@@ -1,25 +1,59 @@
 variable "users" {
-  type = map(string)
+  type = map(object({
+    user_principal_name = optional(string)
+    mail                = optional(string)
+    mail_nickname       = optional(string)
+    employee_id         = optional(string)
+    object_id           = optional(string)
+  }))
+  default = {}
 }
 
 variable "groups" {
-  type = map(string)
+  type = map(object({
+    display_name = optional(string)
+    mail         = optional(string)
+    mail_nickname = optional(string)
+    object_id    = optional(string)
+  }))
+  default = {}
 }
 
 variable "app_registrations" {
-  type = map(string)
+  type = map(object({
+    display_name = optional(string)
+    client_id = optional(string)
+    object_id = optional(string)
+    principal_id = optional(string)
+  }))
+  default = {}
 }
 
 variable "system_assigned_managed_identities" {
-  type = map(string)
+  type = map(object({
+    display_name = optional(string)
+    principal_id = optional(string)
+    object_id    = optional(string)
+  }))
+  default = {}
 }
 
 variable "user_assigned_managed_identities" {
-  type = map(string)
+  type = map(object({
+    resource_group_and_name = optional(object({
+      resource_group_name = string
+      name                = string
+    }))
+    display_name = optional(string)
+    principal_id = optional(string)
+    object_id    = optional(string)
+  }))
+  default = {}
 }
 
 variable "role_definitions" {
   type = map(string)
+  default = {}
 }
 
 variable "resources" {
@@ -36,6 +70,7 @@ variable "resources" {
       user_assigned_managed_identities   = optional(set(string))
     }))
   }))
+  default = {}
 }
 
 variable "resource_groups" {
@@ -51,6 +86,7 @@ variable "resource_groups" {
       user_assigned_managed_identities   = optional(set(string))
     }))
   }))
+  default = {}
 }
 
 variable "subscriptions" {
@@ -65,6 +101,7 @@ variable "subscriptions" {
       user_assigned_managed_identities   = optional(set(string))
     }))
   }))
+  default = {}
 }
 
 variable "management_groups" {
@@ -79,6 +116,7 @@ variable "management_groups" {
       user_assigned_managed_identities   = optional(set(string))
     }))
   }))
+  default = {}
 }
 
 variable "entra_id" {
@@ -93,6 +131,7 @@ variable "entra_id" {
       user_assigned_managed_identities   = optional(set(string))
     }))
   }))
+  default = {}
 }
 
 variable "enable_telemetry" {
@@ -105,8 +144,8 @@ If it is set to false, then no telemetry will be collected.
 DESCRIPTION
 }
 
-# This is required for most resource modules
-variable "resource_group_name" {
+variable "telemetry_resource_group_name" {
   type        = string
-  description = "The resource group where the resources will be deployed."
+  description = "The resource group where the telemetry will be deployed."
+  default     = ""
 }

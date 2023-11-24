@@ -12,32 +12,22 @@ provider "azurerm" {
   features {}
 }
 
-variable "enable_telemetry" {
-  type        = bool
-  default     = true
-  description = <<DESCRIPTION
-This variable controls whether or not telemetry is enabled for the module.
-For more information see https://aka.ms/avm/telemetryinfo.
-If it is set to false, then no telemetry will be collected.
-DESCRIPTION
-}
-
-# This ensures we have unique CAF compliant names for our resources.
-module "naming" {
-  source  = "Azure/naming/azurerm"
-  version = "0.3.0"
-}
-
-# This is required for resource modules
-resource "azurerm_resource_group" "this" {
-  name     = module.naming.resource_group.name_unique
-  location = "MYLOCATION"
-}
-
-# This is the module call
 module "MYMODULE" {
   source = "../../"
   # source             = "Azure/avm-<res/ptn>-<name>/azurerm"
   enable_telemetry = var.enable_telemetry
-  # ...
+  users = {
+    user1 = {
+      user_principal_name = "test-user-01@csutf.onmicrosoft.com"
+      mail = "test.user.01@test.com"
+      mail_nickname = "test-user-01"
+      employee_id = "Test User 01 332"
+      object_id = "4de4aa10-d0cf-4634-ae1c-fdc82361cd67"
+    }
+    user2 = {
+      user_principal_name = "test-user-02@csutf.onmicrosoft.com"
+    }
+  }
 }
+
+
