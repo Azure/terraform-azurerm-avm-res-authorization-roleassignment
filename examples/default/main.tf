@@ -17,8 +17,8 @@ provider "azurerm" {
 }
 
 locals {
-  module_name = "avm-ptn-authorization-roleassignment"
-  test_user_count = 6
+  module_name                 = "avm-ptn-authorization-roleassignment"
+  test_user_count             = 6
   test_app_registrstion_count = 5
 }
 
@@ -26,7 +26,7 @@ module "avm-ptn-authorization-roleassignment" {
   source = "../../"
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
   enable_telemetry = var.enable_telemetry
-  users_by_user_principal_name =  {
+  users_by_user_principal_name = {
     user1 = azuread_user.test[0].user_principal_name
     user2 = azuread_user.test[1].user_principal_name
   }

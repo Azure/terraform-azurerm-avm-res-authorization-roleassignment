@@ -37,13 +37,13 @@ data "azuread_user" "users_by_mail" {
 }
 
 data "azuread_user" "users_by_mail_nickname" {
-  for_each = var.users_by_mail_nickname
-  mail_nickname =      each.value
+  for_each      = var.users_by_mail_nickname
+  mail_nickname = each.value
 }
 
 data "azuread_user" "users_by_employee_id" {
-  for_each = var.users_by_employee_id
-  employee_id      = each.value
+  for_each    = var.users_by_employee_id
+  employee_id = each.value
 }
 
 data "azuread_user" "users_by_object_id" {

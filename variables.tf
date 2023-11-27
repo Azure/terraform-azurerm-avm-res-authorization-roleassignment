@@ -1,82 +1,8 @@
-variable "users_by_user_principal_name" {
-  type = map(string)
-  default = {}
-}
 
-variable "users_by_mail" {
-  type = map(string)
-  default = {}
-}
 
-variable "users_by_mail_nickname" {
-  type = map(string)
-  default = {}
-}
-
-variable "users_by_employee_id" {
-  type = map(string)
-  default = {}
-}
-
-variable "users_by_object_id" {
-  type = map(string)
-  default = {}
-}
-
-variable "groups" {
-  type = map(object({
-    display_name = optional(string)
-    mail         = optional(string)
-    mail_nickname = optional(string)
-    object_id    = optional(string)
-  }))
-  default = {}
-}
-
-variable "app_registrations_by_display_name" {
-  type = map(string)
-  default = {}
-}
-
-variable "app_registrations_by_client_id" {
-  type = map(string)
-  default = {}
-}
-
-variable "app_registrations_by_object_id" {
-  type = map(string)
-  default = {}
-}
-
-variable "app_registrations_by_principal_id" {
-  type = map(string)
-  default = {}
-}
-
-variable "system_assigned_managed_identities" {
-  type = map(object({
-    display_name = optional(string)
-    principal_id = optional(string)
-    object_id    = optional(string)
-  }))
-  default = {}
-}
-
-variable "user_assigned_managed_identities" {
-  type = map(object({
-    resource_group_and_name = optional(object({
-      resource_group_name = string
-      name                = string
-    }))
-    display_name = optional(string)
-    principal_id = optional(string)
-    object_id    = optional(string)
-  }))
-  default = {}
-}
 
 variable "role_definitions" {
-  type = map(string)
+  type    = map(string)
   default = {}
 }
 
