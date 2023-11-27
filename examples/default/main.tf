@@ -5,6 +5,10 @@ terraform {
       source  = "hashicorp/azurerm"
       version = ">= 3.7.0, < 4.0.0"
     }
+    azuread = {
+      source  = "hashicorp/azuread"
+      version = ">= 2.0.0, < 3.0.0"
+    }
   }
 }
 
@@ -12,32 +16,52 @@ provider "azurerm" {
   features {}
 }
 
+locals {
+  module_name = "avm-ptn-authorization-roleassignment"
+  test_user_count = 6
+  test_app_registrstion_count = 5
+}
+
 module "avm-ptn-authorization-roleassignment" {
   source = "../../"
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
   enable_telemetry = var.enable_telemetry
-  users = {
-    user1 = {
-      user_principal_name = "test-user-01@csutf.onmicrosoft.com"
-      mail = "test.user.01@test.com"
-      mail_nickname = "test-user-01"
-      employee_id = "Test User 01 332"
-      object_id = "4de4aa10-d0cf-4634-ae1c-fdc82361cd67"
-    }
-    user2 = {
-      user_principal_name = "test-user-02@csutf.onmicrosoft.com"
-    }
+  users_by_user_principal_name =  {
+    user1 = azuread_user.test[0].user_principal_name
+    user2 = azuread_user.test[1].user_principal_name
   }
-  app_registrations = {
-    app1 = {
-      display_name = "test-application-01"
-      client_id = "31df6c65-93ae-4214-b64b-8f63560ccaa5"
-      object_id = "c4a2ee57-562a-49a7-9c67-74704d2a78eb"
-      principal_id = "18848969-0a9f-47ab-8868-0ad193b40221"
-    }
-    app2 = {
-      display_name = "test-application-02"
-    }
+  users_by_mail = {
+    user1 = azuread_user.test[0].mail
+    user3 = azuread_user.test[2].mail
+  }
+  users_by_mail_nickname = {
+    user1 = azuread_user.test[0].mail_nickname
+    user4 = azuread_user.test[3].mail_nickname
+  }
+  users_by_employee_id = {
+    user1 = azuread_user.test[0].employee_id
+    user5 = azuread_user.test[4].employee_id
+  }
+  users_by_object_id = {
+    user1 = azuread_user.test[0].object_id
+    user6 = azuread_user.test[5].object_id
+  }
+
+  app_registrations_by_display_name = {
+    app1 = azuread_application.test[0].display_name
+    app2 = azuread_application.test[1].display_name
+  }
+  app_registrations_by_client_id = {
+    app1 = azuread_application.test[0].client_id
+    app3 = azuread_application.test[2].client_id
+  }
+  app_registrations_by_object_id = {
+    app1 = azuread_application.test[0].object_id
+    app4 = azuread_application.test[3].object_id
+  }
+  app_registrations_by_principal_id = {
+    app1 = azuread_service_principal.test[0].object_id
+    app5 = azuread_service_principal.test[4].object_id
   }
 }
 

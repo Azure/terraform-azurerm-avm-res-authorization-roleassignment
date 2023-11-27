@@ -1,11 +1,25 @@
-variable "users" {
-  type = map(object({
-    user_principal_name = optional(string)
-    mail                = optional(string)
-    mail_nickname       = optional(string)
-    employee_id         = optional(string)
-    object_id           = optional(string)
-  }))
+variable "users_by_user_principal_name" {
+  type = map(string)
+  default = {}
+}
+
+variable "users_by_mail" {
+  type = map(string)
+  default = {}
+}
+
+variable "users_by_mail_nickname" {
+  type = map(string)
+  default = {}
+}
+
+variable "users_by_employee_id" {
+  type = map(string)
+  default = {}
+}
+
+variable "users_by_object_id" {
+  type = map(string)
   default = {}
 }
 
@@ -19,13 +33,23 @@ variable "groups" {
   default = {}
 }
 
-variable "app_registrations" {
-  type = map(object({
-    display_name = optional(string)
-    client_id = optional(string)
-    object_id = optional(string)
-    principal_id = optional(string)
-  }))
+variable "app_registrations_by_display_name" {
+  type = map(string)
+  default = {}
+}
+
+variable "app_registrations_by_client_id" {
+  type = map(string)
+  default = {}
+}
+
+variable "app_registrations_by_object_id" {
+  type = map(string)
+  default = {}
+}
+
+variable "app_registrations_by_principal_id" {
+  type = map(string)
   default = {}
 }
 
