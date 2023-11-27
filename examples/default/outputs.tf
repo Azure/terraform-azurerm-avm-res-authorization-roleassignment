@@ -1,7 +1,7 @@
 output "users" {
-  value = module.MYMODULE.users
+  value = module.avm-ptn-authorization-roleassignment.users
 }
 
-output "test" {
-  value = module.MYMODULE.test
+output "app_registrations" {
+  value = module.avm-ptn-authorization-roleassignment.app_registrations
 }
