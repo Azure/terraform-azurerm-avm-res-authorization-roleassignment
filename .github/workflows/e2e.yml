@@ -31,6 +31,7 @@ jobs:
     env:
       TF_IN_AUTOMATION: 1
       TF_VAR_enable_telemetry: false
+      TF_VAR_spn_domain: ${{ secrets.SPN_DOMAIN }}
     strategy:
       matrix:
         example: ${{ fromJson(needs.getexamples.outputs.examples) }}

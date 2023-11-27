@@ -22,7 +22,7 @@ resource "random_string" "employee_id" {
 
 resource "azuread_user" "test" {
   count               = local.test_user_count
-  user_principal_name = "${random_pet.username[count.index].id}-${count.index}@ms-demo.net"
+  user_principal_name = "${random_pet.username[count.index].id}-${count.index}@${var.spn_domain}"
   display_name        = "${local.module_name}-${random_pet.username[count.index].id}-${count.index}"
   mail_nickname       = "${random_pet.username[count.index].id}-${count.index}"
   account_enabled     = false
