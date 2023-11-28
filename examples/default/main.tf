@@ -27,7 +27,7 @@ module "avm-ptn-authorization-roleassignment" {
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
   enable_telemetry = var.enable_telemetry
 
-  depends_on = [ azuread_service_principal.test, azuread_user.test ]
+  depends_on = [azuread_service_principal.test, azuread_user.test]
 
   users_by_user_principal_name = {
     user1 = azuread_user.test[0].user_principal_name
