@@ -3,11 +3,6 @@ variable "groups_by_display_name" {
   default = {}
 }
 
-variable "groups_by_mail" {
-  type    = map(string)
-  default = {}
-}
-
 variable "groups_by_mail_nickname" {
   type    = map(string)
   default = {}

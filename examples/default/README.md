@@ -11,6 +11,10 @@ terraform {
       source  = "hashicorp/azurerm"
       version = ">= 3.7.0, < 4.0.0"
     }
+    azuread = {
+      source  = "hashicorp/azuread"
+      version = ">= 2.0.0, < 3.0.0"
+    }
   }
 }
 
@@ -18,35 +22,59 @@ provider "azurerm" {
   features {}
 }
 
-variable "enable_telemetry" {
-  type        = bool
-  default     = true
-  description = <<DESCRIPTION
-This variable controls whether or not telemetry is enabled for the module.
-For more information see https://aka.ms/avm/telemetryinfo.
-If it is set to false, then no telemetry will be collected.
-DESCRIPTION
+locals {
+  module_name                 = "avm-ptn-authorization-roleassignment"
+  test_user_count             = 6
+  test_app_registrstion_count = 5
 }
 
-# This ensures we have unique CAF compliant names for our resources.
-module "naming" {
-  source  = "Azure/naming/azurerm"
-  version = "0.3.0"
-}
-
-# This is required for resource modules
-resource "azurerm_resource_group" "this" {
-  name     = module.naming.resource_group.name_unique
-  location = "MYLOCATION"
-}
-
-# This is the module call
-module "MYMODULE" {
+module "avm-ptn-authorization-roleassignment" {
   source = "../../"
-  # source             = "Azure/avm-<res/ptn>-<name>/azurerm"
+  # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
   enable_telemetry = var.enable_telemetry
-  # ...
+
+  depends_on = [azuread_service_principal.test, azuread_user.test]
+
+  users_by_user_principal_name = {
+    user1 = azuread_user.test[0].user_principal_name
+    user2 = azuread_user.test[1].user_principal_name
+  }
+  users_by_mail = {
+    user1 = azuread_user.test[0].mail
+    user3 = azuread_user.test[2].mail
+  }
+  users_by_mail_nickname = {
+    user1 = azuread_user.test[0].mail_nickname
+    user4 = azuread_user.test[3].mail_nickname
+  }
+  users_by_employee_id = {
+    user1 = azuread_user.test[0].employee_id
+    user5 = azuread_user.test[4].employee_id
+  }
+  users_by_object_id = {
+    user1 = azuread_user.test[0].object_id
+    user6 = azuread_user.test[5].object_id
+  }
+
+  app_registrations_by_display_name = {
+    app1 = azuread_application.test[0].display_name
+    app2 = azuread_application.test[1].display_name
+  }
+  app_registrations_by_client_id = {
+    app1 = azuread_application.test[0].client_id
+    app3 = azuread_application.test[2].client_id
+  }
+  app_registrations_by_object_id = {
+    app1 = azuread_application.test[0].object_id
+    app4 = azuread_application.test[3].object_id
+  }
+  app_registrations_by_principal_id = {
+    app1 = azuread_service_principal.test[0].object_id
+    app5 = azuread_service_principal.test[4].object_id
+  }
 }
+
+
 ```
 
 <!-- markdownlint-disable MD033 -->
@@ -56,19 +84,29 @@ The following requirements are needed by this module:
 
 - <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (>= 1.3.0)
 
+- <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) (>= 2.0.0, < 3.0.0)
+
 - <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (>= 3.7.0, < 4.0.0)
 
 ## Providers
 
 The following providers are used by this module:
 
-- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (>= 3.7.0, < 4.0.0)
+- <a name="provider_azuread"></a> [azuread](#provider\_azuread) (>= 2.0.0, < 3.0.0)
+
+- <a name="provider_random"></a> [random](#provider\_random)
 
 ## Resources
 
 The following resources are used by this module:
 
-- [azurerm_resource_group.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) (resource)
+- [azuread_application.test](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application) (resource)
+- [azuread_service_principal.test](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal) (resource)
+- [azuread_user.test](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/user) (resource)
+- [random_password.password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) (resource)
+- [random_pet.app_registration_display_name](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)
+- [random_pet.username](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)
+- [random_string.employee_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) (resource)
 
 <!-- markdownlint-disable MD013 -->
 ## Required Inputs
@@ -89,25 +127,35 @@ Type: `bool`
 
 Default: `true`
 
+### <a name="input_spn_domain"></a> [spn\_domain](#input\_spn\_domain)
+
+Description: The domain name for the service principal name.
+
+Type: `string`
+
+Default: `"changeme.com"`
+
 ## Outputs
 
-No outputs.
+The following outputs are exported:
+
+### <a name="output_app_registrations"></a> [app\_registrations](#output\_app\_registrations)
+
+Description: n/a
+
+### <a name="output_users"></a> [users](#output\_users)
+
+Description: n/a
 
 ## Modules
 
 The following Modules are called:
 
-### <a name="module_MYMODULE"></a> [MYMODULE](#module\_MYMODULE)
+### <a name="module_avm-ptn-authorization-roleassignment"></a> [avm-ptn-authorization-roleassignment](#module\_avm-ptn-authorization-roleassignment)
 
 Source: ../../
 
 Version:
-
-### <a name="module_naming"></a> [naming](#module\_naming)
-
-Source: Azure/naming/azurerm
-
-Version: 0.3.0
 
 <!-- markdownlint-disable-next-line MD041 -->
 ## Data Collection

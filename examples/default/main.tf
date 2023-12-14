@@ -19,6 +19,7 @@ provider "azurerm" {
 locals {
   module_name                 = "avm-ptn-authorization-roleassignment"
   test_user_count             = 6
+  test_group_count            = 4
   test_app_registrstion_count = 5
 }
 
@@ -48,6 +49,19 @@ module "avm-ptn-authorization-roleassignment" {
   users_by_object_id = {
     user1 = azuread_user.test[0].object_id
     user6 = azuread_user.test[5].object_id
+  }
+
+  groups_by_display_name = {
+    group1 = azuread_group.test[0].display_name
+    group2 = azuread_group.test[1].display_name
+  }
+  groups_by_mail_nickname = {
+    group1 = azuread_group.test[0].mail_nickname
+    group3 = azuread_group.test[2].mail_nickname
+  }
+  groups_by_object_id = {
+    group1 = azuread_group.test[0].object_id
+    group4 = azuread_group.test[3].object_id
   }
 
   app_registrations_by_display_name = {
