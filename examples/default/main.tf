@@ -130,7 +130,7 @@ module "avm-ptn-authorization-roleassignment" {
     role3 = "Reader"
   }
 
-  role_assignments_by_resources_by_resource_group_and_name = {
+  role_assignments_by_resource = {
     test1 = {
       resource_group_name = azurerm_resource_group.test.name
       resource_name       = azurerm_static_site.test[local.system_assigned_managed_identities.sami1].name
