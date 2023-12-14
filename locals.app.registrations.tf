@@ -1,5 +1,5 @@
 locals {
-  # Prepare the search criteria for users
+  # Prepare the search criteria for app registrations
   app_registrations_by_client_id_client_id = { for key, value in data.azuread_application.applications_by_client_id :
     key => value.client_id
   }

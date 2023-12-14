@@ -1,18 +1,29 @@
+locals {
+  users = {
+    user1 = "user1"
+    user2 = "user2"
+    user3 = "user3"
+    user4 = "user4"
+    user5 = "user5"
+    user6 = "user6"
+  }
+}
+
 resource "random_pet" "username" {
-  count     = local.test_user_count
+  for_each     = local.users
   length    = 2
   separator = "-"
 }
 
 resource "random_password" "password" {
-  count            = local.test_user_count
+  for_each     = local.users
   length           = 16
   special          = true
   override_special = "_%@"
 }
 
 resource "random_string" "employee_id" {
-  count   = local.test_user_count
+  for_each     = local.users
   length  = 10
   special = false
   upper   = false
@@ -21,12 +32,12 @@ resource "random_string" "employee_id" {
 }
 
 resource "azuread_user" "test" {
-  count               = local.test_user_count
-  user_principal_name = "${random_pet.username[count.index].id}-${count.index}@${var.spn_domain}"
-  display_name        = "${local.module_name}-${random_pet.username[count.index].id}-${count.index}"
-  mail_nickname       = "${random_pet.username[count.index].id}-${count.index}"
+  for_each     = local.users
+  user_principal_name = "${each.key}-${random_pet.username[each.key].id}@${var.spn_domain}"
+  display_name        = "${local.module_name}-${each.key}-${random_pet.username[each.key].id}"
+  mail_nickname       = "${each.key}-${random_pet.username[each.key].id}"
   account_enabled     = false
-  mail                = "${random_pet.username[count.index].id}-${count.index}@avm-test.com"
-  password            = random_password.password[count.index].result
-  employee_id         = random_string.employee_id[count.index].result
+  mail                = "${each.key}-${random_pet.username[each.key].id}@avm-test.com"
+  password            = random_password.password[each.key].result
+  employee_id         = random_string.employee_id[each.key].result
 }
