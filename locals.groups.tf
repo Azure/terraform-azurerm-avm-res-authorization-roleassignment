@@ -1,5 +1,5 @@
 locals {
-    # Get the group id from the data sources
+  # Get the group id from the data sources
   groups_by_display_name = { for key, value in data.azuread_group.groups_by_display_name :
     key => value.id
   }

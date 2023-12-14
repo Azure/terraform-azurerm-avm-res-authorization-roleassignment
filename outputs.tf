@@ -17,3 +17,11 @@ output "system_assigned_managed_identities" {
 output "user_assigned_managed_identities" {
   value = local.user_assigned_managed_identities
 }
+
+output "role_defintions" {
+  value = local.role_definitions
+}
+
+output "role_assignments" {
+  value = local.role_assignments
+}

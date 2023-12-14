@@ -20,7 +20,7 @@ locals {
 }
 
 data "azuread_service_principal" "system_assigned_managed_identities_by_display_name" {
-  for_each  = var.system_assigned_managed_identities_by_display_name
+  for_each     = var.system_assigned_managed_identities_by_display_name
   display_name = each.value
 }
 

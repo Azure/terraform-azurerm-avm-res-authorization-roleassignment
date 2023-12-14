@@ -9,7 +9,7 @@ locals {
 }
 
 resource "random_pet" "user_assigned_managed_identity" {
-  for_each = local.user_assigned_managed_identities
+  for_each  = local.user_assigned_managed_identities
   length    = 2
   separator = "-"
 }

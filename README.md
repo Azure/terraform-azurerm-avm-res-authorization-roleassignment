@@ -45,17 +45,30 @@ The following providers are used by this module:
 The following resources are used by this module:
 
 - [azurerm_resource_group_template_deployment.telemetry](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group_template_deployment) (resource)
+- [azurerm_role_assignment.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) (resource)
 - [random_id.telem](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) (resource)
 - [azuread_application.applications_by_client_id](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/application) (data source)
 - [azuread_application.applications_by_display_name](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/application) (data source)
 - [azuread_application.applications_by_object_id](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/application) (data source)
+- [azuread_group.groups_by_display_name](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) (data source)
+- [azuread_group.groups_by_mail_nickname](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) (data source)
+- [azuread_group.groups_by_object_id](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) (data source)
 - [azuread_service_principal.service_principal_by_client_id](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) (data source)
 - [azuread_service_principal.service_principal_by_object_id](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) (data source)
+- [azuread_service_principal.system_assigned_managed_identities_by_client_id](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) (data source)
+- [azuread_service_principal.system_assigned_managed_identities_by_display_name](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) (data source)
+- [azuread_service_principal.system_assigned_managed_identities_by_principal_id](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) (data source)
+- [azuread_service_principal.user_assigned_managed_identities_by_client_id](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) (data source)
+- [azuread_service_principal.user_assigned_managed_identities_by_display_name](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) (data source)
+- [azuread_service_principal.user_assigned_managed_identities_by_principal_id](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) (data source)
 - [azuread_user.users_by_employee_id](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/user) (data source)
 - [azuread_user.users_by_mail](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/user) (data source)
 - [azuread_user.users_by_mail_nickname](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/user) (data source)
 - [azuread_user.users_by_object_id](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/user) (data source)
 - [azuread_user.users_by_user_principal_name](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/user) (data source)
+- [azurerm_resources.resources_by_resource_group_and_name](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resources) (data source)
+- [azurerm_role_definition.role_definitions_by_name](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/role_definition) (data source)
+- [azurerm_user_assigned_identity.user_assigned_managed_identities_by_resource_group_and_name](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) (data source)
 
 <!-- markdownlint-disable MD013 -->
 ## Required Inputs
@@ -138,14 +151,6 @@ Type: `map(string)`
 
 Default: `{}`
 
-### <a name="input_groups_by_mail"></a> [groups\_by\_mail](#input\_groups\_by\_mail)
-
-Description: n/a
-
-Type: `map(string)`
-
-Default: `{}`
-
 ### <a name="input_groups_by_mail_nickname"></a> [groups\_by\_mail\_nickname](#input\_groups\_by\_mail\_nickname)
 
 Description: n/a
@@ -207,7 +212,7 @@ map(object({
 
 Default: `{}`
 
-### <a name="input_resources"></a> [resources](#input\_resources)
+### <a name="input_role_assignment_by_scope"></a> [role\_assignment\_by\_scope](#input\_role\_assignment\_by\_scope)
 
 Description: n/a
 
@@ -215,9 +220,30 @@ Type:
 
 ```hcl
 map(object({
+    scope = string
+    role_assignments = map(object({
+      role_definition                    = string
+      users                              = optional(set(string))
+      groups                             = optional(set(string))
+      app_registrations                  = optional(set(string))
+      system_assigned_managed_identities = optional(set(string))
+      user_assigned_managed_identities   = optional(set(string))
+    }))
+  }))
+```
+
+Default: `{}`
+
+### <a name="input_role_assignments_by_resource"></a> [role\_assignments\_by\_resource](#input\_role\_assignments\_by\_resource)
+
+Description: NOTE: Only supports provider subscription
+
+Type:
+
+```hcl
+map(object({
     resource_name       = string
     resource_group_name = string
-    subscription_id     = string
     role_assignments = map(object({
       role_definition                    = string
       users                              = optional(set(string))
@@ -377,6 +403,26 @@ Default: `{}`
 The following outputs are exported:
 
 ### <a name="output_app_registrations"></a> [app\_registrations](#output\_app\_registrations)
+
+Description: n/a
+
+### <a name="output_groups"></a> [groups](#output\_groups)
+
+Description: n/a
+
+### <a name="output_role_assignments"></a> [role\_assignments](#output\_role\_assignments)
+
+Description: n/a
+
+### <a name="output_role_defintions"></a> [role\_defintions](#output\_role\_defintions)
+
+Description: n/a
+
+### <a name="output_system_assigned_managed_identities"></a> [system\_assigned\_managed\_identities](#output\_system\_assigned\_managed\_identities)
+
+Description: n/a
+
+### <a name="output_user_assigned_managed_identities"></a> [user\_assigned\_managed\_identities](#output\_user\_assigned\_managed\_identities)
 
 Description: n/a
 

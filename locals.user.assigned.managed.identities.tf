@@ -17,6 +17,7 @@ locals {
   }
 
   user_assigned_managed_identities = merge(
+    local.user_assigned_managed_identities_by_resource_group_and_name,
     local.user_assigned_managed_identities_by_display_name,
     local.user_assigned_managed_identities_by_client_id,
     local.user_assigned_managed_identities_by_principal_id
@@ -24,13 +25,13 @@ locals {
 }
 
 data "azurerm_user_assigned_identity" "user_assigned_managed_identities_by_resource_group_and_name" {
-  for_each  = var.user_assigned_managed_identities_by_resource_group_and_name
+  for_each            = var.user_assigned_managed_identities_by_resource_group_and_name
   name                = each.value.name
   resource_group_name = each.value.resource_group_name
 }
 
 data "azuread_service_principal" "user_assigned_managed_identities_by_display_name" {
-  for_each  = var.user_assigned_managed_identities_by_display_name
+  for_each     = var.user_assigned_managed_identities_by_display_name
   display_name = each.value
 }
 

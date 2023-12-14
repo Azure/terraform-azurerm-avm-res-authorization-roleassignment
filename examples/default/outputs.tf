@@ -17,3 +17,11 @@ output "system_assigned_managed_identities" {
 output "user_assigned_managed_identities" {
   value = module.avm-ptn-authorization-roleassignment.user_assigned_managed_identities
 }
+
+output "role_defintions" {
+  value = module.avm-ptn-authorization-roleassignment.role_defintions
+}
+
+output "role_assignments" {
+  value = module.avm-ptn-authorization-roleassignment.role_assignments
+}

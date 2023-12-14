@@ -1,16 +1,23 @@
-
-
-
-variable "role_definitions" {
-  type    = map(string)
+variable "role_assignment_by_scope" {
+  type = map(object({
+    scope = string
+    role_assignments = map(object({
+      role_definition                    = string
+      users                              = optional(set(string))
+      groups                             = optional(set(string))
+      app_registrations                  = optional(set(string))
+      system_assigned_managed_identities = optional(set(string))
+      user_assigned_managed_identities   = optional(set(string))
+    }))
+  }))
   default = {}
 }
 
-variable "resources" {
+# NOTE: Only supports provider subscription
+variable "role_assignments_by_resource" {
   type = map(object({
     resource_name       = string
     resource_group_name = string
-    subscription_id     = string
     role_assignments = map(object({
       role_definition                    = string
       users                              = optional(set(string))

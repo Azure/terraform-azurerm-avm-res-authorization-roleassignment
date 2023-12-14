@@ -87,7 +87,7 @@ module "avm-ptn-authorization-roleassignment" {
     (local.app_registrations.app_registration1) = azuread_service_principal.test[local.app_registrations.app_registration1].object_id
     (local.app_registrations.app_registration5) = azuread_service_principal.test[local.app_registrations.app_registration5].object_id
   }
-  
+
   system_assigned_managed_identities_by_display_name = {
     (local.system_assigned_managed_identities.sami1) = azurerm_static_site.test[local.system_assigned_managed_identities.sami1].name
     (local.system_assigned_managed_identities.sami2) = azurerm_static_site.test[local.system_assigned_managed_identities.sami2].name
@@ -103,11 +103,11 @@ module "avm-ptn-authorization-roleassignment" {
 
   user_assigned_managed_identities_by_resource_group_and_name = {
     (local.user_assigned_managed_identities.uami1) = {
-      name = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami1].name
+      name                = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami1].name
       resource_group_name = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami1].resource_group_name
     }
     (local.user_assigned_managed_identities.uami2) = {
-      name = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami2].name
+      name                = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami2].name
       resource_group_name = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami2].resource_group_name
     }
   }
@@ -122,5 +122,44 @@ module "avm-ptn-authorization-roleassignment" {
   user_assigned_managed_identities_by_principal_id = {
     (local.user_assigned_managed_identities.uami1) = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami1].principal_id
     (local.user_assigned_managed_identities.uami5) = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami5].principal_id
+  }
+
+  role_definitions = {
+    role1 = "Owner"
+    role2 = "Contributor"
+    role3 = "Reader"
+  }
+
+  role_assignments_by_resources_by_resource_group_and_name = {
+    test1 = {
+      resource_group_name = azurerm_resource_group.test.name
+      resource_name       = azurerm_static_site.test[local.system_assigned_managed_identities.sami1].name
+      role_assignments = {
+        role_assignment1 = {
+          role_definition                    = "role1"
+          users                              = [local.users.user1]
+          groups                             = [local.groups.group1]
+          app_registrations                  = [local.app_registrations.app_registration1]
+          system_assigned_managed_identities = [local.system_assigned_managed_identities.sami1]
+          user_assigned_managed_identities   = [local.user_assigned_managed_identities.uami1]
+        }
+        role_assignment2 = {
+          role_definition                    = "role2"
+          users                              = [local.users.user2]
+          groups                             = [local.groups.group2]
+          app_registrations                  = [local.app_registrations.app_registration2]
+          system_assigned_managed_identities = [local.system_assigned_managed_identities.sami2]
+          user_assigned_managed_identities   = [local.user_assigned_managed_identities.uami2]
+        }
+        role_assignment3 = {
+          role_definition                    = "role3"
+          users                              = [local.users.user3]
+          groups                             = [local.groups.group3]
+          app_registrations                  = [local.app_registrations.app_registration3]
+          system_assigned_managed_identities = [local.system_assigned_managed_identities.sami3]
+          user_assigned_managed_identities   = [local.user_assigned_managed_identities.uami3]
+        }
+      }
+    }
   }
 }
