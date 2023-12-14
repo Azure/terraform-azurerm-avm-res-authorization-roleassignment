@@ -17,9 +17,14 @@ resource "random_pet" "username" {
 
 resource "random_password" "password" {
   for_each     = local.users
-  length           = 16
+  length           = 20
   special          = true
+  min_numeric = 1
+  min_lower = 1
+  min_upper = 1
+  min_special = 1
   override_special = "_%@"
+
 }
 
 resource "random_string" "employee_id" {

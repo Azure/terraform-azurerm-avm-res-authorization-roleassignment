@@ -13,3 +13,7 @@ output "app_registrations" {
 output "system_assigned_managed_identities" {
   value = module.avm-ptn-authorization-roleassignment.system_assigned_managed_identities
 }
+
+output "user_assigned_managed_identities" {
+  value = module.avm-ptn-authorization-roleassignment.user_assigned_managed_identities
+}

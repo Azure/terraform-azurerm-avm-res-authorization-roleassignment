@@ -35,7 +35,7 @@ module "avm-ptn-authorization-roleassignment" {
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
   enable_telemetry = var.enable_telemetry
 
-  depends_on = [azuread_service_principal.test, azuread_user.test, azuread_group.test, azuread_application.test, azurerm_static_site.test]
+  depends_on = [azuread_service_principal.test, azuread_user.test, azuread_group.test, azuread_application.test, azurerm_static_site.test, azurerm_user_assigned_identity.test]
 
   users_by_user_principal_name = {
     (local.users.user1) = azuread_user.test[local.users.user1].user_principal_name
@@ -96,6 +96,31 @@ module "avm-ptn-authorization-roleassignment" {
     (local.system_assigned_managed_identities.sami1) = azurerm_static_site.test[local.system_assigned_managed_identities.sami1].identity[0].principal_id
     (local.system_assigned_managed_identities.sami3) = azurerm_static_site.test[local.system_assigned_managed_identities.sami3].identity[0].principal_id
   }
+  system_assigned_managed_identities_by_client_id = {
+    (local.system_assigned_managed_identities.sami1) = data.azuread_service_principal.test[local.system_assigned_managed_identities.sami1].client_id
+    (local.system_assigned_managed_identities.sami4) = data.azuread_service_principal.test[local.system_assigned_managed_identities.sami4].client_id
+  }
+
+  user_assigned_managed_identities_by_resource_group_and_name = {
+    (local.user_assigned_managed_identities.uami1) = {
+      name = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami1].name
+      resource_group_name = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami1].resource_group_name
+    }
+    (local.user_assigned_managed_identities.uami2) = {
+      name = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami2].name
+      resource_group_name = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami2].resource_group_name
+    }
+  }
+  user_assigned_managed_identities_by_display_name = {
+    (local.user_assigned_managed_identities.uami1) = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami2].name
+    (local.user_assigned_managed_identities.uami3) = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami2].name
+  }
+  user_assigned_managed_identities_by_client_id = {
+    (local.user_assigned_managed_identities.uami1) = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami1].client_id
+    (local.user_assigned_managed_identities.uami4) = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami4].client_id
+  }
+  user_assigned_managed_identities_by_principal_id = {
+    (local.user_assigned_managed_identities.uami1) = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami1].principal_id
+    (local.user_assigned_managed_identities.uami5) = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami5].principal_id
+  }
 }
-
-

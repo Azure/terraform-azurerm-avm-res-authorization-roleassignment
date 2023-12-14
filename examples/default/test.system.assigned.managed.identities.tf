@@ -3,6 +3,7 @@ locals {
     sami1 = "sami1"
     sami2 = "sami2"
     sami3 = "sami3"
+    sami4 = "sami4"
   }
 }
 
@@ -22,4 +23,9 @@ resource "azurerm_static_site" "test" {
   identity {
     type = "SystemAssigned"
   }
+}
+
+data "azuread_service_principal" "test" {
+  for_each  = local.system_assigned_managed_identities
+  object_id = azurerm_static_site.test[each.key].identity[0].principal_id
 }
