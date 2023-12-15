@@ -35,7 +35,7 @@ module "avm-ptn-authorization-roleassignment" {
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
   enable_telemetry = var.enable_telemetry
 
-  depends_on = [azuread_service_principal.test, azuread_user.test, azuread_group.test, azuread_application.test, azurerm_static_site.test, azurerm_user_assigned_identity.test]
+  depends_on = [azuread_service_principal.test, azuread_user.test, azuread_group.test, azuread_application.test, azurerm_static_site.test, azurerm_user_assigned_identity.test, data.azuread_service_principal.test]
 
   users_by_user_principal_name = {
     (local.users.user1) = azuread_user.test[local.users.user1].user_principal_name
@@ -137,7 +137,7 @@ module "avm-ptn-authorization-roleassignment" {
       role_assignments = {
         role_assignment1 = {
           role_definition                    = "role1"
-          users                              = [local.users.user1]
+          users                              = [local.users.user1, local.users.user4]
           groups                             = [local.groups.group1]
           app_registrations                  = [local.app_registrations.app_registration1]
           system_assigned_managed_identities = [local.system_assigned_managed_identities.sami1]
