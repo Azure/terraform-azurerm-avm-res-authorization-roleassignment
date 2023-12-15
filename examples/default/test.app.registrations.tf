@@ -1,13 +1,3 @@
-locals {
-  app_registrations = {
-    app_registration1 = "app_registration1"
-    app_registration2 = "app_registration2"
-    app_registration3 = "app_registration3"
-    app_registration4 = "app_registration4"
-    app_registration5 = "app_registration5"
-  }
-}
-
 resource "random_pet" "app_registration_display_name" {
   for_each  = local.app_registrations
   length    = 2

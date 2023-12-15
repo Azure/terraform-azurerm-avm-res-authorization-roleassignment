@@ -1,14 +1,3 @@
-locals {
-  users = {
-    user1 = "user1"
-    user2 = "user2"
-    user3 = "user3"
-    user4 = "user4"
-    user5 = "user5"
-    user6 = "user6"
-  }
-}
-
 resource "random_pet" "username" {
   for_each  = local.users
   length    = 2

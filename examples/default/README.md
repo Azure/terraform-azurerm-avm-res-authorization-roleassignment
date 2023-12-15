@@ -4,44 +4,12 @@
 This deploys the module in its simplest form.
 
 ```hcl
-terraform {
-  required_version = ">= 1.3.0"
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = ">= 3.7.0, < 4.0.0"
-    }
-    azuread = {
-      source  = "hashicorp/azuread"
-      version = ">= 2.0.0, < 3.0.0"
-    }
-  }
-}
-
-provider "azurerm" {
-  features {}
-}
-
-locals {
-  module_name = "apar"
-}
-
-resource "random_pet" "resource_group_name" {
-  length    = 2
-  separator = "-"
-}
-
-resource "azurerm_resource_group" "test" {
-  name     = "${local.module_name}-${random_pet.resource_group_name.id}"
-  location = "westeurope"
-}
-
 module "avm-ptn-authorization-roleassignment" {
   source = "../../"
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
   enable_telemetry = var.enable_telemetry
 
-  depends_on = [azuread_service_principal.test, azuread_user.test, azuread_group.test, azuread_application.test, azurerm_static_site.test, azurerm_user_assigned_identity.test]
+  depends_on = [azuread_service_principal.test, azuread_user.test, azuread_group.test, azuread_application.test, azurerm_static_site.test, azurerm_user_assigned_identity.test, data.azuread_service_principal.test]
 
   users_by_user_principal_name = {
     (local.users.user1) = azuread_user.test[local.users.user1].user_principal_name
@@ -136,14 +104,14 @@ module "avm-ptn-authorization-roleassignment" {
     role3 = "Reader"
   }
 
-  role_assignments_by_resources_by_resource_group_and_name = {
+  role_assignments_by_resource = {
     test1 = {
       resource_group_name = azurerm_resource_group.test.name
       resource_name       = azurerm_static_site.test[local.system_assigned_managed_identities.sami1].name
       role_assignments = {
         role_assignment1 = {
           role_definition                    = "role1"
-          users                              = [local.users.user1]
+          users                              = [local.users.user1, local.users.user4]
           groups                             = [local.groups.group1]
           app_registrations                  = [local.app_registrations.app_registration1]
           system_assigned_managed_identities = [local.system_assigned_managed_identities.sami1]
@@ -192,6 +160,8 @@ The following providers are used by this module:
 
 - <a name="provider_random"></a> [random](#provider\_random)
 
+- <a name="provider_time"></a> [time](#provider\_time)
+
 ## Resources
 
 The following resources are used by this module:
@@ -211,6 +181,7 @@ The following resources are used by this module:
 - [random_pet.user_assigned_managed_identity](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)
 - [random_pet.username](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)
 - [random_string.employee_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) (resource)
+- [time_sleep.before_service_principal_read_creation](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) (resource)
 - [azuread_service_principal.test](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) (data source)
 
 <!-- markdownlint-disable MD013 -->

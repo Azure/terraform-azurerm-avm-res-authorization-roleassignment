@@ -1,12 +1,3 @@
-locals {
-  groups = {
-    group1 = "group1"
-    group2 = "group2"
-    group3 = "group3"
-    group4 = "group4"
-  }
-}
-
 resource "random_pet" "group_name" {
   for_each  = local.groups
   length    = 2

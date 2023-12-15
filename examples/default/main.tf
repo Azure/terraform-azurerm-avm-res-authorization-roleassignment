@@ -1,35 +1,3 @@
-terraform {
-  required_version = ">= 1.3.0"
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = ">= 3.7.0, < 4.0.0"
-    }
-    azuread = {
-      source  = "hashicorp/azuread"
-      version = ">= 2.0.0, < 3.0.0"
-    }
-  }
-}
-
-provider "azurerm" {
-  features {}
-}
-
-locals {
-  module_name = "apar"
-}
-
-resource "random_pet" "resource_group_name" {
-  length    = 2
-  separator = "-"
-}
-
-resource "azurerm_resource_group" "test" {
-  name     = "${local.module_name}-${random_pet.resource_group_name.id}"
-  location = "westeurope"
-}
-
 module "avm-ptn-authorization-roleassignment" {
   source = "../../"
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"

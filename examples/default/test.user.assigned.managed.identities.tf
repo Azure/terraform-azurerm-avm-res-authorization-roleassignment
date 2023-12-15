@@ -1,13 +1,3 @@
-locals {
-  user_assigned_managed_identities = {
-    uami1 = "uami1"
-    uami2 = "uami2"
-    uami3 = "uami3"
-    uami4 = "uami4"
-    uami5 = "uami5"
-  }
-}
-
 resource "random_pet" "user_assigned_managed_identity" {
   for_each  = local.user_assigned_managed_identities
   length    = 2
