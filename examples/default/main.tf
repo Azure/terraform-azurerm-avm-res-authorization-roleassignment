@@ -96,6 +96,7 @@ module "avm-ptn-authorization-roleassignment" {
     role1 = "Owner"
     role2 = "Contributor"
     role3 = "Reader"
+    role4 = "Example-Role" # Note this custom role has been created manually on the Tenant Root Group MG as it takes too long to create one during the test.
   }
 
   role_assignments_by_resource = {
@@ -126,6 +127,55 @@ module "avm-ptn-authorization-roleassignment" {
           app_registrations                  = [local.app_registrations.app_registration3]
           system_assigned_managed_identities = [local.system_assigned_managed_identities.sami3]
           user_assigned_managed_identities   = [local.user_assigned_managed_identities.uami3]
+        }
+        role_assignment4 = {
+          role_definition                    = "role4"
+          users                              = [local.users.user4]
+          groups                             = [local.groups.group4]
+          app_registrations                  = [local.app_registrations.app_registration4]
+          system_assigned_managed_identities = [local.system_assigned_managed_identities.sami4]
+          user_assigned_managed_identities   = [local.user_assigned_managed_identities.uami4]
+        }
+      }
+    }
+  }
+
+  role_assignments_by_resource_group = {
+    test1 = {
+      resource_group_name = azurerm_resource_group.test.name
+      subscription_id     = data.azurerm_client_config.current.subscription_id
+      role_assignments = {
+        role_assignment1 = {
+          role_definition                    = "role1"
+          users                              = [local.users.user1, local.users.user4]
+          groups                             = [local.groups.group1]
+          app_registrations                  = [local.app_registrations.app_registration1]
+          system_assigned_managed_identities = [local.system_assigned_managed_identities.sami1]
+          user_assigned_managed_identities   = [local.user_assigned_managed_identities.uami1]
+        }
+        role_assignment2 = {
+          role_definition                    = "role2"
+          users                              = [local.users.user2]
+          groups                             = [local.groups.group2]
+          app_registrations                  = [local.app_registrations.app_registration2]
+          system_assigned_managed_identities = [local.system_assigned_managed_identities.sami2]
+          user_assigned_managed_identities   = [local.user_assigned_managed_identities.uami2]
+        }
+        role_assignment3 = {
+          role_definition                    = "role3"
+          users                              = [local.users.user3]
+          groups                             = [local.groups.group3]
+          app_registrations                  = [local.app_registrations.app_registration3]
+          system_assigned_managed_identities = [local.system_assigned_managed_identities.sami3]
+          user_assigned_managed_identities   = [local.user_assigned_managed_identities.uami3]
+        }
+        role_assignment4 = {
+          role_definition                    = "role4"
+          users                              = [local.users.user4]
+          groups                             = [local.groups.group4]
+          app_registrations                  = [local.app_registrations.app_registration4]
+          system_assigned_managed_identities = [local.system_assigned_managed_identities.sami4]
+          user_assigned_managed_identities   = [local.user_assigned_managed_identities.uami4]
         }
       }
     }

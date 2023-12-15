@@ -1,4 +1,4 @@
-variable "role_assignment_by_scope" {
+variable "role_assignments_by_scope" {
   type = map(object({
     scope = string
     role_assignments = map(object({
@@ -30,7 +30,7 @@ variable "role_assignments_by_resource" {
   default = {}
 }
 
-variable "resource_groups" {
+variable "role_assignments_by_resource_group" {
   type = map(object({
     resource_group_name = string
     subscription_id     = string

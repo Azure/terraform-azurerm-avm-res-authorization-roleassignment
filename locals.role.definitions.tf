@@ -1,6 +1,9 @@
 locals {
   role_definitions = { for key, value in data.azurerm_role_definition.role_definitions_by_name :
-    key => value.id
+    key => {
+      id     = value.id
+      scopes = value.assignable_scopes
+    }
   }
 }
 
