@@ -1,5 +1,5 @@
 locals {
-  role_scope_format = "/subscriptions/%s/resourceGroups/%s"
+  role_scope_format      = "/subscriptions/%s/resourceGroups/%s"
   role_definition_format = "/subscriptions/%s%s"
   role_assignments_by_resource_group_for_users = {
     for flattened_role_assignments in flatten([

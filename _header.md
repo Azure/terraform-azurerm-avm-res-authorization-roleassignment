@@ -1,17 +1,55 @@
-# terraform-azurerm-avm-template
+# Azure Authorization Role Assignment Module
 
-This is a template repo for Terraform Azure Verified Modules.
+This module is a convenience wrapper around the `azurerm_role_assignment` resource to make it easier to create role assignments at different scopes for different types of principals.
 
-Things to do:
+## Features
 
-1. Set up a GitHub repo environment called `test`.
-1. Configure environment protection rule to ensure that approval is required before deploying to this environment.
-1. Create a user-assigned managed identity in your test subscription.
-1. Create a role assignment for the managed identity on your test subscription, use the minimum required role.
-1. Configure federated identity credentials on the user assigned managed identity. Use the GitHub environment.
-1. Create the following environment secrets on the `test` environment:
-   1. AZURE_CLIENT_ID
-   1. AZURE_TENANT_ID
-   1. AZURE_SUBSCRIPTION_ID
+This module supports both built in and custom role definitions.
 
-Major version Zero (0.y.z) is for initial development. Anything MAY change at any time. A module SHOULD NOT be considered stable till at least it is major version one (1.0.0) or greater. Changes will always be via new versions being published and no changes will be made to existing published versions. For more details please go to https://semver.org/
+This module can be used to create role assignments at following scopes:
+
+- Management Group
+- Subscription
+- Resource Group
+- Resource
+
+This module supports following types of principals:
+
+- User
+- Group
+- App Registrations (Service Principal)
+- System Assigned Managed Identity
+- User Assigned Managed Identity
+
+The module provides muliple helper variables to make it easier to find the principal id for different types of principals.
+
+## Usage
+
+The module takes a mapping approach, where you define the principals and role defintions with keys, then map them together to define role assignments. This approach enables you to create role assignments at multiple scopes for multiple principals with multiple methods of finding the principal id.
+
+### Simple Example - Assign a single User account Owner rights to a single Resource Group
+
+In the most basic example, this is how to assign a single user to a resource group with a built in role definition:
+
+```hcl
+module "role_assignments" {
+  source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
+  users_by_user_principal_name = {
+    user1 = "abc@def.com"
+  }
+  role_definitions = {
+    role1 = "Owner"
+  }
+  role_assignments_by_resource_group = {
+    role_assignment1 = {
+      resource_group_name = "rg-example"
+      role_assignments = {
+        role_definition = "role1"
+        users           = ["user1"]
+      }
+    }
+  }
+}
+```
+
+> NOTE: Although this may seem like a lot of code for this seemingly simple task, it is important to note that we are referring to our User principal by it's User Principal Name and we are referring to out Role Definition by it's name. If you were to attempt this same task using the built in `azurerm` resources and data sources, you would find that you require at least 3 data sources and 1 resource to achieve the same result.

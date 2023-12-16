@@ -1,21 +1,59 @@
 <!-- BEGIN_TF_DOCS -->
-# terraform-azurerm-avm-template
+# Azure Authorization Role Assignment Module
 
-This is a template repo for Terraform Azure Verified Modules.
+This module is a convenience wrapper around the `azurerm_role_assignment` resource to make it easier to create role assignments at different scopes for different types of principals.
 
-Things to do:
+## Features
 
-1. Set up a GitHub repo environment called `test`.
-1. Configure environment protection rule to ensure that approval is required before deploying to this environment.
-1. Create a user-assigned managed identity in your test subscription.
-1. Create a role assignment for the managed identity on your test subscription, use the minimum required role.
-1. Configure federated identity credentials on the user assigned managed identity. Use the GitHub environment.
-1. Create the following environment secrets on the `test` environment:
-   1. AZURE\_CLIENT\_ID
-   1. AZURE\_TENANT\_ID
-   1. AZURE\_SUBSCRIPTION\_ID
+This module supports both built in and custom role definitions.
 
-Major version Zero (0.y.z) is for initial development. Anything MAY change at any time. A module SHOULD NOT be considered stable till at least it is major version one (1.0.0) or greater. Changes will always be via new versions being published and no changes will be made to existing published versions. For more details please go to https://semver.org/
+This module can be used to create role assignments at following scopes:
+
+- Management Group
+- Subscription
+- Resource Group
+- Resource
+
+This module supports following types of principals:
+
+- User
+- Group
+- App Registrations (Service Principal)
+- System Assigned Managed Identity
+- User Assigned Managed Identity
+
+The module provides muliple helper variables to make it easier to find the principal id for different types of principals.
+
+## Usage
+
+The module takes a mapping approach, where you define the principals and role defintions with keys, then map them together to define role assignments. This approach enables you to create role assignments at multiple scopes for multiple principals with multiple methods of finding the principal id.
+
+### Simple Example - Assign a single User account Owner rights to a single Resource Group
+
+In the most basic example, this is how to assign a single user to a resource group with a built in role definition:
+
+```hcl
+module "role_assignments" {
+  source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
+  users_by_user_principal_name = {
+    user1 = "abc@def.com"
+  }
+  role_definitions = {
+    role1 = "Owner"
+  }
+  role_assignments_by_resource_group = {
+    role_assignment1 = {
+      resource_group_name = "rg-example"
+      role_assignments = {
+        role_definition = "role1"
+        users           = ["user1"]
+      }
+    }
+  }
+}
+```
+
+> NOTE: Although this may seem like a lot of code for this seemingly simple task, it is important to note that we are referring to our User principal by it's User Principal Name and we are referring to out Role Definition by it's name. If you were to attempt this same task using the built in `azurerm` resources and data sources, you would find that you require at least 3 data sources and 1 resource to achieve the same result.
 
 <!-- markdownlint-disable MD033 -->
 ## Requirements
@@ -66,6 +104,7 @@ The following resources are used by this module:
 - [azuread_user.users_by_mail_nickname](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/user) (data source)
 - [azuread_user.users_by_object_id](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/user) (data source)
 - [azuread_user.users_by_user_principal_name](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/user) (data source)
+- [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
 - [azurerm_resources.resources_by_resource_group_and_name](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resources) (data source)
 - [azurerm_role_definition.role_definitions_by_name](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/role_definition) (data source)
 - [azurerm_user_assigned_identity.user_assigned_managed_identities_by_resource_group_and_name](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) (data source)
@@ -189,51 +228,6 @@ map(object({
 
 Default: `{}`
 
-### <a name="input_resource_groups"></a> [resource\_groups](#input\_resource\_groups)
-
-Description: n/a
-
-Type:
-
-```hcl
-map(object({
-    resource_group_name = string
-    subscription_id     = string
-    role_assignments = map(object({
-      role_definition                    = string
-      users                              = optional(set(string))
-      groups                             = optional(set(string))
-      app_registrations                  = optional(set(string))
-      system_assigned_managed_identities = optional(set(string))
-      user_assigned_managed_identities   = optional(set(string))
-    }))
-  }))
-```
-
-Default: `{}`
-
-### <a name="input_role_assignment_by_scope"></a> [role\_assignment\_by\_scope](#input\_role\_assignment\_by\_scope)
-
-Description: n/a
-
-Type:
-
-```hcl
-map(object({
-    scope = string
-    role_assignments = map(object({
-      role_definition                    = string
-      users                              = optional(set(string))
-      groups                             = optional(set(string))
-      app_registrations                  = optional(set(string))
-      system_assigned_managed_identities = optional(set(string))
-      user_assigned_managed_identities   = optional(set(string))
-    }))
-  }))
-```
-
-Default: `{}`
-
 ### <a name="input_role_assignments_by_resource"></a> [role\_assignments\_by\_resource](#input\_role\_assignments\_by\_resource)
 
 Description: NOTE: Only supports provider subscription
@@ -244,6 +238,51 @@ Type:
 map(object({
     resource_name       = string
     resource_group_name = string
+    role_assignments = map(object({
+      role_definition                    = string
+      users                              = optional(set(string))
+      groups                             = optional(set(string))
+      app_registrations                  = optional(set(string))
+      system_assigned_managed_identities = optional(set(string))
+      user_assigned_managed_identities   = optional(set(string))
+    }))
+  }))
+```
+
+Default: `{}`
+
+### <a name="input_role_assignments_by_resource_group"></a> [role\_assignments\_by\_resource\_group](#input\_role\_assignments\_by\_resource\_group)
+
+Description: n/a
+
+Type:
+
+```hcl
+map(object({
+    resource_group_name = string
+    subscription_id     = optional(string, null)
+    role_assignments = map(object({
+      role_definition                    = string
+      users                              = optional(set(string))
+      groups                             = optional(set(string))
+      app_registrations                  = optional(set(string))
+      system_assigned_managed_identities = optional(set(string))
+      user_assigned_managed_identities   = optional(set(string))
+    }))
+  }))
+```
+
+Default: `{}`
+
+### <a name="input_role_assignments_by_scope"></a> [role\_assignments\_by\_scope](#input\_role\_assignments\_by\_scope)
+
+Description: n/a
+
+Type:
+
+```hcl
+map(object({
+    scope = string
     role_assignments = map(object({
       role_definition                    = string
       users                              = optional(set(string))
@@ -273,7 +312,7 @@ Type:
 
 ```hcl
 map(object({
-    subscription_id = string
+    subscription_id = optional(string, null)
     role_assignments = map(object({
       role_definition                    = string
       users                              = optional(set(string))

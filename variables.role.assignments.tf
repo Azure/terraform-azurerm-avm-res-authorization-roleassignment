@@ -33,7 +33,7 @@ variable "role_assignments_by_resource" {
 variable "role_assignments_by_resource_group" {
   type = map(object({
     resource_group_name = string
-    subscription_id     = string
+    subscription_id     = optional(string, null)
     role_assignments = map(object({
       role_definition                    = string
       users                              = optional(set(string))
@@ -48,7 +48,7 @@ variable "role_assignments_by_resource_group" {
 
 variable "subscriptions" {
   type = map(object({
-    subscription_id = string
+    subscription_id = optional(string, null)
     role_assignments = map(object({
       role_definition                    = string
       users                              = optional(set(string))
@@ -89,20 +89,4 @@ variable "entra_id" {
     }))
   }))
   default = {}
-}
-
-variable "enable_telemetry" {
-  type        = bool
-  default     = true
-  description = <<DESCRIPTION
-This variable controls whether or not telemetry is enabled for the module.
-For more information see https://aka.ms/avm/telemetryinfo.
-If it is set to false, then no telemetry will be collected.
-DESCRIPTION
-}
-
-variable "telemetry_resource_group_name" {
-  type        = string
-  description = "The resource group where the telemetry will be deployed."
-  default     = ""
 }
