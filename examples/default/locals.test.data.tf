@@ -137,7 +137,6 @@ locals {
   role_assignments_by_resource_group = merge({
     test1 = {
       resource_group_name = azurerm_resource_group.test.name
-      subscription_id     = data.azurerm_client_config.current.subscription_id
       role_assignments = {
         role_assignment1 = {
           role_definition                    = "role1"
@@ -173,8 +172,8 @@ locals {
         }
       }
     }
-    },
-    local.include_alternative_subscription ? {
+  },
+  local.include_alternative_subscription ? {
       test2 = {
         resource_group_name = azurerm_resource_group.alternative[0].name
         subscription_id     = var.alternative_subscription_id
