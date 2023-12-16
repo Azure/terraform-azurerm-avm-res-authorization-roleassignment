@@ -52,4 +52,4 @@ module "role_assignments" {
 }
 ```
 
-> NOTE: Although this may seem like a lot of code for this seemingly simple task, it is important to note that we are referring to our User principal by it's User Principal Name and we are referring to out Role Definition by it's name. If you were to attempt this same task using the built in `azurerm` resources and data sources, you would find that you require at least 3 data sources and 1 resource to achieve the same result.
+> NOTE: Although this may seem like a lot of code for this seemingly simple task, it is important to note that we are referring to our User principal by it's User Principal Name and we are referring to our Role Definition by it's name. If you were to attempt this same task using the built in `azurerm` resources and data sources, you would find that you require at least 3 data sources and 1 resource to achieve the same result.
