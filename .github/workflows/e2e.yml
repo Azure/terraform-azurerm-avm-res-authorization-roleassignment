@@ -32,6 +32,7 @@ jobs:
       TF_IN_AUTOMATION: 1
       TF_VAR_enable_telemetry: false
       TF_VAR_spn_domain: ${{ secrets.SPN_DOMAIN }}
+      TF_VAR_alternative_subscription_id: ${{ secrets.AZURE_ALTERNATIVE_SUBSCRIPTION_ID }}
     strategy:
       matrix:
         example: ${{ fromJson(needs.getexamples.outputs.examples) }}
