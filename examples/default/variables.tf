@@ -9,7 +9,27 @@ DESCRIPTION
 }
 
 variable "spn_domain" {
-  type        = string
-  description = "The domain name for the service principal name."
+  type = string
+
   default     = "changeme.com"
+  description = <<DESCRIPTION
+The domain name that is post-fixed on the service principal name.
+This must be a valid domain registered in your Entra ID tenant.
+DESCRIPTION
+}
+
+variable "include_custom_role_definition" {
+  type        = bool
+  default     = true
+  description = <<DESCRIPTION
+This variable is used to control whether the example tests a custom role definition.
+DESCRIPTION
+}
+
+variable "alternative_subscription_id" {
+  type        = string
+  default     = null
+  description = <<DESCRIPTION
+This variable is used to test the module with an alternative subscription id.
+DESCRIPTION
 }

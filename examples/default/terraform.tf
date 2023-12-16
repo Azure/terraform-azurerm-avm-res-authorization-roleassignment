@@ -23,3 +23,9 @@ terraform {
 provider "azurerm" {
   features {}
 }
+
+provider "azurerm" {
+  alias           = "alternative"
+  subscription_id = var.alternative_subscription_id
+  features {}
+}
