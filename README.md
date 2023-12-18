@@ -230,7 +230,7 @@ module "role_assignments" {
     reader      = "Reader"
   }
 
-  role_assignnents_for_management_group = {
+  role_assignnents_for_management_groups = {
     role_assignment1 = {
       management_group_display_name = "Tenant Root Group" # Note that `management_group_display_name` and `management_group_id` are mutually exclusive, supply one or the other.
       role_assignments = {
@@ -284,13 +284,42 @@ module "role_assignments" {
   role_definitions = {
     contributor = "Contributor"
   }
-  role_assignments_for_resource = {
+  role_assignments_for_resources = {
     role_assignment1 = {
       resource_name       = "my-app-service"
       resource_group_name = "rg-example"
       role_assignments = {
         role_assignment_1 = {
           role_definition = "contributor"
+          groups          = ["group1"]
+        }
+      }
+    }
+  }
+}
+```
+
+### Example - Assign a Group account Owner rights to a single Resource in a different subscription to the one Terraform is configured for
+
+In this example we use the convenience variable `role_assignments_for_scopes` to assigne a role to an indiviual resource in a different subscription to the one Terraform is configured for. The principal running Terraform would require User Access Administrator rights on the target resource.
+
+>NOTE: This variable can be used to apply role assignments at any scope, including management group, subscription, resource group and resource.
+
+```hcl
+module "role_assignments" {
+  source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
+  groups_by_display_name = {
+    group1 = "my-group"
+  }
+  role_definitions = {
+    owner = "Owner"
+  }
+  role_assignments_for_scopes = {
+    role_assignment1 = {
+      scope = "subscriptions/7d805431-4943-42ed-8116-3b545c2fc459/resourceGroups/rg-example/providers/Microsoft.Web/sites/my-app-service"
+      role_assignments = {
+        role_assignment_1 = {
+          role_definition = "owner"
           groups          = ["group1"]
         }
       }
