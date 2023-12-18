@@ -6,7 +6,7 @@ resource "azurerm_role_assignment" "this" {
 }
 
 resource "azuread_directory_role_assignment" "this" {
-  for_each = local.entra_id_role_assignments
+  for_each            = local.entra_id_role_assignments
   role_id             = each.value.role_definition_id
   principal_object_id = each.value.principal_id
 }

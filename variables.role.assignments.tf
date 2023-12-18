@@ -11,7 +11,7 @@ variable "role_assignments_for_scopes" {
       any_principals                     = optional(set(string), [])
     }))
   }))
-  default = {}
+  default     = {}
   description = <<DESCRIPTION
 (Optional) Role assignments to be applied to specific scope ids. The scope id is the id of the resource, resource group, subscription or management group.
 
@@ -42,7 +42,7 @@ variable "role_assignments_for_resources" {
       any_principals                     = optional(set(string), [])
     }))
   }))
-  default = {}
+  default     = {}
   description = <<DESCRIPTION
 (Optional) Role assignments to be applied to resources. The resource is defined by the resource name and the resource group name.
 This variable only works with the current provider subscription. This is a convenience variable that avoids the need to find the resource id.
@@ -74,7 +74,7 @@ variable "role_assignments_for_resource_groups" {
       any_principals                     = optional(set(string), [])
     }))
   }))
-  default = {}
+  default     = {}
   description = <<DESCRIPTION
 (Optional) Role assignments to be applied to resource groups.
 The resource group can be in the current subscription (default) or a `subscription_id` can be supplied to target a resource group in another subscription.
@@ -106,7 +106,7 @@ variable "role_assignments_for_subscriptions" {
       any_principals                     = optional(set(string), [])
     }))
   }))
-  default = {}
+  default     = {}
   description = <<DESCRIPTION
 (Optional) Role assignments to be applied to subscriptions.
 This will default to the current subscription (default) or a `subscription_id` can be supplied to target another subscription.
@@ -138,7 +138,7 @@ variable "role_assignments_for_management_groups" {
       any_principals                     = optional(set(string), [])
     }))
   }))
-  default = {}
+  default     = {}
   description = <<DESCRIPTION
 (Optional) Role assignments to be applied to management groups.
 This is a convenience variable that avoids the need to find the resource id of the management group.
@@ -168,7 +168,7 @@ variable "role_assignments_for_entra_id" {
       any_principals                     = optional(set(string), [])
     }))
   }))
-  default = {}
+  default     = {}
   description = <<DESCRIPTION
 (Optional) Role assignments to be applied to Entra ID.
 This variable allows the assignment of Entra ID directory roles outside of the scope of Azure Resource Manager.

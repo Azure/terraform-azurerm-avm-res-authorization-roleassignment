@@ -9,6 +9,7 @@ This module supports both built in and custom role definitions.
 
 This module can be used to create role assignments at following scopes:
 
+- Entra ID
 - Management Group
 - Subscription
 - Resource Group
@@ -36,6 +37,7 @@ The following examples show common usage patterns:
 - [Example - Assign multiple principals to management group, subscription and resource group](#example---assign-multiple-principals-to-management-group-subscription-and-resource-group)
 - [Example - Assign a Group account Contributor rights to a single Resource](#example---assign-a-group-account-contributor-rights-to-a-single-resource)
 - [Example - Assign a Group account Owner rights to a single Resource in a different subscription to the one Terraform is configured for](#example---assign-a-group-account-owner-rights-to-a-single-resource-in-a-different-subscription-to-the-one-terraform-is-configured-for)
+- [Example - Assign a User an Entra ID role](#example---assign-a-user-an-entra-id-role)
 
 ### Simple Example - Assign a single User account Owner rights to a single Resource Group
 
@@ -329,6 +331,34 @@ module "role_assignments" {
 }
 ```
 
+### Example - Assign a User an Entra ID role
+
+In this example we assign a User account a role in Entra ID.
+
+>NOTE: This variable can be used to apply role assignments in the current tenant.
+
+```hcl
+module "role_assignments" {
+  source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
+  users_by_user_principal_name = {
+    abc = "abc@def.com"
+  }
+  entra_id_role_definitions = {
+    application-administrator = "Application Administrator"
+  }
+  role_assignments_for_entra_id = {
+    role_assignment1 = {
+      role_assignments = {
+        role_assignment_1 = {
+          role_definition = "application-administrator"
+          groups          = ["abc"]
+        }
+      }
+    }
+  }
+}
+```
+
 <!-- markdownlint-disable MD033 -->
 ## Requirements
 
@@ -356,6 +386,8 @@ The following providers are used by this module:
 
 The following resources are used by this module:
 
+- [azuread_directory_role.entra_id_role_definitions_by_name](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/directory_role) (resource)
+- [azuread_directory_role_assignment.this](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/directory_role_assignment) (resource)
 - [azurerm_resource_group_template_deployment.telemetry](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group_template_deployment) (resource)
 - [azurerm_role_assignment.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) (resource)
 - [random_id.telem](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) (resource)
@@ -395,7 +427,8 @@ The following input variables are optional (have default values):
 
 ### <a name="input_app_registrations_by_client_id"></a> [app\_registrations\_by\_client\_id](#input\_app\_registrations\_by\_client\_id)
 
-Description: n/a
+Description:   (Optional) A map of Entra ID application registrations to reference in role assignments.  
+  The key is something unique to you. The value is the client ID (application ID) of the application registration.
 
 Type: `map(string)`
 
@@ -403,7 +436,8 @@ Default: `{}`
 
 ### <a name="input_app_registrations_by_display_name"></a> [app\_registrations\_by\_display\_name](#input\_app\_registrations\_by\_display\_name)
 
-Description: n/a
+Description:   (Optional) A map of Entra ID application registrations to reference in role assignments.  
+  The key is something unique to you. The value is the display name of the application registration.
 
 Type: `map(string)`
 
@@ -411,7 +445,8 @@ Default: `{}`
 
 ### <a name="input_app_registrations_by_object_id"></a> [app\_registrations\_by\_object\_id](#input\_app\_registrations\_by\_object\_id)
 
-Description: n/a
+Description:   (Optional) A map of Entra ID application registrations to reference in role assignments.  
+  The key is something unique to you. The value is the object ID of the application registration.
 
 Type: `map(string)`
 
@@ -419,7 +454,8 @@ Default: `{}`
 
 ### <a name="input_app_registrations_by_principal_id"></a> [app\_registrations\_by\_principal\_id](#input\_app\_registrations\_by\_principal\_id)
 
-Description: n/a
+Description:   (Optional) A map of Entra ID application registrations to reference in role assignments.  
+  The key is something unique to you. The value is the principal ID of the service principal backing the application registration.
 
 Type: `map(string)`
 
@@ -435,9 +471,19 @@ Type: `bool`
 
 Default: `true`
 
+### <a name="input_entra_id_role_definitions"></a> [entra\_id\_role\_definitions](#input\_entra\_id\_role\_definitions)
+
+Description: (Optional) A map of Entra ID role definitions to reference in role assignments.  
+The key is something unique to you. The value is a built in or customer role definition name.
+
+Type: `map(string)`
+
+Default: `{}`
+
 ### <a name="input_groups_by_display_name"></a> [groups\_by\_display\_name](#input\_groups\_by\_display\_name)
 
-Description: n/a
+Description:   (Optional) A map of Entra ID groups to reference in role assignments.  
+  The key is something unique to you. The value is the display name of the group.
 
 Type: `map(string)`
 
@@ -445,7 +491,8 @@ Default: `{}`
 
 ### <a name="input_groups_by_mail_nickname"></a> [groups\_by\_mail\_nickname](#input\_groups\_by\_mail\_nickname)
 
-Description: n/a
+Description:   (Optional) A map of Entra ID groups to reference in role assignments.  
+  The key is something unique to you. The value is the mail nickname of the group.
 
 Type: `map(string)`
 
@@ -453,7 +500,8 @@ Default: `{}`
 
 ### <a name="input_groups_by_object_id"></a> [groups\_by\_object\_id](#input\_groups\_by\_object\_id)
 
-Description: n/a
+Description:   (Optional) A map of Entra ID groups to reference in role assignments.  
+  The key is something unique to you. The value is the object ID of the group.
 
 Type: `map(string)`
 
@@ -461,7 +509,18 @@ Default: `{}`
 
 ### <a name="input_role_assignments_for_entra_id"></a> [role\_assignments\_for\_entra\_id](#input\_role\_assignments\_for\_entra\_id)
 
-Description: n/a
+Description: (Optional) Role assignments to be applied to Entra ID.  
+This variable allows the assignment of Entra ID directory roles outside of the scope of Azure Resource Manager.  
+This variable requires the `entra_id_role_definitions` variable to be populated.
+
+- role\_assignments: (Required) The role assignments to be applied to the scope.
+  - role\_definition: (Required) The key of the role definition as defined in the `entra_id_role_definitions` variable.
+  - users: (Optional) The keys of the users as defined in one of the `users_by_...` variables.
+  - groups: (Optional) The keys of the groups as defined in one of the `groups_by_...` variables.
+  - app\_registrations: (Optional) The keys of the app registrations as defined in one of the `app_registrations_by_...` variables.
+  - system\_assigned\_managed\_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
+  - user\_assigned\_managed\_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
+  - any\_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
 
 Type:
 
@@ -483,7 +542,19 @@ Default: `{}`
 
 ### <a name="input_role_assignments_for_management_groups"></a> [role\_assignments\_for\_management\_groups](#input\_role\_assignments\_for\_management\_groups)
 
-Description: n/a
+Description: (Optional) Role assignments to be applied to management groups.  
+This is a convenience variable that avoids the need to find the resource id of the management group.
+
+- management\_group\_id: (Optional) The id of the management group (one of `management_group_id` or `management_group_display_name` must be supplied).
+- management\_group\_display\_name: (Optional) The display name of the management group.
+- role\_assignments: (Required) The role assignments to be applied to the scope.
+  - role\_definition: (Required) The key of the role definition as defined in the `role_definitions` variable.
+  - users: (Optional) The keys of the users as defined in one of the `users_by_...` variables.
+  - groups: (Optional) The keys of the groups as defined in one of the `groups_by_...` variables.
+  - app\_registrations: (Optional) The keys of the app registrations as defined in one of the `app_registrations_by_...` variables.
+  - system\_assigned\_managed\_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
+  - user\_assigned\_managed\_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
+  - any\_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
 
 Type:
 
@@ -507,7 +578,20 @@ Default: `{}`
 
 ### <a name="input_role_assignments_for_resource_groups"></a> [role\_assignments\_for\_resource\_groups](#input\_role\_assignments\_for\_resource\_groups)
 
-Description: n/a
+Description: (Optional) Role assignments to be applied to resource groups.  
+The resource group can be in the current subscription (default) or a `subscription_id` can be supplied to target a resource group in another subscription.  
+This is a convenience variable that avoids the need to find the resource id of the resource group.
+
+- resource\_group\_name: (Required) The name of the resource group.
+- subscription\_id: (Optional) The id of the subscription. If not supplied the current subscription is used.
+- role\_assignments: (Required) The role assignments to be applied to the scope.
+  - role\_definition: (Required) The key of the role definition as defined in the `role_definitions` variable.
+  - users: (Optional) The keys of the users as defined in one of the `users_by_...` variables.
+  - groups: (Optional) The keys of the groups as defined in one of the `groups_by_...` variables.
+  - app\_registrations: (Optional) The keys of the app registrations as defined in one of the `app_registrations_by_...` variables.
+  - system\_assigned\_managed\_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
+  - user\_assigned\_managed\_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
+  - any\_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
 
 Type:
 
@@ -531,7 +615,19 @@ Default: `{}`
 
 ### <a name="input_role_assignments_for_resources"></a> [role\_assignments\_for\_resources](#input\_role\_assignments\_for\_resources)
 
-Description: NOTE: Only supports provider subscription
+Description: (Optional) Role assignments to be applied to resources. The resource is defined by the resource name and the resource group name.  
+This variable only works with the current provider subscription. This is a convenience variable that avoids the need to find the resource id.
+
+- resouce\_name: (Required) The names of the resource.
+- resource\_group\_name: (Required) The name of the resource group.
+- role\_assignments: (Required) The role assignments to be applied to the scope.
+  - role\_definition: (Required) The key of the role definition as defined in the `role_definitions` variable.
+  - users: (Optional) The keys of the users as defined in one of the `users_by_...` variables.
+  - groups: (Optional) The keys of the groups as defined in one of the `groups_by_...` variables.
+  - app\_registrations: (Optional) The keys of the app registrations as defined in one of the `app_registrations_by_...` variables.
+  - system\_assigned\_managed\_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
+  - user\_assigned\_managed\_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
+  - any\_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
 
 Type:
 
@@ -555,7 +651,17 @@ Default: `{}`
 
 ### <a name="input_role_assignments_for_scopes"></a> [role\_assignments\_for\_scopes](#input\_role\_assignments\_for\_scopes)
 
-Description: n/a
+Description: (Optional) Role assignments to be applied to specific scope ids. The scope id is the id of the resource, resource group, subscription or management group.
+
+- scope: (Required) The scope / id of the resource, resource group, subscription or management group.
+- role\_assignments: (Required) The role assignments to be applied to the scope.
+  - role\_definition: (Required) The key of the role definition as defined in the `role_definitions` variable.
+  - users: (Optional) The keys of the users as defined in one of the `users_by_...` variables.
+  - groups: (Optional) The keys of the groups as defined in one of the `groups_by_...` variables.
+  - app\_registrations: (Optional) The keys of the app registrations as defined in one of the `app_registrations_by_...` variables.
+  - system\_assigned\_managed\_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
+  - user\_assigned\_managed\_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
+  - any\_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
 
 Type:
 
@@ -578,7 +684,19 @@ Default: `{}`
 
 ### <a name="input_role_assignments_for_subscriptions"></a> [role\_assignments\_for\_subscriptions](#input\_role\_assignments\_for\_subscriptions)
 
-Description: n/a
+Description: (Optional) Role assignments to be applied to subscriptions.  
+This will default to the current subscription (default) or a `subscription_id` can be supplied to target another subscription.  
+This is a convenience variable that avoids the need to find the resource id of the subscription.
+
+- subscription\_id: (Optional) The id of the subscription. If not supplied the current subscription is used.
+- role\_assignments: (Required) The role assignments to be applied to the scope.
+  - role\_definition: (Required) The key of the role definition as defined in the `role_definitions` variable.
+  - users: (Optional) The keys of the users as defined in one of the `users_by_...` variables.
+  - groups: (Optional) The keys of the groups as defined in one of the `groups_by_...` variables.
+  - app\_registrations: (Optional) The keys of the app registrations as defined in one of the `app_registrations_by_...` variables.
+  - system\_assigned\_managed\_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
+  - user\_assigned\_managed\_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
+  - any\_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
 
 Type:
 
@@ -601,7 +719,8 @@ Default: `{}`
 
 ### <a name="input_role_definitions"></a> [role\_definitions](#input\_role\_definitions)
 
-Description: n/a
+Description: (Optional) A map of Azure Resource Manager role definitions to reference in role assignments.  
+The key is something unique to you. The value is a built in or customer role definition name.
 
 Type: `map(string)`
 
@@ -609,7 +728,8 @@ Default: `{}`
 
 ### <a name="input_system_assigned_managed_identities_by_client_id"></a> [system\_assigned\_managed\_identities\_by\_client\_id](#input\_system\_assigned\_managed\_identities\_by\_client\_id)
 
-Description: n/a
+Description:   (Optional) A map of system assigned managed identities to reference in role assignments.  
+  The key is something unique to you. The value is the client id of the identity.
 
 Type: `map(string)`
 
@@ -617,7 +737,8 @@ Default: `{}`
 
 ### <a name="input_system_assigned_managed_identities_by_display_name"></a> [system\_assigned\_managed\_identities\_by\_display\_name](#input\_system\_assigned\_managed\_identities\_by\_display\_name)
 
-Description: n/a
+Description:   (Optional) A map of system assigned managed identities to reference in role assignments.  
+  The key is something unique to you. The value is the display name of the identity / compute instance.
 
 Type: `map(string)`
 
@@ -625,7 +746,8 @@ Default: `{}`
 
 ### <a name="input_system_assigned_managed_identities_by_principal_id"></a> [system\_assigned\_managed\_identities\_by\_principal\_id](#input\_system\_assigned\_managed\_identities\_by\_principal\_id)
 
-Description: n/a
+Description:   (Optional) A map of system assigned managed identities to reference in role assignments.  
+  The key is something unique to you. The value is the principal id of the underying service principalk of the identity.
 
 Type: `map(string)`
 
@@ -641,7 +763,8 @@ Default: `""`
 
 ### <a name="input_user_assigned_managed_identities_by_client_id"></a> [user\_assigned\_managed\_identities\_by\_client\_id](#input\_user\_assigned\_managed\_identities\_by\_client\_id)
 
-Description: n/a
+Description:   (Optional) A map of system assigned managed identities to reference in role assignments.  
+  The key is something unique to you. The value is the client id of the identity.
 
 Type: `map(string)`
 
@@ -649,7 +772,8 @@ Default: `{}`
 
 ### <a name="input_user_assigned_managed_identities_by_display_name"></a> [user\_assigned\_managed\_identities\_by\_display\_name](#input\_user\_assigned\_managed\_identities\_by\_display\_name)
 
-Description: n/a
+Description:   (Optional) A map of system assigned managed identities to reference in role assignments.  
+  The key is something unique to you. The value is the display name of the identity.
 
 Type: `map(string)`
 
@@ -657,7 +781,8 @@ Default: `{}`
 
 ### <a name="input_user_assigned_managed_identities_by_principal_id"></a> [user\_assigned\_managed\_identities\_by\_principal\_id](#input\_user\_assigned\_managed\_identities\_by\_principal\_id)
 
-Description: n/a
+Description:   (Optional) A map of system assigned managed identities to reference in role assignments.  
+  The key is something unique to you. The value is the principal id of the underying service principalk of the identity.
 
 Type: `map(string)`
 
@@ -665,7 +790,11 @@ Default: `{}`
 
 ### <a name="input_user_assigned_managed_identities_by_resource_group_and_name"></a> [user\_assigned\_managed\_identities\_by\_resource\_group\_and\_name](#input\_user\_assigned\_managed\_identities\_by\_resource\_group\_and\_name)
 
-Description: n/a
+Description:   (Optional) A map of user assigned managed identities to reference in role assignments.  
+  The key is something unique to you. The values are:
+
+  - resource\_group\_name: The name of the resource group the identity is in.
+  - name: The name of the identity.
 
 Type:
 
@@ -680,7 +809,8 @@ Default: `{}`
 
 ### <a name="input_users_by_employee_id"></a> [users\_by\_employee\_id](#input\_users\_by\_employee\_id)
 
-Description: n/a
+Description:   (Optional) A map of Entra ID users to reference in role assignments.  
+  The key is something unique to you. The value is the employee ID of the user.
 
 Type: `map(string)`
 
@@ -688,7 +818,8 @@ Default: `{}`
 
 ### <a name="input_users_by_mail"></a> [users\_by\_mail](#input\_users\_by\_mail)
 
-Description: n/a
+Description:   (Optional) A map of Entra ID users to reference in role assignments.  
+  The key is something unique to you. The value is the mail address of the user.
 
 Type: `map(string)`
 
@@ -696,7 +827,8 @@ Default: `{}`
 
 ### <a name="input_users_by_mail_nickname"></a> [users\_by\_mail\_nickname](#input\_users\_by\_mail\_nickname)
 
-Description: n/a
+Description:   (Optional) A map of Entra ID users to reference in role assignments.  
+  The key is something unique to you. The value is the mail nickname of the user.
 
 Type: `map(string)`
 
@@ -704,7 +836,8 @@ Default: `{}`
 
 ### <a name="input_users_by_object_id"></a> [users\_by\_object\_id](#input\_users\_by\_object\_id)
 
-Description: n/a
+Description:   (Optional) A map of Entra ID users to reference in role assignments.  
+  The key is something unique to you. The value is the object ID of the user.
 
 Type: `map(string)`
 
@@ -712,7 +845,8 @@ Default: `{}`
 
 ### <a name="input_users_by_user_principal_name"></a> [users\_by\_user\_principal\_name](#input\_users\_by\_user\_principal\_name)
 
-Description: n/a
+Description:   (Optional) A map of Entra ID users to reference in role assignments.  
+  The key is something unique to you. The value is the user principal name (UPN) of the user.
 
 Type: `map(string)`
 
@@ -727,6 +861,14 @@ The following outputs are exported:
 Description: n/a
 
 ### <a name="output_app_registrations"></a> [app\_registrations](#output\_app\_registrations)
+
+Description: n/a
+
+### <a name="output_entra_id_role_assignments"></a> [entra\_id\_role\_assignments](#output\_entra\_id\_role\_assignments)
+
+Description: n/a
+
+### <a name="output_entra_id_role_definitions"></a> [entra\_id\_role\_definitions](#output\_entra\_id\_role\_definitions)
 
 Description: n/a
 

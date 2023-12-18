@@ -7,7 +7,7 @@ locals {
   }
   entra_id_role_definitions = { for key, value in azuread_directory_role.entra_id_role_definitions_by_name :
     key => {
-      id     = value.template_id
+      id = value.template_id
     }
   }
 }

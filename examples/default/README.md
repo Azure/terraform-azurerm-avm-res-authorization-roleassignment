@@ -37,12 +37,15 @@ module "avm-ptn-authorization-roleassignment" {
   user_assigned_managed_identities_by_client_id               = local.user_assigned_managed_identities_by_client_id
   user_assigned_managed_identities_by_principal_id            = local.user_assigned_managed_identities_by_principal_id
 
-  role_definitions = local.role_definitions
+  role_definitions          = local.role_definitions
+  entra_id_role_definitions = local.entra_id_role_definitions
 
   role_assignments_for_resources         = local.role_assignments_for_resources
   role_assignments_for_resource_groups   = local.role_assignments_for_resource_groups
   role_assignments_for_subscriptions     = local.role_assignments_for_subscriptions
   role_assignments_for_management_groups = local.role_assignments_for_management_groups
+  role_assignments_for_scopes            = local.role_assignments_for_scopes
+  role_assignments_for_entra_id          = local.role_assignments_for_entra_id
 
   depends_on = [
     azuread_service_principal.test,
@@ -177,6 +180,14 @@ Description: n/a
 
 Description: n/a
 
+### <a name="output_entra_id_role_assignments"></a> [entra\_id\_role\_assignments](#output\_entra\_id\_role\_assignments)
+
+Description: n/a
+
+### <a name="output_entra_id_role_definitions"></a> [entra\_id\_role\_definitions](#output\_entra\_id\_role\_definitions)
+
+Description: n/a
+
 ### <a name="output_groups"></a> [groups](#output\_groups)
 
 Description: n/a
@@ -190,6 +201,10 @@ Description: n/a
 Description: n/a
 
 ### <a name="output_system_assigned_managed_identities"></a> [system\_assigned\_managed\_identities](#output\_system\_assigned\_managed\_identities)
+
+Description: n/a
+
+### <a name="output_test_resource_ids"></a> [test\_resource\_ids](#output\_test\_resource\_ids)
 
 Description: n/a
 
