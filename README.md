@@ -123,6 +123,8 @@ module "role_assignments" {
 }
 ```
 
+Trigger deployment
+
 <!-- markdownlint-disable MD033 -->
 ## Requirements
 
