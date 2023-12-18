@@ -18,6 +18,7 @@ locals {
   users_by_object_id = {
     (local.users.user1) = azuread_user.test[local.users.user1].object_id
     (local.users.user6) = azuread_user.test[local.users.user6].object_id
+    (local.users.user7) = azuread_user.test[local.users.user7].object_id
   }
 
   groups_by_display_name = {
@@ -31,6 +32,7 @@ locals {
   groups_by_object_id = {
     (local.groups.group1) = azuread_group.test[local.groups.group1].object_id
     (local.groups.group4) = azuread_group.test[local.groups.group4].object_id
+    (local.groups.group5) = azuread_group.test[local.groups.group5].object_id
   }
 
   app_registrations_by_display_name = {
@@ -48,6 +50,7 @@ locals {
   app_registrations_by_principal_id = {
     (local.app_registrations.app_registration1) = azuread_service_principal.test[local.app_registrations.app_registration1].object_id
     (local.app_registrations.app_registration5) = azuread_service_principal.test[local.app_registrations.app_registration5].object_id
+    (local.app_registrations.app_registration6) = azuread_service_principal.test[local.app_registrations.app_registration6].object_id
   }
 
   system_assigned_managed_identities_by_display_name = {
@@ -61,6 +64,7 @@ locals {
   system_assigned_managed_identities_by_client_id = {
     (local.system_assigned_managed_identities.sami1) = data.azuread_service_principal.test[local.system_assigned_managed_identities.sami1].client_id
     (local.system_assigned_managed_identities.sami4) = data.azuread_service_principal.test[local.system_assigned_managed_identities.sami4].client_id
+    (local.system_assigned_managed_identities.sami5) = data.azuread_service_principal.test[local.system_assigned_managed_identities.sami5].client_id
   }
 
   user_assigned_managed_identities_by_resource_group_and_name = {
@@ -84,6 +88,7 @@ locals {
   user_assigned_managed_identities_by_principal_id = {
     (local.user_assigned_managed_identities.uami1) = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami1].principal_id
     (local.user_assigned_managed_identities.uami5) = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami5].principal_id
+    (local.user_assigned_managed_identities.uami6) = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami6].principal_id
   }
 
   role_definitions = {
@@ -93,7 +98,7 @@ locals {
     role4 = var.include_custom_role_definition ? "Example-Role" : "User Access Administrator" # Note the custom role `Example-Role` needs to be created manually on the Tenant Root Group MG as it takes too long to create one during the test.
   }
 
-  role_assignments_by_resource = {
+  role_assignments_for_resource = {
     test1 = {
       resource_group_name = azurerm_resource_group.test.name
       resource_name       = azurerm_static_site.test[local.system_assigned_managed_identities.sami1].name
@@ -105,10 +110,17 @@ locals {
           app_registrations                  = [local.app_registrations.app_registration1]
           system_assigned_managed_identities = [local.system_assigned_managed_identities.sami1]
           user_assigned_managed_identities   = [local.user_assigned_managed_identities.uami1]
+          any_principals                     = [
+            local.users.user2,
+            local.users.user7,
+            local.groups.group5,
+            local.app_registrations.app_registration5,
+            local.system_assigned_managed_identities.sami5,
+            local.user_assigned_managed_identities.uami5,
+          ]
         }
         role_assignment2 = {
           role_definition                    = "role2"
-          users                              = [local.users.user2]
           groups                             = [local.groups.group2]
           app_registrations                  = [local.app_registrations.app_registration2]
           system_assigned_managed_identities = [local.system_assigned_managed_identities.sami2]
@@ -134,7 +146,7 @@ locals {
     }
   }
 
-  role_assignments_by_resource_group = merge({
+  role_assignments_for_resource_group = merge({
     test1 = {
       resource_group_name = azurerm_resource_group.test.name
       role_assignments = {
@@ -145,10 +157,17 @@ locals {
           app_registrations                  = [local.app_registrations.app_registration1]
           system_assigned_managed_identities = [local.system_assigned_managed_identities.sami1]
           user_assigned_managed_identities   = [local.user_assigned_managed_identities.uami1]
+          any_principals                     = [
+            local.users.user2,
+            local.users.user7,
+            local.groups.group5,
+            local.app_registrations.app_registration5,
+            local.system_assigned_managed_identities.sami5,
+            local.user_assigned_managed_identities.uami5,
+          ]
         }
         role_assignment2 = {
           role_definition                    = "role2"
-          users                              = [local.users.user2]
           groups                             = [local.groups.group2]
           app_registrations                  = [local.app_registrations.app_registration2]
           system_assigned_managed_identities = [local.system_assigned_managed_identities.sami2]
@@ -185,10 +204,17 @@ locals {
             app_registrations                  = [local.app_registrations.app_registration1]
             system_assigned_managed_identities = [local.system_assigned_managed_identities.sami1]
             user_assigned_managed_identities   = [local.user_assigned_managed_identities.uami1]
+            any_principals                     = [
+              local.users.user2,
+              local.users.user7,
+              local.groups.group5,
+              local.app_registrations.app_registration5,
+              local.system_assigned_managed_identities.sami5,
+              local.user_assigned_managed_identities.uami5,
+            ]
           }
           role_assignment2 = {
             role_definition                    = "role2"
-            users                              = [local.users.user2]
             groups                             = [local.groups.group2]
             app_registrations                  = [local.app_registrations.app_registration2]
             system_assigned_managed_identities = [local.system_assigned_managed_identities.sami2]

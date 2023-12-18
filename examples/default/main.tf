@@ -29,8 +29,8 @@ module "avm-ptn-authorization-roleassignment" {
 
   role_definitions = local.role_definitions
 
-  role_assignments_by_resource       = local.role_assignments_by_resource
-  role_assignments_by_resource_group = local.role_assignments_by_resource_group
+  role_assignments_for_resource       = local.role_assignments_for_resource
+  role_assignments_for_resource_group = local.role_assignments_for_resource_group
 
   depends_on = [
     azuread_service_principal.test,

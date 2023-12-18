@@ -40,7 +40,7 @@ module "role_assignments" {
   role_definitions = {
     role1 = "Owner"
   }
-  role_assignments_by_resource_group = {
+  role_assignments_for_resource_group = {
     role_assignment1 = {
       resource_group_name = "rg-example"
       role_assignments = {
@@ -97,7 +97,7 @@ module "role_assignments" {
     reader      = "Reader"
   }
 
-  role_assignments_by_resource_group = {
+  role_assignments_for_resource_group = {
     role_assignment1 = {
       resource_group_name = "rg-example-2"
       subscription_id     = "7d805431-4943-42ed-8116-3b545c2fc459"
@@ -122,4 +122,70 @@ module "role_assignments" {
 }
 ```
 
-Trigger deployment
+### Example - Assign multiple principals different roles on a resource group using the `any_principal` option
+
+This example demonstrates how to use different principal types and different roles to assign multiple principals to a resource group using the `any_principal` option. The `any_principal` variable is a convenience variable that allows you to add all your principals, regardless of type to the same set.
+
+>NOTE: Using the `any_principal` variable requires a unique set of keys for your principals, as the keys are used to create the role assignments. If you have multiple principals with the same key, they will be merged using the following precedence order: `user`, `group`, `app_registration`, `system_assigned_managed_identity`, `user_assigned_managed_identity`.
+
+In this example we are assigning the following roles:
+
+| Role Name | Principal Type | Principal Name |
+| --------- | -------------- | -------------- |
+| Owner     | User           | <abc@def.com>   |
+| Contributor | Group         | my-group       |
+| Reader      | App Registration | my-app-registration-1 |
+| Contributor | System Assigned Managed Identity | my-app-service |
+| Owner       | User Assigned Managed Identity | my-mi-1 |
+| Owner       | User Assigned Managed Identity | my-mi-2 |
+
+```hcl
+module "role_assignments" {
+  source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
+  users_by_user_principal_name = {
+    abc = "abc@def.com"
+  }
+  groups_by_display_name = {
+    group1 = "my-group"
+  }
+  app_registrations_by_display_name = {
+    app1 = "my-app-registration-1"
+  }
+  system_assigned_managed_identities_by_display_name = {
+    mi1 = "my-app-service"
+  }
+  user_assigned_managed_identities_by_display_name = {
+    mi1 = "my-mi-1" # Note we are using the same key as the system assigned managed identity, this principal will get precedence over the system assigned managed identity. The system assigned managed identity will be ignored.
+    mi2 = "my-mi-2"
+  }
+
+  role_definitions = {
+    owner       = "Owner"
+    contributor = "Contributor"
+    reader      = "Reader"
+  }
+
+  role_assignments_for_resource_group = {
+    role_assignment1 = {
+      resource_group_name = "rg-example-2"
+      subscription_id     = "7d805431-4943-42ed-8116-3b545c2fc459"
+      role_assignments = {
+        role_assignment_1 = {
+          role_definition = "owner"
+          any_principals  = ["abc","mi1", "mi2"]
+        }
+        role_assignment_2 = {
+          role_definition = "contributor"
+          any_principals  = ["group1","mi1"]
+        }
+        role_assignment_3 = {
+          role_definition   = "reader"
+          any_principals = ["app1"]
+        }
+      }
+    }
+  }
+}
+```
+
+>NOTE: You can mix and match the `any_principal` variable with the other principal variables. However, if you have a principal in the `any_principal` variable that is also in one of the other principal variables, the apply will fail since it will attempt to create the same role assignment twice.

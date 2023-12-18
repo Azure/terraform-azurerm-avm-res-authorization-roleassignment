@@ -41,7 +41,7 @@ module "role_assignments" {
   role_definitions = {
     role1 = "Owner"
   }
-  role_assignments_by_resource_group = {
+  role_assignments_for_resource_group = {
     role_assignment1 = {
       resource_group_name = "rg-example"
       role_assignments = {
@@ -98,7 +98,7 @@ module "role_assignments" {
     reader      = "Reader"
   }
 
-  role_assignments_by_resource_group = {
+  role_assignments_for_resource_group = {
     role_assignment1 = {
       resource_group_name = "rg-example-2"
       subscription_id     = "7d805431-4943-42ed-8116-3b545c2fc459"
@@ -298,7 +298,7 @@ map(object({
 
 Default: `{}`
 
-### <a name="input_role_assignments_by_resource"></a> [role\_assignments\_by\_resource](#input\_role\_assignments\_by\_resource)
+### <a name="input_role_assignments_for_resource"></a> [role\_assignments\_by\_resource](#input\_role\_assignments\_by\_resource)
 
 Description: NOTE: Only supports provider subscription
 
@@ -321,7 +321,7 @@ map(object({
 
 Default: `{}`
 
-### <a name="input_role_assignments_by_resource_group"></a> [role\_assignments\_by\_resource\_group](#input\_role\_assignments\_by\_resource\_group)
+### <a name="input_role_assignments_for_resource_group"></a> [role\_assignments\_by\_resource\_group](#input\_role\_assignments\_by\_resource\_group)
 
 Description: n/a
 

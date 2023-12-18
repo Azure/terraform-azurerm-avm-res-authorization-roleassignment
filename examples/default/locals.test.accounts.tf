@@ -5,6 +5,7 @@ locals {
     app_registration3 = "app_registration3"
     app_registration4 = "app_registration4"
     app_registration5 = "app_registration5"
+    app_registration6 = "app_registration6"
   }
 
   groups = {
@@ -12,6 +13,7 @@ locals {
     group2 = "group2"
     group3 = "group3"
     group4 = "group4"
+    group5 = "group5"
   }
 
   system_assigned_managed_identities = {
@@ -19,6 +21,7 @@ locals {
     sami2 = "sami2"
     sami3 = "sami3"
     sami4 = "sami4"
+    sami5 = "sami5"
   }
 
   user_assigned_managed_identities = {
@@ -27,6 +30,7 @@ locals {
     uami3 = "uami3"
     uami4 = "uami4"
     uami5 = "uami5"
+    uami6 = "uami6"
   }
 
   users = {
@@ -36,5 +40,6 @@ locals {
     user4 = "user4"
     user5 = "user5"
     user6 = "user6"
+    user7 = "user7"
   }
 }

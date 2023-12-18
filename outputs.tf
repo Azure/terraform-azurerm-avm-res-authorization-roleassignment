@@ -25,3 +25,7 @@ output "role_defintions" {
 output "role_assignments" {
   value = local.role_assignments
 }
+
+output "all_principals" {
+  value = local.all_principals
+}
