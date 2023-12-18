@@ -11,5 +11,6 @@ locals {
     (local.groups.group1) = azuread_group.test[local.groups.group1].object_id
     (local.groups.group4) = azuread_group.test[local.groups.group4].object_id
     (local.groups.group5) = azuread_group.test[local.groups.group5].object_id
+    (local.groups.group6) = azuread_group.test[local.groups.group6].object_id
   }
 }

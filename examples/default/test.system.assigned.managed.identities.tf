@@ -17,7 +17,7 @@ resource "azurerm_static_site" "test" {
 }
 
 resource "time_sleep" "before_service_principal_read_creation" {
-  create_duration  = "10s"
+  create_duration  = "20s"
   destroy_duration = "10s"
   depends_on       = [azurerm_static_site.test]
 }

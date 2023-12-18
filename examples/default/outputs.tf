@@ -29,3 +29,12 @@ output "role_defintions" {
 output "role_assignments" {
   value = module.avm-ptn-authorization-roleassignment.role_assignments
 }
+
+output "test_resource_ids" {
+  value = {
+    management_group = azurerm_management_group.test.id
+    subscription     = "/subscriptions/${var.alternative_subscription_id}"
+    resource_group   = azurerm_resource_group.test.id
+    resource         = azurerm_static_site.test[local.system_assigned_managed_identities.sami1].id
+  }
+}

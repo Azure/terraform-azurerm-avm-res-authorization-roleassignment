@@ -15,5 +15,6 @@ locals {
     (local.app_registrations.app_registration1) = azuread_service_principal.test[local.app_registrations.app_registration1].object_id
     (local.app_registrations.app_registration5) = azuread_service_principal.test[local.app_registrations.app_registration5].object_id
     (local.app_registrations.app_registration6) = azuread_service_principal.test[local.app_registrations.app_registration6].object_id
+    (local.app_registrations.app_registration7) = azuread_service_principal.test[local.app_registrations.app_registration7].object_id
   }
 }

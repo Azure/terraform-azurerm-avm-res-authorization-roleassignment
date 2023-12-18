@@ -21,5 +21,6 @@ locals {
     (local.user_assigned_managed_identities.uami1) = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami1].principal_id
     (local.user_assigned_managed_identities.uami5) = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami5].principal_id
     (local.user_assigned_managed_identities.uami6) = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami6].principal_id
+    (local.user_assigned_managed_identities.uami7) = azurerm_user_assigned_identity.test[local.user_assigned_managed_identities.uami7].principal_id
   }
 }

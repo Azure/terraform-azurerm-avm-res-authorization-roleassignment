@@ -19,5 +19,6 @@ locals {
     (local.users.user1) = azuread_user.test[local.users.user1].object_id
     (local.users.user6) = azuread_user.test[local.users.user6].object_id
     (local.users.user7) = azuread_user.test[local.users.user7].object_id
+    (local.users.user8) = azuread_user.test[local.users.user8].object_id
   }
 }

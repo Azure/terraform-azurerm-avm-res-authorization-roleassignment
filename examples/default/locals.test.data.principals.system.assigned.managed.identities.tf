@@ -11,5 +11,6 @@ locals {
     (local.system_assigned_managed_identities.sami1) = data.azuread_service_principal.test[local.system_assigned_managed_identities.sami1].client_id
     (local.system_assigned_managed_identities.sami4) = data.azuread_service_principal.test[local.system_assigned_managed_identities.sami4].client_id
     (local.system_assigned_managed_identities.sami5) = data.azuread_service_principal.test[local.system_assigned_managed_identities.sami5].client_id
+    (local.system_assigned_managed_identities.sami6) = data.azuread_service_principal.test[local.system_assigned_managed_identities.sami6].client_id
   }
 }
