@@ -49,7 +49,7 @@ variable "role_assignments_for_resource_group" {
   default = {}
 }
 
-variable "role_assignments_for_subscriptions" {
+variable "role_assignments_for_subscription" {
   type = map(object({
     subscription_id = optional(string, null)
     role_assignments = map(object({
@@ -65,7 +65,7 @@ variable "role_assignments_for_subscriptions" {
   default = {}
 }
 
-variable "role_assignments_for_management_groups" {
+variable "role_assignments_for_management_group" {
   type = map(object({
     management_group_id = string
     role_assignments = map(object({

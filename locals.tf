@@ -1,4 +1,5 @@
 locals {
+  default_subscription_id = data.azurerm_client_config.current.subscription_id
   all_principals = merge(
     { for key, value in local.users : key => {
         principal_id = value
