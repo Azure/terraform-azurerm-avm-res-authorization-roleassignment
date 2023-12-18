@@ -35,6 +35,7 @@ The following examples show common usage patterns:
 - [Example - Assign multiple principals different roles on a resource group using the `any_principal` option](#example---assign-multiple-principals-different-roles-on-a-resource-group-using-the-any\_principal-option)
 - [Example - Assign multiple principals to management group, subscription and resource group](#example---assign-multiple-principals-to-management-group-subscription-and-resource-group)
 - [Example - Assign a Group account Contributor rights to a single Resource](#example---assign-a-group-account-contributor-rights-to-a-single-resource)
+- [Example - Assign a Group account Owner rights to a single Resource in a different subscription to the one Terraform is configured for](#example---assign-a-group-account-owner-rights-to-a-single-resource-in-a-different-subscription-to-the-one-terraform-is-configured-for)
 
 ### Simple Example - Assign a single User account Owner rights to a single Resource Group
 
