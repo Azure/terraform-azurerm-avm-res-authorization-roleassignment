@@ -172,8 +172,8 @@ locals {
         }
       }
     }
-  },
-  local.include_alternative_subscription ? {
+    },
+    local.include_alternative_subscription ? {
       test2 = {
         resource_group_name = azurerm_resource_group.alternative[0].name
         subscription_id     = var.alternative_subscription_id
