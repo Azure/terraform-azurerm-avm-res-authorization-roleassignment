@@ -39,8 +39,10 @@ module "avm-ptn-authorization-roleassignment" {
 
   role_definitions = local.role_definitions
 
-  role_assignments_for_resource       = local.role_assignments_for_resource
-  role_assignments_for_resource_group = local.role_assignments_for_resource_group
+  role_assignments_for_resource         = local.role_assignments_for_resource
+  role_assignments_for_resource_group   = local.role_assignments_for_resource_group
+  role_assignments_for_subscription     = local.role_assignments_for_subscription
+  role_assignments_for_management_group = local.role_assignments_for_management_group
 
   depends_on = [
     azuread_service_principal.test,
@@ -49,7 +51,8 @@ module "avm-ptn-authorization-roleassignment" {
     azuread_application.test,
     azurerm_static_site.test,
     azurerm_user_assigned_identity.test,
-    data.azuread_service_principal.test
+    data.azuread_service_principal.test,
+    azurerm_management_group.test
   ]
 }
 ```
@@ -91,6 +94,7 @@ The following resources are used by this module:
 - [azuread_group.test](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/group) (resource)
 - [azuread_service_principal.test](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal) (resource)
 - [azuread_user.test](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/user) (resource)
+- [azurerm_management_group.test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_group) (resource)
 - [azurerm_resource_group.alternative](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) (resource)
 - [azurerm_resource_group.test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) (resource)
 - [azurerm_static_site.test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/static_site) (resource)
@@ -98,6 +102,7 @@ The following resources are used by this module:
 - [random_password.password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) (resource)
 - [random_pet.app_registration_display_name](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)
 - [random_pet.group_name](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)
+- [random_pet.management_group_name](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)
 - [random_pet.resource_group_name](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)
 - [random_pet.static_site](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)
 - [random_pet.user_assigned_managed_identity](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)
@@ -106,6 +111,7 @@ The following resources are used by this module:
 - [time_sleep.before_service_principal_read_creation](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) (resource)
 - [azuread_service_principal.test](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) (data source)
 - [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
+- [azurerm_management_group.test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/management_group) (data source)
 
 <!-- markdownlint-disable MD013 -->
 ## Required Inputs
@@ -151,9 +157,21 @@ Type: `string`
 
 Default: `"changeme.com"`
 
+### <a name="input_test_management_group_display_name"></a> [test\_management\_group\_display\_name](#input\_test\_management\_group\_display\_name)
+
+Description: The display name for the management group to test.
+
+Type: `string`
+
+Default: `"Tenant Root Group"`
+
 ## Outputs
 
 The following outputs are exported:
+
+### <a name="output_all_principals"></a> [all\_principals](#output\_all\_principals)
+
+Description: n/a
 
 ### <a name="output_app_registrations"></a> [app\_registrations](#output\_app\_registrations)
 

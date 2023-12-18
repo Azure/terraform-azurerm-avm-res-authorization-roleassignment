@@ -67,7 +67,7 @@ variable "role_assignments_for_subscription" {
 
 variable "role_assignments_for_management_group" {
   type = map(object({
-    management_group_id = optional(string, null)
+    management_group_id           = optional(string, null)
     management_group_display_name = optional(string, null)
     role_assignments = map(object({
       role_definition                    = string

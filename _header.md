@@ -27,6 +27,13 @@ The module provides muliple helper variables to make it easier to find the princ
 
 The module takes a mapping approach, where you define the principals and role defintions with keys, then map them together to define role assignments. This approach enables you to create role assignments at multiple scopes for multiple principals with multiple methods of finding the principal id.
 
+The following examples show common usage patterns:
+
+- [Simple Example - Assign a single User account Owner rights to a single Resource Group](#simple-example---assign-a-single-user-account-owner-rights-to-a-single-resource-group)
+- [Example - Assign multiple principals different roles on a resource group in a different subscription to the one Terraform is configured for](#example---assign-multiple-principals-different-roles-on-a-resource-group-in-a-different-subscription-to-the-one-terraform-is-configured-for)
+- [Example - Assign multiple principals different roles on a resource group using the `any_principal` option](#example---assign-multiple-principals-different-roles-on-a-resource-group-using-the-any_principal-option)
+- [Example - Assign multiple principals to management group, subscription and resource group](#example---assign-multiple-principals-to-management-group-subscription-and-resource-group)
+
 ### Simple Example - Assign a single User account Owner rights to a single Resource Group
 
 In the most basic example, this is how to assign a single user to a resource group with a built in role definition:
@@ -135,7 +142,7 @@ In this example we are assigning the following roles:
 | Owner     | User           | <abc@def.com>   |
 | Contributor | Group         | my-group       |
 | Reader      | App Registration | my-app-registration-1 |
-| Contributor | System Assigned Managed Identity | my-app-service |
+| X Contributor | System Assigned Managed Identity | my-app-service |
 | Owner       | User Assigned Managed Identity | my-mi-1 |
 | Owner       | User Assigned Managed Identity | my-mi-2 |
 
@@ -172,15 +179,15 @@ module "role_assignments" {
       role_assignments = {
         role_assignment_1 = {
           role_definition = "owner"
-          any_principals  = ["abc","mi1", "mi2"]
+          any_principals  = ["abc", "mi1", "mi2"]
         }
         role_assignment_2 = {
           role_definition = "contributor"
-          any_principals  = ["group1","mi1"]
+          any_principals  = ["group1", "mi1"]
         }
         role_assignment_3 = {
-          role_definition   = "reader"
-          any_principals = ["app1"]
+          role_definition = "reader"
+          any_principals  = ["app1"]
         }
       }
     }
@@ -189,3 +196,73 @@ module "role_assignments" {
 ```
 
 >NOTE: You can mix and match the `any_principal` variable with the other principal variables. However, if you have a principal in the `any_principal` variable that is also in one of the other principal variables, the apply will fail since it will attempt to create the same role assignment twice.
+
+### Example - Assign multiple principals to management group, subscription and resource group
+
+This example demonstrates how to use different principal types and different roles to assign multiple principals to a management group, subscription and resource group in the same module call. The principal running Terraform would require User Access Administrator rights on the target management group, subscription and resource group.
+
+In this example we are assigning the following roles:
+
+| Role Name | Scope | Principal Type | Principal Name |
+| --------- | ----- | -------------- | -------------- |
+| Owner     | Management Group: Tenant Root Group | User           | <abc@def.com>   |
+| Contributor | Subscription: 7d805431-4943-42ed-8116-3b545c2fc459 | Group         | my-group       |
+| Reader      | Resource Group: rg-example-2 | App Registration | my-app-registration-1 |
+
+```hcl
+module "role_assignments" {
+  source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
+  users_by_user_principal_name = {
+    abc = "abc@def.com"
+  }
+  groups_by_display_name = {
+    group1 = "my-group"
+  }
+  app_registrations_by_display_name = {
+    app1 = "my-app-registration-1"
+  }
+
+  role_definitions = {
+    owner       = "Owner"
+    contributor = "Contributor"
+    reader      = "Reader"
+  }
+
+  role_assignnents_for_management_group = {
+    role_assignment1 = {
+      management_group_display_name = "Tenant Root Group" # Note that `management_group_display_name` and `management_group_id` are mutually exclusive, supply one or the other.
+      role_assignments = {
+        role_assignment_1 = {
+          role_definition = "owner"
+          users           = ["abc"]
+        }
+      }
+    }
+  }
+
+  role_assignments_for_subscription = {
+    role_assignment1 = {
+      subscription_id = "7d805431-4943-42ed-8116-3b545c2fc459"
+      role_assignments = {
+        role_assignment_1 = {
+          role_definition = "contributor"
+          groups          = ["group1"]
+        }
+      }
+    }
+  }
+
+  role_assignments_for_resource_group = {
+    role_assignment1 = {
+      resource_group_name = "rg-example-2"
+      subscription_id     = "7d805431-4943-42ed-8116-3b545c2fc459"
+      role_assignments = {
+        role_assignment_1 = {
+          role_definition   = "reader"
+          app_registrations = ["app1"]
+        }
+      }
+    }
+  }
+}
+```

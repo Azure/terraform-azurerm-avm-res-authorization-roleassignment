@@ -1,6 +1,6 @@
 locals {
-  subscription_role_scope_format       = "/subscriptions/%s"
-  subscription_role_definition_format  = "/subscriptions/%s%s"
+  subscription_role_scope_format      = "/subscriptions/%s"
+  subscription_role_definition_format = "/subscriptions/%s%s"
   role_assignments_for_subscription_for_users = {
     for flattened_role_assignments in flatten([
       for key, value in var.role_assignments_for_subscription : [
@@ -24,7 +24,7 @@ locals {
             key                = "subscription-group-${key}-${assignment_key}-${group}"
             role_definition_id = format(local.subscription_role_definition_format, value.subscription_id == null ? local.default_subscription_id : value.subscription_id, local.role_definitions[assignment_value.role_definition].id)
             principal_id       = local.groups[group]
-            scope              = format(local.subscription_role_scope_format, value.subscription_id == null ? local.default_subscription_id : value.subscription_id,)
+            scope              = format(local.subscription_role_scope_format, value.subscription_id == null ? local.default_subscription_id : value.subscription_id, )
           }
         ]
       ]

@@ -11,7 +11,7 @@ locals {
           app_registrations                  = [local.app_registrations.app_registration1]
           system_assigned_managed_identities = [local.system_assigned_managed_identities.sami1]
           user_assigned_managed_identities   = [local.user_assigned_managed_identities.uami1]
-          any_principals                     = [
+          any_principals = [
             local.users.user2,
             local.users.user7,
             local.groups.group5,
