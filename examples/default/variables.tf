@@ -33,3 +33,11 @@ variable "alternative_subscription_id" {
 This variable is used to test the module with an alternative subscription id.
 DESCRIPTION
 }
+
+variable "test_management_group_display_name" {
+  type        = string
+  default     = "Tenant Root Group"
+  description = <<DESCRIPTION
+The display name for the management group to test.
+DESCRIPTION
+}
