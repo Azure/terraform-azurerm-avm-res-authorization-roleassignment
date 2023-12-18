@@ -30,6 +30,14 @@ output "role_assignments" {
   value = module.avm-ptn-authorization-roleassignment.role_assignments
 }
 
+output "entra_id_role_definitions" {
+  value = module.avm-ptn-authorization-roleassignment.entra_id_role_definitions
+}
+
+output "entra_id_role_assignments" {
+  value = module.avm-ptn-authorization-roleassignment.entra_id_role_assignments
+}
+
 output "test_resource_ids" {
   value = {
     management_group = azurerm_management_group.test.id

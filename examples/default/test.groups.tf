@@ -5,8 +5,9 @@ resource "random_pet" "group_name" {
 }
 
 resource "azuread_group" "test" {
-  for_each         = local.groups
-  display_name     = "${each.key}-${local.module_name}-${random_pet.group_name[each.key].id}"
-  mail_nickname    = "${each.key}-${random_pet.group_name[each.key].id}"
-  security_enabled = true
+  for_each           = local.groups
+  display_name       = "${each.key}-${local.module_name}-${random_pet.group_name[each.key].id}"
+  mail_nickname      = "${each.key}-${random_pet.group_name[each.key].id}"
+  security_enabled   = true
+  assignable_to_role = true
 }

@@ -22,8 +22,16 @@ output "role_defintions" {
   value = local.role_definitions
 }
 
+output "entra_id_role_definitions" {
+  value = local.entra_id_role_definitions
+}
+
 output "role_assignments" {
   value = local.role_assignments
+}
+
+output "entra_id_role_assignments" {
+  value = local.entra_id_role_assignments
 }
 
 output "all_principals" {

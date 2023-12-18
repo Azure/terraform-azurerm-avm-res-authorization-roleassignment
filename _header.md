@@ -8,6 +8,7 @@ This module supports both built in and custom role definitions.
 
 This module can be used to create role assignments at following scopes:
 
+- Entra ID
 - Management Group
 - Subscription
 - Resource Group
@@ -35,6 +36,7 @@ The following examples show common usage patterns:
 - [Example - Assign multiple principals to management group, subscription and resource group](#example---assign-multiple-principals-to-management-group-subscription-and-resource-group)
 - [Example - Assign a Group account Contributor rights to a single Resource](#example---assign-a-group-account-contributor-rights-to-a-single-resource)
 - [Example - Assign a Group account Owner rights to a single Resource in a different subscription to the one Terraform is configured for](#example---assign-a-group-account-owner-rights-to-a-single-resource-in-a-different-subscription-to-the-one-terraform-is-configured-for)
+- [Example - Assign a User an Entra ID role](#example---assign-a-user-an-entra-id-role)
 
 ### Simple Example - Assign a single User account Owner rights to a single Resource Group
 
@@ -321,6 +323,34 @@ module "role_assignments" {
         role_assignment_1 = {
           role_definition = "owner"
           groups          = ["group1"]
+        }
+      }
+    }
+  }
+}
+```
+
+### Example - Assign a User an Entra ID role
+
+In this example we assign a User account a role in Entra ID.
+
+>NOTE: This variable can be used to apply role assignments in the current tenant.
+
+```hcl
+module "role_assignments" {
+  source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
+  users_by_user_principal_name = {
+    abc = "abc@def.com"
+  }
+  entra_id_role_definitions = {
+    application-administrator = "Application Administrator"
+  }
+  role_assignments_for_entra_id = {
+    role_assignment1 = {
+      role_assignments = {
+        role_assignment_1 = {
+          role_definition = "application-administrator"
+          groups          = ["abc"]
         }
       }
     }

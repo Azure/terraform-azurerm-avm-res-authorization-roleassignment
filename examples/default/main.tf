@@ -27,13 +27,15 @@ module "avm-ptn-authorization-roleassignment" {
   user_assigned_managed_identities_by_client_id               = local.user_assigned_managed_identities_by_client_id
   user_assigned_managed_identities_by_principal_id            = local.user_assigned_managed_identities_by_principal_id
 
-  role_definitions = local.role_definitions
+  role_definitions          = local.role_definitions
+  entra_id_role_definitions = local.entra_id_role_definitions
 
   role_assignments_for_resources         = local.role_assignments_for_resources
   role_assignments_for_resource_groups   = local.role_assignments_for_resource_groups
   role_assignments_for_subscriptions     = local.role_assignments_for_subscriptions
   role_assignments_for_management_groups = local.role_assignments_for_management_groups
   role_assignments_for_scopes            = local.role_assignments_for_scopes
+  role_assignments_for_entra_id          = local.role_assignments_for_entra_id
 
   depends_on = [
     azuread_service_principal.test,

@@ -12,6 +12,19 @@ variable "role_assignments_for_scopes" {
     }))
   }))
   default = {}
+  description = <<DESCRIPTION
+(Optional) Role assignments to be applied to specific scope ids. The scope id is the id of the resource, resource group, subscription or management group.
+
+- scope: (Required) The scope / id of the resource, resource group, subscription or management group.
+- role_assignments: (Required) The role assignments to be applied to the scope.
+  - role_definition: (Required) The key of the role definition as defined in the `role_definitions` variable.
+  - users: (Optional) The keys of the users as defined in one of the `users_by_...` variables.
+  - groups: (Optional) The keys of the groups as defined in one of the `groups_by_...` variables.
+  - app_registrations: (Optional) The keys of the app registrations as defined in one of the `app_registrations_by_...` variables.
+  - system_assigned_managed_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
+  - user_assigned_managed_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
+  - any_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
+DESCRIPTION
 }
 
 # NOTE: Only supports provider subscription
@@ -30,6 +43,21 @@ variable "role_assignments_for_resources" {
     }))
   }))
   default = {}
+  description = <<DESCRIPTION
+(Optional) Role assignments to be applied to resources. The resource is defined by the resource name and the resource group name.
+This variable only works with the current provider subscription. This is a convenience variable that avoids the need to find the resource id.
+
+- resouce_name: (Required) The names of the resource.
+- resource_group_name: (Required) The name of the resource group.
+- role_assignments: (Required) The role assignments to be applied to the scope.
+  - role_definition: (Required) The key of the role definition as defined in the `role_definitions` variable.
+  - users: (Optional) The keys of the users as defined in one of the `users_by_...` variables.
+  - groups: (Optional) The keys of the groups as defined in one of the `groups_by_...` variables.
+  - app_registrations: (Optional) The keys of the app registrations as defined in one of the `app_registrations_by_...` variables.
+  - system_assigned_managed_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
+  - user_assigned_managed_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
+  - any_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
+DESCRIPTION
 }
 
 variable "role_assignments_for_resource_groups" {
@@ -47,6 +75,22 @@ variable "role_assignments_for_resource_groups" {
     }))
   }))
   default = {}
+  description = <<DESCRIPTION
+(Optional) Role assignments to be applied to resource groups.
+The resource group can be in the current subscription (default) or a `subscription_id` can be supplied to target a resource group in another subscription.
+This is a convenience variable that avoids the need to find the resource id of the resource group.
+
+- resource_group_name: (Required) The name of the resource group.
+- subscription_id: (Optional) The id of the subscription. If not supplied the current subscription is used.
+- role_assignments: (Required) The role assignments to be applied to the scope.
+  - role_definition: (Required) The key of the role definition as defined in the `role_definitions` variable.
+  - users: (Optional) The keys of the users as defined in one of the `users_by_...` variables.
+  - groups: (Optional) The keys of the groups as defined in one of the `groups_by_...` variables.
+  - app_registrations: (Optional) The keys of the app registrations as defined in one of the `app_registrations_by_...` variables.
+  - system_assigned_managed_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
+  - user_assigned_managed_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
+  - any_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
+DESCRIPTION
 }
 
 variable "role_assignments_for_subscriptions" {
@@ -63,6 +107,21 @@ variable "role_assignments_for_subscriptions" {
     }))
   }))
   default = {}
+  description = <<DESCRIPTION
+(Optional) Role assignments to be applied to subscriptions.
+This will default to the current subscription (default) or a `subscription_id` can be supplied to target another subscription.
+This is a convenience variable that avoids the need to find the resource id of the subscription.
+
+- subscription_id: (Optional) The id of the subscription. If not supplied the current subscription is used.
+- role_assignments: (Required) The role assignments to be applied to the scope.
+  - role_definition: (Required) The key of the role definition as defined in the `role_definitions` variable.
+  - users: (Optional) The keys of the users as defined in one of the `users_by_...` variables.
+  - groups: (Optional) The keys of the groups as defined in one of the `groups_by_...` variables.
+  - app_registrations: (Optional) The keys of the app registrations as defined in one of the `app_registrations_by_...` variables.
+  - system_assigned_managed_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
+  - user_assigned_managed_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
+  - any_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
+DESCRIPTION
 }
 
 variable "role_assignments_for_management_groups" {
@@ -80,6 +139,21 @@ variable "role_assignments_for_management_groups" {
     }))
   }))
   default = {}
+  description = <<DESCRIPTION
+(Optional) Role assignments to be applied to management groups.
+This is a convenience variable that avoids the need to find the resource id of the management group.
+
+- management_group_id: (Optional) The id of the management group (one of `management_group_id` or `management_group_display_name` must be supplied).
+- management_group_display_name: (Optional) The display name of the management group.
+- role_assignments: (Required) The role assignments to be applied to the scope.
+  - role_definition: (Required) The key of the role definition as defined in the `role_definitions` variable.
+  - users: (Optional) The keys of the users as defined in one of the `users_by_...` variables.
+  - groups: (Optional) The keys of the groups as defined in one of the `groups_by_...` variables.
+  - app_registrations: (Optional) The keys of the app registrations as defined in one of the `app_registrations_by_...` variables.
+  - system_assigned_managed_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
+  - user_assigned_managed_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
+  - any_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
+DESCRIPTION
 }
 
 variable "role_assignments_for_entra_id" {
@@ -95,4 +169,18 @@ variable "role_assignments_for_entra_id" {
     }))
   }))
   default = {}
+  description = <<DESCRIPTION
+(Optional) Role assignments to be applied to Entra ID.
+This variable allows the assignment of Entra ID directory roles outside of the scope of Azure Resource Manager.
+This variable requires the `entra_id_role_definitions` variable to be populated.
+
+- role_assignments: (Required) The role assignments to be applied to the scope.
+  - role_definition: (Required) The key of the role definition as defined in the `entra_id_role_definitions` variable.
+  - users: (Optional) The keys of the users as defined in one of the `users_by_...` variables.
+  - groups: (Optional) The keys of the groups as defined in one of the `groups_by_...` variables.
+  - app_registrations: (Optional) The keys of the app registrations as defined in one of the `app_registrations_by_...` variables.
+  - system_assigned_managed_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
+  - user_assigned_managed_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
+  - any_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
+DESCRIPTION
 }
