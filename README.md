@@ -34,6 +34,7 @@ The following examples show common usage patterns:
 - [Example - Assign multiple principals different roles on a resource group in a different subscription to the one Terraform is configured for](#example---assign-multiple-principals-different-roles-on-a-resource-group-in-a-different-subscription-to-the-one-terraform-is-configured-for)
 - [Example - Assign multiple principals different roles on a resource group using the `any_principal` option](#example---assign-multiple-principals-different-roles-on-a-resource-group-using-the-any\_principal-option)
 - [Example - Assign multiple principals to management group, subscription and resource group](#example---assign-multiple-principals-to-management-group-subscription-and-resource-group)
+- [Example - Assign a Group account Contributor rights to a single Resource](#example---assign-a-group-account-contributor-rights-to-a-single-resource)
 
 ### Simple Example - Assign a single User account Owner rights to a single Resource Group
 
@@ -261,6 +262,36 @@ module "role_assignments" {
         role_assignment_1 = {
           role_definition   = "reader"
           app_registrations = ["app1"]
+        }
+      }
+    }
+  }
+}
+```
+
+### Example - Assign a Group account Contributor rights to a single Resource
+
+In this example we use the convenience variable `role_assignments_for_resources` to find the scope of a resource. You must supply the `resource_name` and `resource_group_name` in order for the module to lookup the scope for you.
+
+>NOTE: This variable only works in the context of the current Terraform subscription, it cannot be used to apply resource scope role assignments in other subscription. If you need to do that, you can use the `role_assignments_for_scopes` variable.
+
+```hcl
+module "role_assignments" {
+  source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
+  groups_by_display_name = {
+    group1 = "my-group"
+  }
+  role_definitions = {
+    contributor = "Contributor"
+  }
+  role_assignments_for_resource = {
+    role_assignment1 = {
+      resource_name       = "my-app-service"
+      resource_group_name = "rg-example"
+      role_assignments = {
+        role_assignment_1 = {
+          role_definition = "contributor"
+          groups          = ["group1"]
         }
       }
     }
