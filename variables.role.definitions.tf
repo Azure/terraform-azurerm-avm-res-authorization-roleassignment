@@ -3,7 +3,7 @@ variable "role_definitions" {
   default     = {}
   description = <<DESCRIPTION
 (Optional) A map of Azure Resource Manager role definitions to reference in role assignments.
-The key is something unique to you. The value is a built in or customer role definition name.
+The key is something unique to you. The value is a built in or custom role definition name.
 DESCRIPTION
 }
 
@@ -12,6 +12,6 @@ variable "entra_id_role_definitions" {
   default     = {}
   description = <<DESCRIPTION
 (Optional) A map of Entra ID role definitions to reference in role assignments.
-The key is something unique to you. The value is a built in or customer role definition name.
+The key is something unique to you. The value is a built in or custom role definition name.
 DESCRIPTION
 }
