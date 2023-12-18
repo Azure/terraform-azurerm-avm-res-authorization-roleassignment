@@ -1,5 +1,5 @@
 locals {
-  role_assignments_for_resource = {
+  role_assignments_for_resources = {
     test1 = {
       resource_group_name = azurerm_resource_group.test.name
       resource_name       = azurerm_static_site.test[local.system_assigned_managed_identities.sami1].name

@@ -1,4 +1,4 @@
-variable "role_assignments_for_scope" {
+variable "role_assignments_for_scopes" {
   type = map(object({
     scope = string
     role_assignments = map(object({
@@ -15,7 +15,7 @@ variable "role_assignments_for_scope" {
 }
 
 # NOTE: Only supports provider subscription
-variable "role_assignments_for_resource" {
+variable "role_assignments_for_resources" {
   type = map(object({
     resource_name       = string
     resource_group_name = string
@@ -32,7 +32,7 @@ variable "role_assignments_for_resource" {
   default = {}
 }
 
-variable "role_assignments_for_resource_group" {
+variable "role_assignments_for_resource_groups" {
   type = map(object({
     resource_group_name = string
     subscription_id     = optional(string, null)
@@ -49,7 +49,7 @@ variable "role_assignments_for_resource_group" {
   default = {}
 }
 
-variable "role_assignments_for_subscription" {
+variable "role_assignments_for_subscriptions" {
   type = map(object({
     subscription_id = optional(string, null)
     role_assignments = map(object({
@@ -65,7 +65,7 @@ variable "role_assignments_for_subscription" {
   default = {}
 }
 
-variable "role_assignments_for_management_group" {
+variable "role_assignments_for_management_groups" {
   type = map(object({
     management_group_id           = optional(string, null)
     management_group_display_name = optional(string, null)

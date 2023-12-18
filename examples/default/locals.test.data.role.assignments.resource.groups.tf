@@ -1,5 +1,5 @@
 locals {
-  role_assignments_for_resource_group = merge({
+  role_assignments_for_resource_groups = merge({
     test1 = {
       resource_group_name = azurerm_resource_group.test.name
       role_assignments = {

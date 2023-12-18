@@ -48,7 +48,7 @@ module "role_assignments" {
   role_definitions = {
     role1 = "Owner"
   }
-  role_assignments_for_resource_group = {
+  role_assignments_for_resource_groups = {
     role_assignment1 = {
       resource_group_name = "rg-example"
       role_assignments = {
@@ -105,7 +105,7 @@ module "role_assignments" {
     reader      = "Reader"
   }
 
-  role_assignments_for_resource_group = {
+  role_assignments_for_resource_groups = {
     role_assignment1 = {
       resource_group_name = "rg-example-2"
       subscription_id     = "7d805431-4943-42ed-8116-3b545c2fc459"
@@ -173,7 +173,7 @@ module "role_assignments" {
     reader      = "Reader"
   }
 
-  role_assignments_for_resource_group = {
+  role_assignments_for_resource_groups = {
     role_assignment1 = {
       resource_group_name = "rg-example-2"
       subscription_id     = "7d805431-4943-42ed-8116-3b545c2fc459"
@@ -241,7 +241,7 @@ module "role_assignments" {
     }
   }
 
-  role_assignments_for_subscription = {
+  role_assignments_for_subscriptions = {
     role_assignment1 = {
       subscription_id = "7d805431-4943-42ed-8116-3b545c2fc459"
       role_assignments = {
@@ -253,7 +253,7 @@ module "role_assignments" {
     }
   }
 
-  role_assignments_for_resource_group = {
+  role_assignments_for_resource_groups = {
     role_assignment1 = {
       resource_group_name = "rg-example-2"
       subscription_id     = "7d805431-4943-42ed-8116-3b545c2fc459"
@@ -420,7 +420,7 @@ map(object({
 
 Default: `{}`
 
-### <a name="input_role_assignments_for_management_group"></a> [role\_assignments\_for\_management\_group](#input\_role\_assignments\_for\_management\_group)
+### <a name="input_role_assignments_for_management_groups"></a> [role\_assignments\_for\_management\_groups](#input\_role\_assignments\_for\_management\_groups)
 
 Description: n/a
 
@@ -444,31 +444,7 @@ map(object({
 
 Default: `{}`
 
-### <a name="input_role_assignments_for_resource"></a> [role\_assignments\_for\_resource](#input\_role\_assignments\_for\_resource)
-
-Description: NOTE: Only supports provider subscription
-
-Type:
-
-```hcl
-map(object({
-    resource_name       = string
-    resource_group_name = string
-    role_assignments = map(object({
-      role_definition                    = string
-      users                              = optional(set(string), [])
-      groups                             = optional(set(string), [])
-      app_registrations                  = optional(set(string), [])
-      system_assigned_managed_identities = optional(set(string), [])
-      user_assigned_managed_identities   = optional(set(string), [])
-      any_principals                     = optional(set(string), [])
-    }))
-  }))
-```
-
-Default: `{}`
-
-### <a name="input_role_assignments_for_resource_group"></a> [role\_assignments\_for\_resource\_group](#input\_role\_assignments\_for\_resource\_group)
+### <a name="input_role_assignments_for_resource_groups"></a> [role\_assignments\_for\_resource\_groups](#input\_role\_assignments\_for\_resource\_groups)
 
 Description: n/a
 
@@ -492,7 +468,31 @@ map(object({
 
 Default: `{}`
 
-### <a name="input_role_assignments_for_scope"></a> [role\_assignments\_for\_scope](#input\_role\_assignments\_for\_scope)
+### <a name="input_role_assignments_for_resources"></a> [role\_assignments\_for\_resources](#input\_role\_assignments\_for\_resources)
+
+Description: NOTE: Only supports provider subscription
+
+Type:
+
+```hcl
+map(object({
+    resource_name       = string
+    resource_group_name = string
+    role_assignments = map(object({
+      role_definition                    = string
+      users                              = optional(set(string), [])
+      groups                             = optional(set(string), [])
+      app_registrations                  = optional(set(string), [])
+      system_assigned_managed_identities = optional(set(string), [])
+      user_assigned_managed_identities   = optional(set(string), [])
+      any_principals                     = optional(set(string), [])
+    }))
+  }))
+```
+
+Default: `{}`
+
+### <a name="input_role_assignments_for_scopes"></a> [role\_assignments\_for\_scopes](#input\_role\_assignments\_for\_scopes)
 
 Description: n/a
 
@@ -515,7 +515,7 @@ map(object({
 
 Default: `{}`
 
-### <a name="input_role_assignments_for_subscription"></a> [role\_assignments\_for\_subscription](#input\_role\_assignments\_for\_subscription)
+### <a name="input_role_assignments_for_subscriptions"></a> [role\_assignments\_for\_subscriptions](#input\_role\_assignments\_for\_subscriptions)
 
 Description: n/a
 

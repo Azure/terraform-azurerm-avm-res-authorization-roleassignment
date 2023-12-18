@@ -47,7 +47,7 @@ module "role_assignments" {
   role_definitions = {
     role1 = "Owner"
   }
-  role_assignments_for_resource_group = {
+  role_assignments_for_resource_groups = {
     role_assignment1 = {
       resource_group_name = "rg-example"
       role_assignments = {
@@ -104,7 +104,7 @@ module "role_assignments" {
     reader      = "Reader"
   }
 
-  role_assignments_for_resource_group = {
+  role_assignments_for_resource_groups = {
     role_assignment1 = {
       resource_group_name = "rg-example-2"
       subscription_id     = "7d805431-4943-42ed-8116-3b545c2fc459"
@@ -172,7 +172,7 @@ module "role_assignments" {
     reader      = "Reader"
   }
 
-  role_assignments_for_resource_group = {
+  role_assignments_for_resource_groups = {
     role_assignment1 = {
       resource_group_name = "rg-example-2"
       subscription_id     = "7d805431-4943-42ed-8116-3b545c2fc459"
@@ -240,7 +240,7 @@ module "role_assignments" {
     }
   }
 
-  role_assignments_for_subscription = {
+  role_assignments_for_subscriptions = {
     role_assignment1 = {
       subscription_id = "7d805431-4943-42ed-8116-3b545c2fc459"
       role_assignments = {
@@ -252,7 +252,7 @@ module "role_assignments" {
     }
   }
 
-  role_assignments_for_resource_group = {
+  role_assignments_for_resource_groups = {
     role_assignment1 = {
       resource_group_name = "rg-example-2"
       subscription_id     = "7d805431-4943-42ed-8116-3b545c2fc459"

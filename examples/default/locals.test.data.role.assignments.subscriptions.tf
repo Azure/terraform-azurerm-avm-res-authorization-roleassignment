@@ -1,5 +1,5 @@
 locals {
-  role_assignments_for_subscription = merge({
+  role_assignments_for_subscriptions = merge({
     test1 = {
       role_assignments = {
         role_assignment1 = {

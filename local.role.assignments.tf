@@ -1,8 +1,8 @@
 locals {
   role_assignments = merge(
-    local.role_assignments_for_resource,
-    local.role_assignments_for_resource_group,
-    local.role_assignments_for_subscription,
-    local.role_assignments_for_management_group
+    local.role_assignments_for_resources,
+    local.role_assignments_for_resource_groups,
+    local.role_assignments_for_subscriptions,
+    local.role_assignments_for_management_groups
   )
 }

@@ -1,5 +1,5 @@
 locals {
-  role_assignments_for_management_group = {
+  role_assignments_for_management_groups = {
     test1 = {
       management_group_display_name = data.azurerm_management_group.test.display_name
       role_assignments = {
