@@ -104,5 +104,4 @@ locals {
       ]
     ]) : flattened_role_assignments.key => flattened_role_assignments
   }
-  scope_role_definition_format = "/subscriptions/%s%s"
 }

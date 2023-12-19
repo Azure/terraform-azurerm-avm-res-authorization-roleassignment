@@ -1,4 +1,4 @@
-module "avm-ptn-authorization-roleassignment" {
+module "avm_ptn_authorization_roleassignment" {
   source = "../../"
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
   enable_telemetry = var.enable_telemetry

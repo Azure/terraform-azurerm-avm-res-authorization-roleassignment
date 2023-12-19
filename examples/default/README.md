@@ -8,7 +8,7 @@ Since this module requires specific account name, this example creates them dyna
 Having said that, there is one specific dependency on a custom role definition called `Example-Role` in this example. This is due to the very slow API response when creating role definitions, which makes it unsuitable for end to end testing.
 
 ```hcl
-module "avm-ptn-authorization-roleassignment" {
+module "avm_ptn_authorization_roleassignment" {
   source = "../../"
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
   enable_telemetry = var.enable_telemetry
@@ -113,7 +113,6 @@ The following resources are used by this module:
 - [random_string.employee_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) (resource)
 - [time_sleep.before_service_principal_read_creation](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) (resource)
 - [azuread_service_principal.test](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) (data source)
-- [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
 - [azurerm_management_group.test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/management_group) (data source)
 
 <!-- markdownlint-disable MD013 -->
@@ -220,7 +219,7 @@ Description: n/a
 
 The following Modules are called:
 
-### <a name="module_avm-ptn-authorization-roleassignment"></a> [avm-ptn-authorization-roleassignment](#module\_avm-ptn-authorization-roleassignment)
+### <a name="module_avm_ptn_authorization_roleassignment"></a> [avm\_ptn\_authorization\_roleassignment](#module\_avm\_ptn\_authorization\_roleassignment)
 
 Source: ../../
 

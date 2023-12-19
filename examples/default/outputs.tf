@@ -1,33 +1,33 @@
 output "all_principals" {
-  value = module.avm-ptn-authorization-roleassignment.all_principals
+  value = module.avm_ptn_authorization_roleassignment.all_principals
 }
 
 output "app_registrations" {
-  value = module.avm-ptn-authorization-roleassignment.app_registrations
+  value = module.avm_ptn_authorization_roleassignment.app_registrations
 }
 
 output "entra_id_role_assignments" {
-  value = module.avm-ptn-authorization-roleassignment.entra_id_role_assignments
+  value = module.avm_ptn_authorization_roleassignment.entra_id_role_assignments
 }
 
 output "entra_id_role_definitions" {
-  value = module.avm-ptn-authorization-roleassignment.entra_id_role_definitions
+  value = module.avm_ptn_authorization_roleassignment.entra_id_role_definitions
 }
 
 output "groups" {
-  value = module.avm-ptn-authorization-roleassignment.groups
+  value = module.avm_ptn_authorization_roleassignment.groups
 }
 
 output "role_assignments" {
-  value = module.avm-ptn-authorization-roleassignment.role_assignments
+  value = module.avm_ptn_authorization_roleassignment.role_assignments
 }
 
 output "role_defintions" {
-  value = module.avm-ptn-authorization-roleassignment.role_defintions
+  value = module.avm_ptn_authorization_roleassignment.role_defintions
 }
 
 output "system_assigned_managed_identities" {
-  value = module.avm-ptn-authorization-roleassignment.system_assigned_managed_identities
+  value = module.avm_ptn_authorization_roleassignment.system_assigned_managed_identities
 }
 
 output "test_resource_ids" {
@@ -40,9 +40,9 @@ output "test_resource_ids" {
 }
 
 output "user_assigned_managed_identities" {
-  value = module.avm-ptn-authorization-roleassignment.user_assigned_managed_identities
+  value = module.avm_ptn_authorization_roleassignment.user_assigned_managed_identities
 }
 
 output "users" {
-  value = module.avm-ptn-authorization-roleassignment.users
+  value = module.avm_ptn_authorization_roleassignment.users
 }
