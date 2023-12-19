@@ -23,11 +23,11 @@ This module supports following types of principals:
 - System Assigned Managed Identity
 - User Assigned Managed Identity
 
-The module provides muliple helper variables to make it easier to find the principal id for different types of principals.
+The module provides multiple helper variables to make it easier to find the principal id for different types of principals.
 
 ## Usage
 
-The module takes a mapping approach, where you define the principals and role defintions with keys, then map them together to define role assignments. This approach enables you to create role assignments at multiple scopes for multiple principals with multiple methods of finding the principal id.
+The module takes a mapping approach, where you define the principals and role definitions with keys, then map them together to define role assignments. This approach enables you to create role assignments at multiple scopes for multiple principals with multiple methods of finding the principal id.
 
 The following examples show common usage patterns:
 
@@ -66,7 +66,7 @@ module "role_assignments" {
 }
 ```
 
-> NOTE: Although this may seem like a lot of code for this seemingly simple task, it is important to note that we are referring to our user by their user principal name and we are referring to our role definition by it's name. If you were to attempt this same task using the native `azurerm` resources and data sources, you would find that you require at least 3 data sources and 1 resource to achieve the same result.
+> NOTE: Although this may seem like a lot of code for this seemingly simple task, it is important to note that we are referring to our user by their user principal name and we are referring to our role definition by its name. If you were to attempt this same task using the native `azurerm` resources and data sources, you would find that you require at least 3 data sources and 1 resource to achieve the same result.
 
 ### Example - Assign multiple principals different roles on a resource group in a different subscription to the one Terraform is configured for
 
@@ -304,7 +304,7 @@ module "role_assignments" {
 
 ### Example - Assign a Group account Owner rights to a single Resource in a different subscription to the one Terraform is configured for
 
-In this example we use the convenience variable `role_assignments_for_scopes` to assigne a role to an indiviual resource in a different subscription to the one Terraform is configured for. The principal running Terraform would require User Access Administrator rights on the target resource.
+In this example we use the convenience variable `role_assignments_for_scopes` to assign a role to an individual resource in a different subscription to the one Terraform is configured for. The principal running Terraform would require User Access Administrator rights on the target resource.
 
 >NOTE: This variable can be used to apply role assignments at any scope, including management group, subscription, resource group and resource.
 
@@ -335,7 +335,7 @@ module "role_assignments" {
 
 In this example we assign a User account a role in Entra ID.
 
->NOTE: This variable can be used to apply role assignments in the current tenant.
+>NOTE: This variable can only be used to apply role assignments in the current tenant.
 
 ```hcl
 module "role_assignments" {
@@ -474,7 +474,7 @@ Default: `true`
 ### <a name="input_entra_id_role_definitions"></a> [entra\_id\_role\_definitions](#input\_entra\_id\_role\_definitions)
 
 Description: (Optional) A map of Entra ID role definitions to reference in role assignments.  
-The key is something unique to you. The value is a built in or customer role definition name.
+The key is something unique to you. The value is a built in or custom role definition name.
 
 Type: `map(string)`
 
@@ -720,7 +720,7 @@ Default: `{}`
 ### <a name="input_role_definitions"></a> [role\_definitions](#input\_role\_definitions)
 
 Description: (Optional) A map of Azure Resource Manager role definitions to reference in role assignments.  
-The key is something unique to you. The value is a built in or customer role definition name.
+The key is something unique to you. The value is a built in or custom role definition name.
 
 Type: `map(string)`
 
