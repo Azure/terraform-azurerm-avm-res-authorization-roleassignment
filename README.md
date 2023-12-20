@@ -858,43 +858,50 @@ The following outputs are exported:
 
 ### <a name="output_all_principals"></a> [all\_principals](#output\_all\_principals)
 
-Description: n/a
+Description: A map of all principals. The key is the key you supplied and the value is the principal id (object id) of the user, group, service principal, or managed identity.
 
 ### <a name="output_app_registrations"></a> [app\_registrations](#output\_app\_registrations)
 
-Description: n/a
+Description: A map of Entra ID application registrations. The key is the key you supplied and the value is the principal id (object id) of the service principal backing the application registration.
 
 ### <a name="output_entra_id_role_assignments"></a> [entra\_id\_role\_assignments](#output\_entra\_id\_role\_assignments)
 
-Description: n/a
+Description: A map of Entra ID role assignments. The key is the key you supplied and the value is the role assignment details:
+
+- role\_definition\_id: The role definition template id of the role assignment.
+- principal\_id: The principal id (object id) of the user, group, service principal, or managed identity the role assignment is for.
 
 ### <a name="output_entra_id_role_definitions"></a> [entra\_id\_role\_definitions](#output\_entra\_id\_role\_definitions)
 
-Description: n/a
+Description: A map of Entra ID role definitions. The key is the key you supplied and the value is the role definition template id.
 
 ### <a name="output_groups"></a> [groups](#output\_groups)
 
-Description: n/a
+Description: A map of Entra ID groups. The key is the key you supplied and the value is the principal id (object id) of the group.
 
 ### <a name="output_role_assignments"></a> [role\_assignments](#output\_role\_assignments)
 
-Description: n/a
+Description: A map of Azure Resource Manager role assignments. The key is the key you supplied and the value is the role assignment details:
+
+- role\_definition\_id: The role definition id of the role assignment.
+- principal\_id: The principal id (object id) of the user, group, service principal, or managed identity the role assignment is for.
+- scope: The scope of the role assignment.
 
 ### <a name="output_role_defintions"></a> [role\_defintions](#output\_role\_defintions)
 
-Description: n/a
+Description: A map of Azure Resource Manager role definitions. The key is the key you supplied and the value consists of is the role definition id and the allowed scopes.
 
 ### <a name="output_system_assigned_managed_identities"></a> [system\_assigned\_managed\_identities](#output\_system\_assigned\_managed\_identities)
 
-Description: n/a
+Description: A map of system assigned managed identities. The key is the key you supplied and value is the principal id (object id) of the service principal backing system assigned managed identity.
 
 ### <a name="output_user_assigned_managed_identities"></a> [user\_assigned\_managed\_identities](#output\_user\_assigned\_managed\_identities)
 
-Description: n/a
+Description: A map of user assigned managed identities. The key is the key you supplied and value is the principal id (object id) of the service principal backing user assigned managed identity.
 
 ### <a name="output_users"></a> [users](#output\_users)
 
-Description: n/a
+Description: A map of Entra ID users. The key is the key you supplied and the value is the principal id (object id) of the user.
 
 ## Modules
 
