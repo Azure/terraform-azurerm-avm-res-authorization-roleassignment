@@ -53,7 +53,7 @@ module "role_assignments" {
     role1 = "Owner"
   }
   role_assignments_for_resource_groups = {
-    role_assignment1 = {
+    example1 = {
       resource_group_name = "rg-example"
       role_assignments = {
         role_assignment_1 = {
@@ -110,7 +110,7 @@ module "role_assignments" {
   }
 
   role_assignments_for_resource_groups = {
-    role_assignment1 = {
+    example1 = {
       resource_group_name = "rg-example-2"
       subscription_id     = "7d805431-4943-42ed-8116-3b545c2fc459"
       role_assignments = {
@@ -178,7 +178,7 @@ module "role_assignments" {
   }
 
   role_assignments_for_resource_groups = {
-    role_assignment1 = {
+    example1 = {
       resource_group_name = "rg-example-2"
       subscription_id     = "7d805431-4943-42ed-8116-3b545c2fc459"
       role_assignments = {
@@ -234,7 +234,7 @@ module "role_assignments" {
   }
 
   role_assignnents_for_management_groups = {
-    role_assignment1 = {
+    example1 = {
       management_group_display_name = "Tenant Root Group" # Note that `management_group_display_name` and `management_group_id` are mutually exclusive, supply one or the other.
       role_assignments = {
         role_assignment_1 = {
@@ -246,7 +246,7 @@ module "role_assignments" {
   }
 
   role_assignments_for_subscriptions = {
-    role_assignment1 = {
+    example2 = {
       subscription_id = "7d805431-4943-42ed-8116-3b545c2fc459"
       role_assignments = {
         role_assignment_1 = {
@@ -258,7 +258,7 @@ module "role_assignments" {
   }
 
   role_assignments_for_resource_groups = {
-    role_assignment1 = {
+    example3 = {
       resource_group_name = "rg-example-2"
       subscription_id     = "7d805431-4943-42ed-8116-3b545c2fc459"
       role_assignments = {
@@ -288,7 +288,7 @@ module "role_assignments" {
     contributor = "Contributor"
   }
   role_assignments_for_resources = {
-    role_assignment1 = {
+    example1 = {
       resource_name       = "my-app-service"
       resource_group_name = "rg-example"
       role_assignments = {
@@ -318,7 +318,7 @@ module "role_assignments" {
     owner = "Owner"
   }
   role_assignments_for_scopes = {
-    role_assignment1 = {
+    example1 = {
       scope = "subscriptions/7d805431-4943-42ed-8116-3b545c2fc459/resourceGroups/rg-example/providers/Microsoft.Web/sites/my-app-service"
       role_assignments = {
         role_assignment_1 = {
@@ -347,7 +347,7 @@ module "role_assignments" {
     application-administrator = "Application Administrator"
   }
   role_assignments_for_entra_id = {
-    role_assignment1 = {
+    example1 = {
       role_assignments = {
         role_assignment_1 = {
           role_definition = "application-administrator"
