@@ -3,11 +3,13 @@
 
 This module is a convenience wrapper around the `azurerm_role_assignment` resource to make it easier to create role assignments at different scopes for different types of principals.
 
+TLDR: Skip to our [Examples](#examples) section for common usage patterns.
+
 ## Features
 
 This module supports both built in and custom role definitions.
 
-This module can be used to create role assignments at following scopes:
+This module can be used to create role assignments at the following scopes:
 
 - Entra ID
 - Management Group
@@ -15,7 +17,7 @@ This module can be used to create role assignments at following scopes:
 - Resource Group
 - Resource
 
-This module supports following types of principals:
+This module supports the following types of principals:
 
 - User
 - Group
@@ -23,17 +25,85 @@ This module supports following types of principals:
 - System Assigned Managed Identity
 - User Assigned Managed Identity
 
-The module provides multiple helper variables to make it easier to find the principal id for different types of principals.
+The module provides multiple helper variables to make it easier to find the principal id (object id) for different types of principals.
 
 ## Usage
 
 The module takes a mapping approach, where you define the principals and role definitions with keys, then map them together to define role assignments. This approach enables you to create role assignments at multiple scopes for multiple principals with multiple methods of finding the principal id.
 
+### Approach
+
+The following steps outline the approach to using this module:
+
+1. Define the principals
+2. Define the role definitions
+3. Map the principals to the role definitions at a specific scope
+
+#### 1 - Define the principals
+
+There are different method to find each type of prinicpal, each has a different variable. These are combined together into a single map in the module, so you can refer to them by their key in the role assignment variables. As such, you can use multiple variable for the same type of principal, as long as the keys are unique.
+
+>NOTE: If the keys are not unique, then the principals will be merged based on the key in the precedence order of the variables shown here.
+
+For a User principal you have the following options:
+
+- `users_by_user_principal_name`: Find users by their user principal name (UPN).
+- `users_by_mail`: Find users by their mail address.
+- `users_by_mail_nickname`: Find users by their mail nickname.
+- `users_by_employee_id`: Find users by their employee id.
+- `users_by_object_id`: Find users by their object id.
+
+For a Group principal you have the following options:
+
+- `groups_by_display_name`: Find groups by their display name.
+- `groups_by_mail_nickname`: Find groups by their mail nickname.
+- `groups_by_object_id`: Find groups by their object id.
+
+For an App Registration principal you have the following options:
+
+- `app_registrations_by_display_name`: Find app registrations by their display name.
+- `app_registrations_by_client_id`: Find app registrations by their client id (application id).
+- `app_registrations_by_object_id`: Find app registrations by their object id.
+- `app_registrations_by_principal_id`: Find app registrations by the principal id of the underpinning Service Principal.
+
+For a System Assigned Managed Identity principal you have the following options:
+
+- `system_assigned_managed_identities_by_display_name`: Find system assigned managed identities by their display name.
+- `system_assigned_managed_identities_by_client_id`: Find system assigned managed identities by their client id (application id).
+- `system_assigned_managed_identities_by_principal_id`: Find system assigned managed identities by their principal id of the underpinning Service Principal.
+
+For a User Assigned Managed Identity principal you have the following options:
+
+- `user_assigned_managed_identities_by_resource_group_and_name`: Find user assigned managed identities by their resource group and name.
+- `user_assigned_managed_identities_by_display_name`: Find user assigned managed identities by their display name.
+- `user_assigned_managed_identities_by_client_id`: Find user assigned managed identities by their client id (application id).
+- `user_assigned_managed_identities_by_principal_id`: Find user assigned managed identities by their principal id of the underpinning Service Principal.
+
+#### 2 - Define the role definitions
+
+You can use either built in or custom role definitions. There are two variables used to find role definitions:
+
+- `role_definitions`: Find Azure Resource Manager role definitions by their name.
+- `entra_id_role_definitions`: Find Entra ID role definitions by their name.
+
+#### 3 - Map the principals to the role definitions at a specific scope
+
+There are several variables that can be used to map the principals to the role definitions at a specific scope:
+
+- `role_assignments_for_entra_id`: Map principals to role definitions in Entra ID. This only works in the context of the current tenant.
+- `role_assignments_for_management_groups`: Map principals to role definitions at the management group scope.
+- `role_assignments_for_subscriptions`: Map principals to role definitions at the subscription scope. This works cross-subscription.
+- `role_assignments_for_resource_groups`: Map principals to role definitions at the resource group scope. This works cross-subscription.
+- `role_assignments_for_resources`: Map principals to role definitions at the resource scope. This only works in the scope of the current subscription.
+- `role_assignments_for_scopes`: Map principals to role definitions at any scope. This is a catch all and you must supply the scope / resource id. This works cross-subscription.
+
+## Examples
+
 The following examples show common usage patterns:
 
 - [Simple Example - Assign a single User account Owner rights to a single Resource Group](#simple-example---assign-a-single-user-account-owner-rights-to-a-single-resource-group)
 - [Example - Assign multiple principals different roles on a resource group in a different subscription to the one Terraform is configured for](#example---assign-multiple-principals-different-roles-on-a-resource-group-in-a-different-subscription-to-the-one-terraform-is-configured-for)
-- [Example - Assign multiple principals different roles on a resource group using the `any_principal` option](#example---assign-multiple-principals-different-roles-on-a-resource-group-using-the-any\_principal-option)
+- [Example - Assign multiple principals different roles on a resource group using the `any_principal` option](#example---assign-multiple-principals-different-roles-on-a-resource-group-using-the-any\\_principal-option)
 - [Example - Assign multiple principals to management group, subscription and resource group](#example---assign-multiple-principals-to-management-group-subscription-and-resource-group)
 - [Example - Assign a Group account Contributor rights to a single Resource](#example---assign-a-group-account-contributor-rights-to-a-single-resource)
 - [Example - Assign a Group account Owner rights to a single Resource in a different subscription to the one Terraform is configured for](#example---assign-a-group-account-owner-rights-to-a-single-resource-in-a-different-subscription-to-the-one-terraform-is-configured-for)
@@ -41,17 +111,23 @@ The following examples show common usage patterns:
 
 ### Simple Example - Assign a single User account Owner rights to a single Resource Group
 
-In the most basic example, this is how to assign a single user to a resource group with a built in role definition:
+This example shows how to assign a single user principal to a resource group with a built in role definition. The comments in the example re-iterate the generic approach to using this module.
 
 ```hcl
 module "role_assignments" {
   source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
+
+  # 1 - Define the principal
   users_by_user_principal_name = {
     abc = "abc@def.com"
   }
+
+  # 2 - Define the role definition
   role_definitions = {
     role1 = "Owner"
   }
+
+  # 3 - Map the principal to the role definition at a specific scope
   role_assignments_for_resource_groups = {
     example1 = {
       resource_group_name = "rg-example"
