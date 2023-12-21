@@ -26,6 +26,8 @@ This module supports the following types of principals:
 
 The module provides multiple helper variables to make it easier to find the principal id (object id) for different types of principals.
 
+>NOTE: The module does not create the principals or role definitions for you, you must create them yourself. The module only creates the role assignments.
+
 ## Usage
 
 The module takes a mapping approach, where you define the principals and role definitions with keys, then map them together to define role assignments. This approach enables you to create role assignments at multiple scopes for multiple principals with multiple methods of finding the principal id.
@@ -116,17 +118,17 @@ This example shows how to assign a single user principal to a resource group wit
 module "role_assignments" {
   source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
 
-  # 1 - Define the principal
+  # 1 - Define the principal(s)
   users_by_user_principal_name = {
     abc = "abc@def.com"
   }
 
-  # 2 - Define the role definition
+  # 2 - Define the role definition(s)
   role_definitions = {
     role1 = "Owner"
   }
 
-  # 3 - Map the principal to the role definition at a specific scope
+  # 3 - Map the principal(s) to the role definition(s) at a specific scope(s)
   role_assignments_for_resource_groups = {
     example1 = {
       resource_group_name = "rg-example"
