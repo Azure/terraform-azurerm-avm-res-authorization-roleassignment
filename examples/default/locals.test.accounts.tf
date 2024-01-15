@@ -8,7 +8,6 @@ locals {
     app_registration6 = "app_registration6"
     app_registration7 = "app_registration7"
   }
-
   groups = {
     group1 = "group1"
     group2 = "group2"
@@ -17,7 +16,6 @@ locals {
     group5 = "group5"
     group6 = "group6"
   }
-
   system_assigned_managed_identities = {
     sami1 = "sami1"
     sami2 = "sami2"
@@ -26,7 +24,6 @@ locals {
     sami5 = "sami5"
     sami6 = "sami6"
   }
-
   user_assigned_managed_identities = {
     uami1 = "uami1"
     uami2 = "uami2"
@@ -36,7 +33,6 @@ locals {
     uami6 = "uami6"
     uami7 = "uami7"
   }
-
   users = {
     user1 = "user1"
     user2 = "user2"
