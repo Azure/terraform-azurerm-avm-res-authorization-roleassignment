@@ -24,6 +24,37 @@ variable "role_assignments_for_scopes" {
   - system_assigned_managed_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
   - user_assigned_managed_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
   - any_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
+
+Example Input:
+
+```hcl
+role_assignments_for_scopes = {
+  scope            = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group"
+  role_assignments = {
+    role_definition = "contributor"
+    users = [
+      "my-user-1",
+      "my-user-2"
+    ]
+    groups = [
+      "my-group-1",
+      "my-group-2"
+    ]
+    app_registrations = [
+      "my-app-1",
+      "my-app-2"
+    ]
+    system_assigned_managed_identities = [
+      "my-vm-1",
+      "my-vm-2"
+    ]
+    user_assigned_managed_identities = [
+      "my-user-assigned-managed-identity-1",
+      "my-user-assigned-managed-identity-2"
+    ]
+  }
+}
+```
 DESCRIPTION
 }
 
@@ -57,6 +88,38 @@ This variable only works with the current provider subscription. This is a conve
   - system_assigned_managed_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
   - user_assigned_managed_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
   - any_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
+
+Example Input:
+
+```hcl
+role_assignments_for_resources = {
+  resource_name       = "my-resource-name"
+  resource_group_name = "my-resource-group-name"
+  role_assignments    = {
+    role_definition = "contributor"
+    users = [
+      "my-user-1",
+      "my-user-2"
+    ]
+    groups = [
+      "my-group-1",
+      "my-group-2"
+    ]
+    app_registrations = [
+      "my-app-1",
+      "my-app-2"
+    ]
+    system_assigned_managed_identities = [
+      "my-vm-1",
+      "my-vm-2"
+    ]
+    user_assigned_managed_identities = [
+      "my-user-assigned-managed-identity-1",
+      "my-user-assigned-managed-identity-2"
+    ]
+  }
+}
+```
 DESCRIPTION
 }
 
@@ -90,6 +153,37 @@ This is a convenience variable that avoids the need to find the resource id of t
   - system_assigned_managed_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
   - user_assigned_managed_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
   - any_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
+
+Example Input:
+
+```hcl
+role_assignments_for_resource_groups = {
+  resource_group_name = "my-resource-group-name"
+  role_assignments    = {
+    role_definition = "contributor"
+    users = [
+      "my-user-1",
+      "my-user-2"
+    ]
+    groups = [
+      "my-group-1",
+      "my-group-2"
+    ]
+    app_registrations = [
+      "my-app-1",
+      "my-app-2"
+    ]
+    system_assigned_managed_identities = [
+      "my-vm-1",
+      "my-vm-2"
+    ]
+    user_assigned_managed_identities = [
+      "my-user-assigned-managed-identity-1",
+      "my-user-assigned-managed-identity-2"
+    ]
+  }
+}
+```
 DESCRIPTION
 }
 
@@ -121,6 +215,37 @@ This is a convenience variable that avoids the need to find the resource id of t
   - system_assigned_managed_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
   - user_assigned_managed_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
   - any_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
+
+Example Input:
+
+```hcl
+role_assignments_for_subscriptions = {
+  subscription_id     = "00000000-0000-0000-0000-000000000000"
+  role_assignments    = {
+    role_definition = "contributor"
+    users = [
+      "my-user-1",
+      "my-user-2"
+    ]
+    groups = [
+      "my-group-1",
+      "my-group-2"
+    ]
+    app_registrations = [
+      "my-app-1",
+      "my-app-2"
+    ]
+    system_assigned_managed_identities = [
+      "my-vm-1",
+      "my-vm-2"
+    ]
+    user_assigned_managed_identities = [
+      "my-user-assigned-managed-identity-1",
+      "my-user-assigned-managed-identity-2"
+    ]
+  }
+}
+```
 DESCRIPTION
 }
 
@@ -153,6 +278,64 @@ This is a convenience variable that avoids the need to find the resource id of t
   - system_assigned_managed_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
   - user_assigned_managed_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
   - any_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
+
+Example Input:
+
+```hcl
+role_assignments_for_management_groups = {
+  management_group_id = "mg-1-id"
+  role_assignments    = {
+    role_definition = "contributor"
+    users = [
+      "my-user-1",
+      "my-user-2"
+    ]
+    groups = [
+      "my-group-1",
+      "my-group-2"
+    ]
+    app_registrations = [
+      "my-app-1",
+      "my-app-2"
+    ]
+    system_assigned_managed_identities = [
+      "my-vm-1",
+      "my-vm-2"
+    ]
+    user_assigned_managed_identities = [
+      "my-user-assigned-managed-identity-1",
+      "my-user-assigned-managed-identity-2"
+    ]
+  }
+}
+
+role_assignments_for_management_groups = {
+  management_group_display_name = "mg-1-display-name"
+  role_assignments              = {
+    role_definition = "contributor"
+    users = [
+      "my-user-1",
+      "my-user-2"
+    ]
+    groups = [
+      "my-group-1",
+      "my-group-2"
+    ]
+    app_registrations = [
+      "my-app-1",
+      "my-app-2"
+    ]
+    system_assigned_managed_identities = [
+      "my-vm-1",
+      "my-vm-2"
+    ]
+    user_assigned_managed_identities = [
+      "my-user-assigned-managed-identity-1",
+      "my-user-assigned-managed-identity-2"
+    ]
+  }
+}
+```
 DESCRIPTION
 }
 
@@ -182,5 +365,35 @@ This variable requires the `entra_id_role_definitions` variable to be populated.
   - system_assigned_managed_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
   - user_assigned_managed_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
   - any_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
+
+Example Input:
+
+```hcl
+role_assignments_for_entra_id = {
+  role_assignments    = {
+    role_definition = "directory-writer"
+    users = [
+      "my-user-1",
+      "my-user-2"
+    ]
+    groups = [
+      "my-group-1",
+      "my-group-2"
+    ]
+    app_registrations = [
+      "my-app-1",
+      "my-app-2"
+    ]
+    system_assigned_managed_identities = [
+      "my-vm-1",
+      "my-vm-2"
+    ]
+    user_assigned_managed_identities = [
+      "my-user-assigned-managed-identity-1",
+      "my-user-assigned-managed-identity-2"
+    ]
+  }
+}
+```
 DESCRIPTION
 }

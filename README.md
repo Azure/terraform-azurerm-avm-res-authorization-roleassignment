@@ -442,23 +442,23 @@ module "role_assignments" {
 
 The following requirements are needed by this module:
 
-- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (>= 1.3.0)
+- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.6)
 
-- <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) (>= 2.46.0)
+- <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) (~> 2.46)
 
-- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (>= 3.71.0)
+- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 3.71)
 
-- <a name="requirement_random"></a> [random](#requirement\_random) (>= 3.5.0)
+- <a name="requirement_random"></a> [random](#requirement\_random) (~> 3.5)
 
 ## Providers
 
 The following providers are used by this module:
 
-- <a name="provider_azuread"></a> [azuread](#provider\_azuread) (>= 2.46.0)
+- <a name="provider_azuread"></a> [azuread](#provider\_azuread) (~> 2.46)
 
-- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (>= 3.71.0)
+- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (~> 3.71)
 
-- <a name="provider_random"></a> [random](#provider\_random) (>= 3.5.0)
+- <a name="provider_random"></a> [random](#provider\_random) (~> 3.5)
 
 ## Resources
 
@@ -505,8 +505,17 @@ The following input variables are optional (have default values):
 
 ### <a name="input_app_registrations_by_client_id"></a> [app\_registrations\_by\_client\_id](#input\_app\_registrations\_by\_client\_id)
 
-Description:   (Optional) A map of Entra ID application registrations to reference in role assignments.  
-  The key is something unique to you. The value is the client ID (application ID) of the application registration.
+Description: (Optional) A map of Entra ID application registrations to reference in role assignments.  
+The key is something unique to you. The value is the client ID (application ID) of the application registration.
+
+Example Input:
+
+```hcl
+app_registrations_by_client_id = {
+  my-app-1 = "00000000-0000-0000-0000-000000000001"
+  my-app-2 = "00000000-0000-0000-0000-000000000002"
+}
+```
 
 Type: `map(string)`
 
@@ -514,8 +523,17 @@ Default: `{}`
 
 ### <a name="input_app_registrations_by_display_name"></a> [app\_registrations\_by\_display\_name](#input\_app\_registrations\_by\_display\_name)
 
-Description:   (Optional) A map of Entra ID application registrations to reference in role assignments.  
-  The key is something unique to you. The value is the display name of the application registration.
+Description: (Optional) A map of Entra ID application registrations to reference in role assignments.  
+The key is something unique to you. The value is the display name of the application registration.
+
+Example Input:
+
+```hcl
+app_registrations_by_display_name = {
+  my-app-1 = "My App 1"
+  my-app-2 = "My App 2"
+}
+```
 
 Type: `map(string)`
 
@@ -523,8 +541,17 @@ Default: `{}`
 
 ### <a name="input_app_registrations_by_object_id"></a> [app\_registrations\_by\_object\_id](#input\_app\_registrations\_by\_object\_id)
 
-Description:   (Optional) A map of Entra ID application registrations to reference in role assignments.  
-  The key is something unique to you. The value is the object ID of the application registration.
+Description: (Optional) A map of Entra ID application registrations to reference in role assignments.  
+The key is something unique to you. The value is the object ID of the application registration.
+
+Example Input:
+
+```hcl
+app_registrations_by_object_id = {
+  my-app-1 = "00000000-0000-0000-0000-000000000001"
+  my-app-2 = "00000000-0000-0000-0000-000000000002"
+}
+```
 
 Type: `map(string)`
 
@@ -532,8 +559,17 @@ Default: `{}`
 
 ### <a name="input_app_registrations_by_principal_id"></a> [app\_registrations\_by\_principal\_id](#input\_app\_registrations\_by\_principal\_id)
 
-Description:   (Optional) A map of Entra ID application registrations to reference in role assignments.  
-  The key is something unique to you. The value is the principal ID of the service principal backing the application registration.
+Description: (Optional) A map of Entra ID application registrations to reference in role assignments.  
+The key is something unique to you. The value is the principal ID of the service principal backing the application registration.
+
+Example Input:
+
+```hcl
+app_registrations_by_principal_id = {
+  my-app-1 = "00000000-0000-0000-0000-000000000001"
+  my-app-2 = "00000000-0000-0000-0000-000000000002"
+}
+```
 
 Type: `map(string)`
 
@@ -554,14 +590,32 @@ Default: `true`
 Description: (Optional) A map of Entra ID role definitions to reference in role assignments.  
 The key is something unique to you. The value is a built in or custom role definition name.
 
+Example Input:
+
+```hcl
+entra_id_role_definitions = {
+  directory-writer     = "Directory Writer"
+  global-administrator = "Global Administrator"
+}
+```
+
 Type: `map(string)`
 
 Default: `{}`
 
 ### <a name="input_groups_by_display_name"></a> [groups\_by\_display\_name](#input\_groups\_by\_display\_name)
 
-Description:   (Optional) A map of Entra ID groups to reference in role assignments.  
-  The key is something unique to you. The value is the display name of the group.
+Description: (Optional) A map of Entra ID groups to reference in role assignments.  
+The key is something unique to you. The value is the display name of the group.
+
+Example Input:
+
+```hcl
+groups_by_display_name = {
+  my-group-1 = "My Group 1"
+  my-group-2 = "My Group 2"
+}
+```
 
 Type: `map(string)`
 
@@ -569,8 +623,17 @@ Default: `{}`
 
 ### <a name="input_groups_by_mail_nickname"></a> [groups\_by\_mail\_nickname](#input\_groups\_by\_mail\_nickname)
 
-Description:   (Optional) A map of Entra ID groups to reference in role assignments.  
-  The key is something unique to you. The value is the mail nickname of the group.
+Description: (Optional) A map of Entra ID groups to reference in role assignments.  
+The key is something unique to you. The value is the mail nickname of the group.
+
+Example Input:
+
+```hcl
+groups_by_mail_nickname = {
+  my-group-1 = "my-group-1-nickname"
+  my-group-2 = "my-group-2-nickname"
+}
+```
 
 Type: `map(string)`
 
@@ -578,8 +641,17 @@ Default: `{}`
 
 ### <a name="input_groups_by_object_id"></a> [groups\_by\_object\_id](#input\_groups\_by\_object\_id)
 
-Description:   (Optional) A map of Entra ID groups to reference in role assignments.  
-  The key is something unique to you. The value is the object ID of the group.
+Description: (Optional) A map of Entra ID groups to reference in role assignments.  
+The key is something unique to you. The value is the object ID of the group.
+
+Example Input:
+
+```hcl
+groups_by_object_id = {
+  my-group-1 = "00000000-0000-0000-0000-000000000001"
+  my-group-2 = "00000000-0000-0000-0000-000000000002"
+}
+```
 
 Type: `map(string)`
 
@@ -599,6 +671,36 @@ This variable requires the `entra_id_role_definitions` variable to be populated.
   - system\_assigned\_managed\_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
   - user\_assigned\_managed\_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
   - any\_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
+
+Example Input:
+
+```hcl
+role_assignments_for_entra_id = {
+  role_assignments    = {
+    role_definition = "directory-writer"
+    users = [
+      "my-user-1",
+      "my-user-2"
+    ]
+    groups = [
+      "my-group-1",
+      "my-group-2"
+    ]
+    app_registrations = [
+      "my-app-1",
+      "my-app-2"
+    ]
+    system_assigned_managed_identities = [
+      "my-vm-1",
+      "my-vm-2"
+    ]
+    user_assigned_managed_identities = [
+      "my-user-assigned-managed-identity-1",
+      "my-user-assigned-managed-identity-2"
+    ]
+  }
+}
+```
 
 Type:
 
@@ -633,6 +735,64 @@ This is a convenience variable that avoids the need to find the resource id of t
   - system\_assigned\_managed\_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
   - user\_assigned\_managed\_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
   - any\_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
+
+Example Input:
+
+```hcl
+role_assignments_for_management_groups = {
+  management_group_id = "mg-1-id"
+  role_assignments    = {
+    role_definition = "contributor"
+    users = [
+      "my-user-1",
+      "my-user-2"
+    ]
+    groups = [
+      "my-group-1",
+      "my-group-2"
+    ]
+    app_registrations = [
+      "my-app-1",
+      "my-app-2"
+    ]
+    system_assigned_managed_identities = [
+      "my-vm-1",
+      "my-vm-2"
+    ]
+    user_assigned_managed_identities = [
+      "my-user-assigned-managed-identity-1",
+      "my-user-assigned-managed-identity-2"
+    ]
+  }
+}
+
+role_assignments_for_management_groups = {
+  management_group_display_name = "mg-1-display-name"
+  role_assignments              = {
+    role_definition = "contributor"
+    users = [
+      "my-user-1",
+      "my-user-2"
+    ]
+    groups = [
+      "my-group-1",
+      "my-group-2"
+    ]
+    app_registrations = [
+      "my-app-1",
+      "my-app-2"
+    ]
+    system_assigned_managed_identities = [
+      "my-vm-1",
+      "my-vm-2"
+    ]
+    user_assigned_managed_identities = [
+      "my-user-assigned-managed-identity-1",
+      "my-user-assigned-managed-identity-2"
+    ]
+  }
+}
+```
 
 Type:
 
@@ -671,6 +831,37 @@ This is a convenience variable that avoids the need to find the resource id of t
   - user\_assigned\_managed\_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
   - any\_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
 
+Example Input:
+
+```hcl
+role_assignments_for_resource_groups = {
+  resource_group_name = "my-resource-group-name"
+  role_assignments    = {
+    role_definition = "contributor"
+    users = [
+      "my-user-1",
+      "my-user-2"
+    ]
+    groups = [
+      "my-group-1",
+      "my-group-2"
+    ]
+    app_registrations = [
+      "my-app-1",
+      "my-app-2"
+    ]
+    system_assigned_managed_identities = [
+      "my-vm-1",
+      "my-vm-2"
+    ]
+    user_assigned_managed_identities = [
+      "my-user-assigned-managed-identity-1",
+      "my-user-assigned-managed-identity-2"
+    ]
+  }
+}
+```
+
 Type:
 
 ```hcl
@@ -707,6 +898,38 @@ This variable only works with the current provider subscription. This is a conve
   - user\_assigned\_managed\_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
   - any\_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
 
+Example Input:
+
+```hcl
+role_assignments_for_resources = {
+  resource_name       = "my-resource-name"
+  resource_group_name = "my-resource-group-name"
+  role_assignments    = {
+    role_definition = "contributor"
+    users = [
+      "my-user-1",
+      "my-user-2"
+    ]
+    groups = [
+      "my-group-1",
+      "my-group-2"
+    ]
+    app_registrations = [
+      "my-app-1",
+      "my-app-2"
+    ]
+    system_assigned_managed_identities = [
+      "my-vm-1",
+      "my-vm-2"
+    ]
+    user_assigned_managed_identities = [
+      "my-user-assigned-managed-identity-1",
+      "my-user-assigned-managed-identity-2"
+    ]
+  }
+}
+```
+
 Type:
 
 ```hcl
@@ -740,6 +963,37 @@ Description: (Optional) Role assignments to be applied to specific scope ids. Th
   - system\_assigned\_managed\_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
   - user\_assigned\_managed\_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
   - any\_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
+
+Example Input:
+
+```hcl
+role_assignments_for_scopes = {
+  scope            = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group"
+  role_assignments = {
+    role_definition = "contributor"
+    users = [
+      "my-user-1",
+      "my-user-2"
+    ]
+    groups = [
+      "my-group-1",
+      "my-group-2"
+    ]
+    app_registrations = [
+      "my-app-1",
+      "my-app-2"
+    ]
+    system_assigned_managed_identities = [
+      "my-vm-1",
+      "my-vm-2"
+    ]
+    user_assigned_managed_identities = [
+      "my-user-assigned-managed-identity-1",
+      "my-user-assigned-managed-identity-2"
+    ]
+  }
+}
+```
 
 Type:
 
@@ -776,6 +1030,37 @@ This is a convenience variable that avoids the need to find the resource id of t
   - user\_assigned\_managed\_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
   - any\_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
 
+Example Input:
+
+```hcl
+role_assignments_for_subscriptions = {
+  subscription_id     = "00000000-0000-0000-0000-000000000000"
+  role_assignments    = {
+    role_definition = "contributor"
+    users = [
+      "my-user-1",
+      "my-user-2"
+    ]
+    groups = [
+      "my-group-1",
+      "my-group-2"
+    ]
+    app_registrations = [
+      "my-app-1",
+      "my-app-2"
+    ]
+    system_assigned_managed_identities = [
+      "my-vm-1",
+      "my-vm-2"
+    ]
+    user_assigned_managed_identities = [
+      "my-user-assigned-managed-identity-1",
+      "my-user-assigned-managed-identity-2"
+    ]
+  }
+}
+```
+
 Type:
 
 ```hcl
@@ -800,14 +1085,33 @@ Default: `{}`
 Description: (Optional) A map of Azure Resource Manager role definitions to reference in role assignments.  
 The key is something unique to you. The value is a built in or custom role definition name.
 
+Example Input:
+
+```hcl
+role_definitions = {
+  owner       = "Owner"
+  contributor = "Contributor"
+  reader      = "Reader"
+}
+```
+
 Type: `map(string)`
 
 Default: `{}`
 
 ### <a name="input_system_assigned_managed_identities_by_client_id"></a> [system\_assigned\_managed\_identities\_by\_client\_id](#input\_system\_assigned\_managed\_identities\_by\_client\_id)
 
-Description:   (Optional) A map of system assigned managed identities to reference in role assignments.  
-  The key is something unique to you. The value is the client id of the identity.
+Description: (Optional) A map of system assigned managed identities to reference in role assignments.  
+The key is something unique to you. The value is the client id of the identity.
+
+Example Input:
+
+```hcl
+system_assigned_managed_identities_by_client_id = {
+  my-vm-1 = "00000000-0000-0000-0000-000000000001"
+  my-vm-2 = "00000000-0000-0000-0000-000000000002"
+}
+```
 
 Type: `map(string)`
 
@@ -815,8 +1119,17 @@ Default: `{}`
 
 ### <a name="input_system_assigned_managed_identities_by_display_name"></a> [system\_assigned\_managed\_identities\_by\_display\_name](#input\_system\_assigned\_managed\_identities\_by\_display\_name)
 
-Description:   (Optional) A map of system assigned managed identities to reference in role assignments.  
-  The key is something unique to you. The value is the display name of the identity / compute instance.
+Description: (Optional) A map of system assigned managed identities to reference in role assignments.  
+The key is something unique to you. The value is the display name of the identity / compute instance.
+
+Example Input:
+
+```hcl
+system_assigned_managed_identities_by_display_name = {
+  my-vm-1 = "My VM 1"
+  my-vm-2 = "My VM 2"
+}
+```
 
 Type: `map(string)`
 
@@ -824,8 +1137,17 @@ Default: `{}`
 
 ### <a name="input_system_assigned_managed_identities_by_principal_id"></a> [system\_assigned\_managed\_identities\_by\_principal\_id](#input\_system\_assigned\_managed\_identities\_by\_principal\_id)
 
-Description:   (Optional) A map of system assigned managed identities to reference in role assignments.  
-  The key is something unique to you. The value is the principal id of the underying service principalk of the identity.
+Description: (Optional) A map of system assigned managed identities to reference in role assignments.  
+The key is something unique to you. The value is the principal id of the underying service principalk of the identity.
+
+Example Input:
+
+```hcl
+system_assigned_managed_identities_by_principal_id = {
+  my-vm-1 = "00000000-0000-0000-0000-000000000001"
+  my-vm-2 = "00000000-0000-0000-0000-000000000002"
+}
+```
 
 Type: `map(string)`
 
@@ -841,8 +1163,17 @@ Default: `""`
 
 ### <a name="input_user_assigned_managed_identities_by_client_id"></a> [user\_assigned\_managed\_identities\_by\_client\_id](#input\_user\_assigned\_managed\_identities\_by\_client\_id)
 
-Description:   (Optional) A map of system assigned managed identities to reference in role assignments.  
-  The key is something unique to you. The value is the client id of the identity.
+Description: (Optional) A map of system assigned managed identities to reference in role assignments.  
+The key is something unique to you. The value is the client id of the identity.
+
+Example Input:
+
+```hcl
+user_assigned_managed_identities_by_client_id = {
+  my-identity-1 = "00000000-0000-0000-0000-000000000001"
+  my-identity-2 = "00000000-0000-0000-0000-000000000002"
+}
+```
 
 Type: `map(string)`
 
@@ -850,8 +1181,17 @@ Default: `{}`
 
 ### <a name="input_user_assigned_managed_identities_by_display_name"></a> [user\_assigned\_managed\_identities\_by\_display\_name](#input\_user\_assigned\_managed\_identities\_by\_display\_name)
 
-Description:   (Optional) A map of system assigned managed identities to reference in role assignments.  
-  The key is something unique to you. The value is the display name of the identity.
+Description: (Optional) A map of system assigned managed identities to reference in role assignments.  
+The key is something unique to you. The value is the display name of the identity.
+
+Example Input:
+
+```hcl
+user_assigned_managed_identities_by_display_name = {
+  my-identity-1 = "My Identity 1"
+  my-identity-2 = "My Identity 2"
+}
+```
 
 Type: `map(string)`
 
@@ -859,8 +1199,17 @@ Default: `{}`
 
 ### <a name="input_user_assigned_managed_identities_by_principal_id"></a> [user\_assigned\_managed\_identities\_by\_principal\_id](#input\_user\_assigned\_managed\_identities\_by\_principal\_id)
 
-Description:   (Optional) A map of system assigned managed identities to reference in role assignments.  
-  The key is something unique to you. The value is the principal id of the underying service principalk of the identity.
+Description: (Optional) A map of system assigned managed identities to reference in role assignments.  
+The key is something unique to you. The value is the principal id of the underying service principalk of the identity.
+
+Example Input:
+
+```hcl
+user_assigned_managed_identities_by_principal_id = {
+  my-identity-1 = "00000000-0000-0000-0000-000000000001"
+  my-identity-2 = "00000000-0000-0000-0000-000000000002"
+}
+```
 
 Type: `map(string)`
 
@@ -868,11 +1217,26 @@ Default: `{}`
 
 ### <a name="input_user_assigned_managed_identities_by_resource_group_and_name"></a> [user\_assigned\_managed\_identities\_by\_resource\_group\_and\_name](#input\_user\_assigned\_managed\_identities\_by\_resource\_group\_and\_name)
 
-Description:   (Optional) A map of user assigned managed identities to reference in role assignments.  
-  The key is something unique to you. The values are:
+Description: (Optional) A map of user assigned managed identities to reference in role assignments.  
+The key is something unique to you. The values are:
 
-  - resource\_group\_name: The name of the resource group the identity is in.
-  - name: The name of the identity.
+- resource\_group\_name: The name of the resource group the identity is in.
+- name: The name of the identity.
+
+Example Input:
+
+```hcl
+user_assigned_managed_identities_by_resource_group_and_name = {
+  my-identity-1 = {
+    resource_group_name = "my-rg-1"
+    name                = "my-identity-1"
+  }
+  my-identity-2 = {
+    resource_group_name = "my-rg-2"
+    name                = "my-identity-2"
+  }
+}
+```
 
 Type:
 
@@ -887,8 +1251,17 @@ Default: `{}`
 
 ### <a name="input_users_by_employee_id"></a> [users\_by\_employee\_id](#input\_users\_by\_employee\_id)
 
-Description:   (Optional) A map of Entra ID users to reference in role assignments.  
-  The key is something unique to you. The value is the employee ID of the user.
+Description: (Optional) A map of Entra ID users to reference in role assignments.  
+The key is something unique to you. The value is the employee ID of the user.
+
+Example Input:
+
+```hcl
+users_by_employee_id = {
+  my-user-1 = "1234567890"
+  my-user-2 = "0987654321"
+}
+```
 
 Type: `map(string)`
 
@@ -896,8 +1269,17 @@ Default: `{}`
 
 ### <a name="input_users_by_mail"></a> [users\_by\_mail](#input\_users\_by\_mail)
 
-Description:   (Optional) A map of Entra ID users to reference in role assignments.  
-  The key is something unique to you. The value is the mail address of the user.
+Description: (Optional) A map of Entra ID users to reference in role assignments.  
+The key is something unique to you. The value is the mail address of the user.
+
+Example Input:
+
+```hcl
+users_by_mail = {
+  my-user-1 = "user.1@example.com"
+  my-user-2 = "user.2@example.com"
+}
+```
 
 Type: `map(string)`
 
@@ -905,8 +1287,17 @@ Default: `{}`
 
 ### <a name="input_users_by_mail_nickname"></a> [users\_by\_mail\_nickname](#input\_users\_by\_mail\_nickname)
 
-Description:   (Optional) A map of Entra ID users to reference in role assignments.  
-  The key is something unique to you. The value is the mail nickname of the user.
+Description: (Optional) A map of Entra ID users to reference in role assignments.  
+The key is something unique to you. The value is the mail nickname of the user.
+
+Example Input:
+
+```hcl
+users_by_mail_nickname = {
+  my-user-1 = "user1-nickname"
+  my-user-2 = "user2-nickname"
+}
+```
 
 Type: `map(string)`
 
@@ -914,8 +1305,17 @@ Default: `{}`
 
 ### <a name="input_users_by_object_id"></a> [users\_by\_object\_id](#input\_users\_by\_object\_id)
 
-Description:   (Optional) A map of Entra ID users to reference in role assignments.  
-  The key is something unique to you. The value is the object ID of the user.
+Description: (Optional) A map of Entra ID users to reference in role assignments.  
+The key is something unique to you. The value is the object ID of the user.
+
+Example Input:
+
+```hcl
+users_by_object_id = {
+  my-user-1 = "00000000-0000-0000-0000-000000000001"
+  my-user-2 = "00000000-0000-0000-0000-000000000002"
+}
+```
 
 Type: `map(string)`
 
@@ -923,8 +1323,17 @@ Default: `{}`
 
 ### <a name="input_users_by_user_principal_name"></a> [users\_by\_user\_principal\_name](#input\_users\_by\_user\_principal\_name)
 
-Description:   (Optional) A map of Entra ID users to reference in role assignments.  
-  The key is something unique to you. The value is the user principal name (UPN) of the user.
+Description: (Optional) A map of Entra ID users to reference in role assignments.  
+The key is something unique to you. The value is the user principal name (UPN) of the user.
+
+Example Input:
+
+```hcl
+users_by_user_principal_name = {
+  my-user-1 = "user1@example.com"
+  my-user-2 = "user2@example.com"
+}
+```
 
 Type: `map(string)`
 
