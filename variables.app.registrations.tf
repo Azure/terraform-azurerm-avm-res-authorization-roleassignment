@@ -1,6 +1,7 @@
 variable "app_registrations_by_display_name" {
   type        = map(string)
   default     = {}
+  nullable    = false
   description = <<DESCRIPTION
 (Optional) A map of Entra ID application registrations to reference in role assignments.
 The key is something unique to you. The value is the display name of the application registration.
@@ -19,6 +20,7 @@ DESCRIPTION
 variable "app_registrations_by_client_id" {
   type        = map(string)
   default     = {}
+  nullable    = false
   description = <<DESCRIPTION
 (Optional) A map of Entra ID application registrations to reference in role assignments.
 The key is something unique to you. The value is the client ID (application ID) of the application registration.
@@ -37,6 +39,7 @@ DESCRIPTION
 variable "app_registrations_by_object_id" {
   type        = map(string)
   default     = {}
+  nullable    = false
   description = <<DESCRIPTION
 (Optional) A map of Entra ID application registrations to reference in role assignments.
 The key is something unique to you. The value is the object ID of the application registration.
