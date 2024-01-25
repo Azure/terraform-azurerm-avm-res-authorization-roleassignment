@@ -40,3 +40,5 @@ avm.tflint.hcl
 avm.tflint_example.hcl
 avmmakefile
 *tfplan*
+avm.tflint.merged.hcl
+avm.tflint_example.merged.hcl
