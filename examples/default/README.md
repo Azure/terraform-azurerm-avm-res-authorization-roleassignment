@@ -75,20 +75,6 @@ The following requirements are needed by this module:
 
 - <a name="requirement_time"></a> [time](#requirement\_time) (~> 0.7)
 
-## Providers
-
-The following providers are used by this module:
-
-- <a name="provider_azuread"></a> [azuread](#provider\_azuread) (~> 2.46)
-
-- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (~> 3.7)
-
-- <a name="provider_azurerm.alternative"></a> [azurerm.alternative](#provider\_azurerm.alternative) (~> 3.7)
-
-- <a name="provider_random"></a> [random](#provider\_random) (~> 3.5)
-
-- <a name="provider_time"></a> [time](#provider\_time) (~> 0.7)
-
 ## Resources
 
 The following resources are used by this module:
