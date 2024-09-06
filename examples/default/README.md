@@ -52,7 +52,7 @@ module "role_assignments" {
     azuread_user.test,
     azuread_group.test,
     azuread_application.test,
-    azurerm_static_site.test,
+    azurerm_static_web_app.test,
     azurerm_user_assigned_identity.test,
     data.azuread_service_principal.test,
     azurerm_management_group.test
@@ -86,7 +86,7 @@ The following resources are used by this module:
 - [azurerm_management_group.test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_group) (resource)
 - [azurerm_resource_group.alternative](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) (resource)
 - [azurerm_resource_group.test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) (resource)
-- [azurerm_static_site.test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/static_site) (resource)
+- [azurerm_static_web_app.test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/static_web_app) (resource)
 - [azurerm_user_assigned_identity.test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) (resource)
 - [random_password.password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) (resource)
 - [random_pet.app_registration_display_name](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)

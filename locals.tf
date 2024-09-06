@@ -27,4 +27,11 @@ locals {
     }
   )
   default_subscription_id = data.azurerm_client_config.current.subscription_id
+  principal_type = {
+    user                             = "User"
+    group                            = "Group"
+    app_registration                 = "ServicePrincipal"
+    system_assigned_managed_identity = "ServicePrincipal"
+    user_assigned_managed_identity   = "ServicePrincipal"
+  }
 }

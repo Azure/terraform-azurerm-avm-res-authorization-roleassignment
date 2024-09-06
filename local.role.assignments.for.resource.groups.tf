@@ -10,6 +10,7 @@ locals {
             role_definition_id = format(local.resource_group_role_definition_format, value.subscription_id == null ? local.default_subscription_id : value.subscription_id, local.role_definitions[assignment_value.role_definition].id)
             principal_id       = local.all_principals[any_principal].principal_id
             scope              = format(local.resource_group_role_scope_format, value.subscription_id == null ? local.default_subscription_id : value.subscription_id, value.resource_group_name)
+            principal_type     = null
           }
         ]
       ]
@@ -24,6 +25,7 @@ locals {
             role_definition_id = format(local.resource_group_role_definition_format, value.subscription_id == null ? local.default_subscription_id : value.subscription_id, local.role_definitions[assignment_value.role_definition].id)
             principal_id       = local.app_registrations[app_registration]
             scope              = format(local.resource_group_role_scope_format, value.subscription_id == null ? local.default_subscription_id : value.subscription_id, value.resource_group_name)
+            principal_type     = local.principal_type.app_registration
           }
         ]
       ]
@@ -38,6 +40,7 @@ locals {
             role_definition_id = format(local.resource_group_role_definition_format, value.subscription_id == null ? local.default_subscription_id : value.subscription_id, local.role_definitions[assignment_value.role_definition].id)
             principal_id       = local.groups[group]
             scope              = format(local.resource_group_role_scope_format, value.subscription_id == null ? local.default_subscription_id : value.subscription_id, value.resource_group_name)
+            principal_type     = local.principal_type.group
           }
         ]
       ]
@@ -52,6 +55,7 @@ locals {
             role_definition_id = format(local.resource_group_role_definition_format, value.subscription_id == null ? local.default_subscription_id : value.subscription_id, local.role_definitions[assignment_value.role_definition].id)
             principal_id       = local.system_assigned_managed_identities[system_assigned_managed_identity]
             scope              = format(local.resource_group_role_scope_format, value.subscription_id == null ? local.default_subscription_id : value.subscription_id, value.resource_group_name)
+            principal_type     = local.principal_type.system_assigned_managed_identity
           }
         ]
       ]
@@ -66,6 +70,7 @@ locals {
             role_definition_id = format(local.resource_group_role_definition_format, value.subscription_id == null ? local.default_subscription_id : value.subscription_id, local.role_definitions[assignment_value.role_definition].id)
             principal_id       = local.user_assigned_managed_identities[user_assigned_managed_identity]
             scope              = format(local.resource_group_role_scope_format, value.subscription_id == null ? local.default_subscription_id : value.subscription_id, value.resource_group_name)
+            principal_type     = local.principal_type.user_assigned_managed_identity
           }
         ]
       ]
@@ -80,6 +85,7 @@ locals {
             role_definition_id = format(local.resource_group_role_definition_format, value.subscription_id == null ? local.default_subscription_id : value.subscription_id, local.role_definitions[assignment_value.role_definition].id)
             principal_id       = local.users[user]
             scope              = format(local.resource_group_role_scope_format, value.subscription_id == null ? local.default_subscription_id : value.subscription_id, value.resource_group_name)
+            principal_type     = local.principal_type.user
           }
         ]
       ]

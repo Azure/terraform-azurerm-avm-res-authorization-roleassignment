@@ -35,7 +35,7 @@ output "test_resource_ids" {
     management_group = azurerm_management_group.test.id
     subscription     = "/subscriptions/${var.alternative_subscription_id}"
     resource_group   = azurerm_resource_group.test.id
-    resource         = azurerm_static_site.test[local.system_assigned_managed_identities.sami1].id
+    resource         = azurerm_static_web_app.test[local.system_assigned_managed_identities.sami1].id
   }
 }
 

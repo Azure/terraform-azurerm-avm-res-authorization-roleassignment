@@ -9,6 +9,7 @@ locals {
             role_definition_id = "${local.resource_role_definition_id_prefix}${local.role_definitions[assignment_value.role_definition].id}"
             principal_id       = local.all_principals[any_principal].principal_id
             scope              = data.azurerm_resources.resources_by_resource_group_and_name[key].resources[0].id
+            principal_type     = null
           }
         ]
       ]
@@ -23,6 +24,7 @@ locals {
             role_definition_id = "${local.resource_role_definition_id_prefix}${local.role_definitions[assignment_value.role_definition].id}"
             principal_id       = local.app_registrations[app_registration]
             scope              = data.azurerm_resources.resources_by_resource_group_and_name[key].resources[0].id
+            principal_type     = local.principal_type.app_registration
           }
         ]
       ]
@@ -37,6 +39,7 @@ locals {
             role_definition_id = "${local.resource_role_definition_id_prefix}${local.role_definitions[assignment_value.role_definition].id}"
             principal_id       = local.groups[group]
             scope              = data.azurerm_resources.resources_by_resource_group_and_name[key].resources[0].id
+            principal_type     = local.principal_type.group
           }
         ]
       ]
@@ -51,6 +54,7 @@ locals {
             role_definition_id = "${local.resource_role_definition_id_prefix}${local.role_definitions[assignment_value.role_definition].id}"
             principal_id       = local.system_assigned_managed_identities[system_assigned_managed_identity]
             scope              = data.azurerm_resources.resources_by_resource_group_and_name[key].resources[0].id
+            principal_type     = local.principal_type.system_assigned_managed_identity
           }
         ]
       ]
@@ -65,6 +69,7 @@ locals {
             role_definition_id = "${local.resource_role_definition_id_prefix}${local.role_definitions[assignment_value.role_definition].id}"
             principal_id       = local.user_assigned_managed_identities[user_assigned_managed_identity]
             scope              = data.azurerm_resources.resources_by_resource_group_and_name[key].resources[0].id
+            principal_type     = local.principal_type.user_assigned_managed_identity
           }
         ]
       ]
@@ -79,6 +84,7 @@ locals {
             role_definition_id = "${local.resource_role_definition_id_prefix}${local.role_definitions[assignment_value.role_definition].id}"
             principal_id       = local.users[user]
             scope              = data.azurerm_resources.resources_by_resource_group_and_name[key].resources[0].id
+            principal_type     = local.principal_type.user
           }
         ]
       ]
