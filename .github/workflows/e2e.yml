@@ -73,6 +73,7 @@
             echo -e "Custom environment variables:\n$(env | grep TF_VAR_ | grep -v ' "TF_VAR_')"
   
             export ARM_OIDC_TOKEN=$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://AzureADTokenExchange")
+            echo $ARM_OIDC_TOKEN
             export ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}
             export ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}
             export ARM_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}
