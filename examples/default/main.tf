@@ -48,3 +48,5 @@ module "role_assignments" {
     azurerm_management_group.test
   ]
 }
+
+data "azurerm_client_config" "current" {}

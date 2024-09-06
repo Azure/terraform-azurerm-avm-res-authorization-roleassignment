@@ -30,9 +30,51 @@ The module provides multiple helper variables to make it easier to find the prin
 
 ## Usage
 
-The module takes a mapping approach, where you define the principals and role definitions with keys, then map them together to define role assignments. This approach enables you to create role assignments at multiple scopes for multiple principals with multiple methods of finding the principal id.
+The module provides 2 ways to create role assignments:
 
-### Approach
+1. Basic: This just uses the `role_assignments` and `role_assignments_entra_id` variable to create role assignments and you need to supply the principal id, scope and role definition data yourself.
+1. Advanced: This uses a set of variables to define the principals, role definitions and role assignments separately and then map them together to create the role assignments.
+
+### Basic Usage
+
+The basic usage is a simple way to create role assignments. You must supply the principal id, scope and role definition data yourself.
+
+Here is an example to apply the Owner role to a user principal at the subscription scope:
+
+```hcl
+module "role_assignments" {
+  source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
+
+  role_assignments = {
+    user1_owner = {
+      principal_id         = "00000000-0000-0000-0000-000000000000"
+      role_definition_name = "Owner"
+      scope                = "/subscriptions/00000000-0000-0000-0000-000000000000"
+    }
+  }
+}
+```
+
+Here is an example to apply the Directory Reader role to a user principal at the Entra ID scope:
+
+```hcl
+module "role_assignments_for_entra_id" {
+  source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
+
+  role_assignments_entra_id = {
+    user1_directory_reader = {
+      principal_object_id = "00000000-0000-0000-0000-000000000000"
+      role_id             = "00000000-0000-0000-0000-000000000000"
+    }
+  }
+}
+```
+
+### Advanced Usage
+
+The module takes a mapping approach for advanced usage, where you define the principals and role definitions with keys, then map them together to define role assignments. This approach enables you to create role assignments at multiple scopes for multiple principals with multiple methods of finding the principal id.
+
+#### Approach
 
 The following steps outline the approach to using this module:
 
@@ -40,7 +82,7 @@ The following steps outline the approach to using this module:
 2. Define the role definitions
 3. Map the principals to the role definitions at a specific scope
 
-#### 1 - Define the principals
+##### 1 - Define the principals
 
 There are different method to find each type of prinicpal, each has a different variable. These are combined together into a single map in the module, so you can refer to them by their key in the role assignment variables. As such, you can use multiple variable for the same type of principal, as long as the keys are unique.
 
@@ -80,14 +122,14 @@ For a User Assigned Managed Identity principal you have the following options:
 - `user_assigned_managed_identities_by_client_id`: Find user assigned managed identities by their client id (application id).
 - `user_assigned_managed_identities_by_principal_id`: Find user assigned managed identities by their principal id of the underpinning Service Principal.
 
-#### 2 - Define the role definitions
+##### 2 - Define the role definitions
 
 You can use either built in or custom role definitions. There are two variables used to find role definitions:
 
 - `role_definitions`: Find Azure Resource Manager role definitions by their name.
 - `entra_id_role_definitions`: Find Entra ID role definitions by their name.
 
-#### 3 - Map the principals to the role definitions at a specific scope
+##### 3 - Map the principals to the role definitions at a specific scope
 
 There are several variables that can be used to map the principals to the role definitions at a specific scope:
 
@@ -98,7 +140,7 @@ There are several variables that can be used to map the principals to the role d
 - `role_assignments_for_resources`: Map principals to role definitions at the resource scope. This only works in the scope of the current subscription.
 - `role_assignments_for_scopes`: Map principals to role definitions at any scope. This is a catch all and you must supply the scope / resource id. This works cross-subscription.
 
-## Examples
+### Examples
 
 The following examples show common usage patterns:
 
@@ -110,7 +152,7 @@ The following examples show common usage patterns:
 - [Example - Assign a Group account Owner rights to a single Resource in a different subscription to the one Terraform is configured for](#example---assign-a-group-account-owner-rights-to-a-single-resource-in-a-different-subscription-to-the-one-terraform-is-configured-for)
 - [Example - Assign a User an Entra ID role](#example---assign-a-user-an-entra-id-role)
 
-### Simple Example - Assign a single User account Owner rights to a single Resource Group
+#### Simple Example - Assign a single User account Owner rights to a single Resource Group
 
 This example shows how to assign a single user principal to a resource group with a built in role definition. The comments in the example re-iterate the generic approach to using this module.
 
@@ -145,7 +187,7 @@ module "role_assignments" {
 
 > NOTE: Although this may seem like a lot of code for this seemingly simple task, it is important to note that we are referring to our user by their user principal name and we are referring to our role definition by its name. If you were to attempt this same task using the native `azurerm` resources and data sources, you would find that you require at least 3 data sources and 1 resource to achieve the same result.
 
-### Example - Assign multiple principals different roles on a resource group in a different subscription to the one Terraform is configured for
+#### Example - Assign multiple principals different roles on a resource group in a different subscription to the one Terraform is configured for
 
 This example demonstrates how to use different principal types and different roles to assign multiple principals to a resource group in a different subscription than the one the provider is configured for. The principal running Terraform would require User Access Administrator rights on the target resource group to be able to assign roles to principals in that subscription.
 
@@ -211,7 +253,7 @@ module "role_assignments" {
 }
 ```
 
-### Example - Assign multiple principals different roles on a resource group using the `any_principal` option
+#### Example - Assign multiple principals different roles on a resource group using the `any_principal` option
 
 This example demonstrates how to use different principal types and different roles to assign multiple principals to a resource group using the `any_principal` option. The `any_principal` variable is a convenience variable that allows you to add all your principals, regardless of type to the same set.
 
@@ -279,7 +321,7 @@ module "role_assignments" {
 
 >NOTE: You can mix and match the `any_principal` variable with the other principal variables. However, if you have a principal in the `any_principal` variable that is also in one of the other principal variables, the apply will fail since it will attempt to create the same role assignment twice.
 
-### Example - Assign multiple principals to management group, subscription and resource group
+#### Example - Assign multiple principals to management group, subscription and resource group
 
 This example demonstrates how to use different principal types and different roles to assign multiple principals to a management group, subscription and resource group in the same module call. The principal running Terraform would require User Access Administrator rights on the target management group, subscription and resource group.
 
@@ -349,7 +391,7 @@ module "role_assignments" {
 }
 ```
 
-### Example - Assign a Group account Contributor rights to a single Resource
+#### Example - Assign a Group account Contributor rights to a single Resource
 
 In this example we use the convenience variable `role_assignments_for_resources` to find the scope of a resource. You must supply the `resource_name` and `resource_group_name` in order for the module to lookup the scope for you.
 
@@ -379,7 +421,7 @@ module "role_assignments" {
 }
 ```
 
-### Example - Assign a Group account Owner rights to a single Resource in a different subscription to the one Terraform is configured for
+#### Example - Assign a Group account Owner rights to a single Resource in a different subscription to the one Terraform is configured for
 
 In this example we use the convenience variable `role_assignments_for_scopes` to assign a role to an individual resource in a different subscription to the one Terraform is configured for. The principal running Terraform would require User Access Administrator rights on the target resource.
 
@@ -408,7 +450,7 @@ module "role_assignments" {
 }
 ```
 
-### Example - Assign a User an Entra ID role
+#### Example - Assign a User an Entra ID role
 
 In this example we assign a User account a role in Entra ID.
 

@@ -58,6 +58,8 @@ module "role_assignments" {
     azurerm_management_group.test
   ]
 }
+
+data "azurerm_client_config" "current" {}
 ```
 
 <!-- markdownlint-disable MD033 -->
@@ -99,6 +101,7 @@ The following resources are used by this module:
 - [random_string.employee_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) (resource)
 - [time_sleep.before_service_principal_read_creation](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) (resource)
 - [azuread_service_principal.test](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) (data source)
+- [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
 - [azurerm_management_group.test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/management_group) (data source)
 
 <!-- markdownlint-disable MD013 -->
