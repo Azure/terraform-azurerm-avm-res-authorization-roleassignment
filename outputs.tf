@@ -14,8 +14,8 @@ output "entra_id_role_assignments" {
   description = <<DESCRIPTION
 A map of Entra ID role assignments. The key is the key you supplied and the value is the role assignment details:
 
-- role_definition_id: The role definition template id of the role assignment.
-- principal_id: The principal id (object id) of the user, group, service principal, or managed identity the role assignment is for.
+* `role_definition_id`: The role definition template id of the role assignment.
+* `principal_id`: The principal id (object id) of the user, group, service principal, or managed identity the role assignment is for.
 DESCRIPTION
   value       = local.entra_id_role_assignments
 }
@@ -30,13 +30,18 @@ output "groups" {
   value       = local.groups
 }
 
+output "resource_id" {
+  description = "This output is not used and is only here to satisfy the requirements of the module linting."
+  value       = null
+}
+
 output "role_assignments" {
   description = <<DESCRIPTION
 A map of Azure Resource Manager role assignments. The key is the key you supplied and the value is the role assignment details:
 
-- role_definition_id: The role definition id of the role assignment.
-- principal_id: The principal id (object id) of the user, group, service principal, or managed identity the role assignment is for.
-- scope: The scope of the role assignment.
+* `role_definition_id`: The role definition id of the role assignment.
+* `principal_id`: The principal id (object id) of the user, group, service principal, or managed identity the role assignment is for.
+* `scope`: The scope of the role assignment.
 DESCRIPTION
   value       = local.role_assignments
 }

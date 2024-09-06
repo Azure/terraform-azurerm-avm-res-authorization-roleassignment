@@ -16,7 +16,7 @@ resource "azuread_directory_role_assignment" "this" {
 }
 
 resource "azurerm_role_assignment" "basic" {
-  for_each = var.role_assignments
+  for_each = var.role_assignments_azure_resource_manager
 
   principal_id                           = each.value.principal_id
   scope                                  = each.value.scope

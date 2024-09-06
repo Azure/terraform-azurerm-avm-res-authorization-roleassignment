@@ -1,21 +1,17 @@
 terraform {
   required_version = "~> 1.6"
   required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~> 3.7"
-    }
     azuread = {
       source  = "hashicorp/azuread"
       version = "~> 2.46"
     }
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 3.7"
+    }
     random = {
       source  = "hashicorp/random"
       version = "~> 3.5"
-    }
-    time = {
-      source  = "hashicorp/time"
-      version = "~> 0.7"
     }
   }
 }
@@ -95,7 +91,7 @@ module "role_assignments" {
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
   enable_telemetry = false
 
-  role_assignments = {
+  role_assignments_azure_resource_manager = {
     for key, value in local.users : key => {
       principal_id         = azuread_user.test[key].object_id
       role_definition_name = "Owner"

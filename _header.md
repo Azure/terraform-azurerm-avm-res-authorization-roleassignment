@@ -32,7 +32,7 @@ The module provides multiple helper variables to make it easier to find the prin
 
 The module provides 2 ways to create role assignments:
 
-1. Basic: This just uses the `role_assignments` and `role_assignments_entra_id` variable to create role assignments and you need to supply the principal id, scope and role definition data yourself.
+1. Basic: This just uses the `role_assignments_azure_resource_manager` and `role_assignments_entra_id` variable to create role assignments and you need to supply the principal id, scope and role definition data yourself.
 1. Advanced: This uses a set of variables to define the principals, role definitions and role assignments separately and then map them together to create the role assignments.
 
 ### Basic Usage
@@ -45,7 +45,7 @@ Here is an example to apply the Owner role to a user principal at the subscripti
 module "role_assignments" {
   source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
 
-  role_assignments = {
+  role_assignments_azure_resource_manager = {
     user1_owner = {
       principal_id         = "00000000-0000-0000-0000-000000000000"
       role_definition_name = "Owner"
@@ -58,7 +58,7 @@ module "role_assignments" {
 Here is an example to apply the Directory Reader role to a user principal at the Entra ID scope:
 
 ```hcl
-module "role_assignments_for_entra_id" {
+module "role_assignments" {
   source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
 
   role_assignments_entra_id = {
@@ -167,7 +167,9 @@ module "role_assignments" {
 
   # 2 - Define the role definition(s)
   role_definitions = {
-    role1 = "Owner"
+    role1 = {
+      name = "Owner"
+    }
   }
 
   # 3 - Map the principal(s) to the role definition(s) at a specific scope(s)
@@ -223,9 +225,15 @@ module "role_assignments" {
   }
 
   role_definitions = {
-    owner       = "Owner"
-    contributor = "Contributor"
-    reader      = "Reader"
+    owner = {
+      name = "Owner"
+    }
+    contributor = {
+      name = "Contributor"
+    }
+    reader = {
+      name = "Reader"
+    }
   }
 
   role_assignments_for_resource_groups = {
@@ -291,9 +299,15 @@ module "role_assignments" {
   }
 
   role_definitions = {
-    owner       = "Owner"
-    contributor = "Contributor"
-    reader      = "Reader"
+    owner = {
+      name = "Owner"
+    }
+    contributor = {
+      name = "Contributor"
+    }
+    reader = {
+      name = "Reader"
+    }
   }
 
   role_assignments_for_resource_groups = {
@@ -347,9 +361,15 @@ module "role_assignments" {
   }
 
   role_definitions = {
-    owner       = "Owner"
-    contributor = "Contributor"
-    reader      = "Reader"
+    owner = {
+      name = "Owner"
+    }
+    contributor = {
+      name = "Contributor"
+    }
+    reader = {
+      name = "Reader"
+    }
   }
 
   role_assignnents_for_management_groups = {
@@ -404,7 +424,9 @@ module "role_assignments" {
     group1 = "my-group"
   }
   role_definitions = {
-    contributor = "Contributor"
+    contributor = {
+      name = "Contributor"
+    }
   }
   role_assignments_for_resources = {
     example1 = {
@@ -434,7 +456,9 @@ module "role_assignments" {
     group1 = "my-group"
   }
   role_definitions = {
-    owner = "Owner"
+    owner = {
+      name = "Owner"
+    }
   }
   role_assignments_for_scopes = {
     example1 = {
@@ -463,7 +487,9 @@ module "role_assignments" {
     abc = "abc@def.com"
   }
   entra_id_role_definitions = {
-    application-administrator = "Application Administrator"
+    application-administrator = {
+      display_name = "Application Administrator"
+    }
   }
   role_assignments_for_entra_id = {
     example1 = {

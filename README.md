@@ -33,7 +33,7 @@ The module provides multiple helper variables to make it easier to find the prin
 
 The module provides 2 ways to create role assignments:
 
-1. Basic: This just uses the `role_assignments` and `role_assignments_entra_id` variable to create role assignments and you need to supply the principal id, scope and role definition data yourself.
+1. Basic: This just uses the `role_assignments_azure_resource_manager` and `role_assignments_entra_id` variable to create role assignments and you need to supply the principal id, scope and role definition data yourself.
 1. Advanced: This uses a set of variables to define the principals, role definitions and role assignments separately and then map them together to create the role assignments.
 
 ### Basic Usage
@@ -46,7 +46,7 @@ Here is an example to apply the Owner role to a user principal at the subscripti
 module "role_assignments" {
   source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
 
-  role_assignments = {
+  role_assignments_azure_resource_manager = {
     user1_owner = {
       principal_id         = "00000000-0000-0000-0000-000000000000"
       role_definition_name = "Owner"
@@ -59,7 +59,7 @@ module "role_assignments" {
 Here is an example to apply the Directory Reader role to a user principal at the Entra ID scope:
 
 ```hcl
-module "role_assignments_for_entra_id" {
+module "role_assignments" {
   source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
 
   role_assignments_entra_id = {
@@ -168,7 +168,9 @@ module "role_assignments" {
 
   # 2 - Define the role definition(s)
   role_definitions = {
-    role1 = "Owner"
+    role1 = {
+      name = "Owner"
+    }
   }
 
   # 3 - Map the principal(s) to the role definition(s) at a specific scope(s)
@@ -224,9 +226,15 @@ module "role_assignments" {
   }
 
   role_definitions = {
-    owner       = "Owner"
-    contributor = "Contributor"
-    reader      = "Reader"
+    owner = {
+      name = "Owner"
+    }
+    contributor = {
+      name = "Contributor"
+    }
+    reader = {
+      name = "Reader"
+    }
   }
 
   role_assignments_for_resource_groups = {
@@ -292,9 +300,15 @@ module "role_assignments" {
   }
 
   role_definitions = {
-    owner       = "Owner"
-    contributor = "Contributor"
-    reader      = "Reader"
+    owner = {
+      name = "Owner"
+    }
+    contributor = {
+      name = "Contributor"
+    }
+    reader = {
+      name = "Reader"
+    }
   }
 
   role_assignments_for_resource_groups = {
@@ -348,9 +362,15 @@ module "role_assignments" {
   }
 
   role_definitions = {
-    owner       = "Owner"
-    contributor = "Contributor"
-    reader      = "Reader"
+    owner = {
+      name = "Owner"
+    }
+    contributor = {
+      name = "Contributor"
+    }
+    reader = {
+      name = "Reader"
+    }
   }
 
   role_assignnents_for_management_groups = {
@@ -405,7 +425,9 @@ module "role_assignments" {
     group1 = "my-group"
   }
   role_definitions = {
-    contributor = "Contributor"
+    contributor = {
+      name = "Contributor"
+    }
   }
   role_assignments_for_resources = {
     example1 = {
@@ -435,7 +457,9 @@ module "role_assignments" {
     group1 = "my-group"
   }
   role_definitions = {
-    owner = "Owner"
+    owner = {
+      name = "Owner"
+    }
   }
   role_assignments_for_scopes = {
     example1 = {
@@ -464,7 +488,9 @@ module "role_assignments" {
     abc = "abc@def.com"
   }
   entra_id_role_definitions = {
-    application-administrator = "Application Administrator"
+    application-administrator = {
+      display_name = "Application Administrator"
+    }
   }
   role_assignments_for_entra_id = {
     example1 = {
@@ -715,7 +741,7 @@ Type: `map(string)`
 
 Default: `{}`
 
-### <a name="input_role_assignments"></a> [role\_assignments](#input\_role\_assignments)
+### <a name="input_role_assignments_azure_resource_manager"></a> [role\_assignments\_azure\_resource\_manager](#input\_role\_assignments\_azure\_resource\_manager)
 
 Description: Basic Azure Resource Manager role assignments to create. This variable does not do any validation that principals or roles exist and you need to supply the principalID, scope, and roleDefinitionID or roleDefinitionName yourself.  
 The key is something unique to you. The value is a map of role assignment attributes.
@@ -1296,14 +1322,6 @@ Type: `map(string)`
 
 Default: `{}`
 
-### <a name="input_telemetry_resource_group_name"></a> [telemetry\_resource\_group\_name](#input\_telemetry\_resource\_group\_name)
-
-Description: The resource group where the telemetry will be deployed.
-
-Type: `string`
-
-Default: `""`
-
 ### <a name="input_user_assigned_managed_identities_by_client_id"></a> [user\_assigned\_managed\_identities\_by\_client\_id](#input\_user\_assigned\_managed\_identities\_by\_client\_id)
 
 Description: (Optional) A map of system assigned managed identities to reference in role assignments.  
@@ -1498,8 +1516,8 @@ Description: A map of Entra ID application registrations. The key is the key you
 
 Description: A map of Entra ID role assignments. The key is the key you supplied and the value is the role assignment details:
 
-- role\_definition\_id: The role definition template id of the role assignment.
-- principal\_id: The principal id (object id) of the user, group, service principal, or managed identity the role assignment is for.
+* `role_definition_id`: The role definition template id of the role assignment.
+* `principal_id`: The principal id (object id) of the user, group, service principal, or managed identity the role assignment is for.
 
 ### <a name="output_entra_id_role_definitions"></a> [entra\_id\_role\_definitions](#output\_entra\_id\_role\_definitions)
 
@@ -1509,13 +1527,17 @@ Description: A map of Entra ID role definitions. The key is the key you supplied
 
 Description: A map of Entra ID groups. The key is the key you supplied and the value is the principal id (object id) of the group.
 
+### <a name="output_resource_id"></a> [resource\_id](#output\_resource\_id)
+
+Description: This output is not used and is only here to satisfy the requirements of the module linting.
+
 ### <a name="output_role_assignments"></a> [role\_assignments](#output\_role\_assignments)
 
 Description: A map of Azure Resource Manager role assignments. The key is the key you supplied and the value is the role assignment details:
 
-- role\_definition\_id: The role definition id of the role assignment.
-- principal\_id: The principal id (object id) of the user, group, service principal, or managed identity the role assignment is for.
-- scope: The scope of the role assignment.
+* `role_definition_id`: The role definition id of the role assignment.
+* `principal_id`: The principal id (object id) of the user, group, service principal, or managed identity the role assignment is for.
+* `scope`: The scope of the role assignment.
 
 ### <a name="output_role_defintions"></a> [role\_defintions](#output\_role\_defintions)
 

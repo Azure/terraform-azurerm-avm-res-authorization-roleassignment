@@ -162,47 +162,47 @@ The following outputs are exported:
 
 ### <a name="output_all_principals"></a> [all\_principals](#output\_all\_principals)
 
-Description: n/a
+Description: All principals
 
 ### <a name="output_app_registrations"></a> [app\_registrations](#output\_app\_registrations)
 
-Description: n/a
+Description: Entra ID application registrations
 
 ### <a name="output_entra_id_role_assignments"></a> [entra\_id\_role\_assignments](#output\_entra\_id\_role\_assignments)
 
-Description: n/a
+Description: Entra ID role assignments
 
 ### <a name="output_entra_id_role_definitions"></a> [entra\_id\_role\_definitions](#output\_entra\_id\_role\_definitions)
 
-Description: n/a
+Description: Entra ID role definitions
 
 ### <a name="output_groups"></a> [groups](#output\_groups)
 
-Description: n/a
+Description: Entra ID groups
 
 ### <a name="output_role_assignments"></a> [role\_assignments](#output\_role\_assignments)
 
-Description: n/a
+Description: Azure Resource Manager role assignments
 
 ### <a name="output_role_defintions"></a> [role\_defintions](#output\_role\_defintions)
 
-Description: n/a
+Description: Azure Resource Manager role definitions
 
 ### <a name="output_system_assigned_managed_identities"></a> [system\_assigned\_managed\_identities](#output\_system\_assigned\_managed\_identities)
 
-Description: n/a
+Description: System assigned managed identities
 
 ### <a name="output_test_resource_ids"></a> [test\_resource\_ids](#output\_test\_resource\_ids)
 
-Description: n/a
+Description: Test resource ids
 
 ### <a name="output_user_assigned_managed_identities"></a> [user\_assigned\_managed\_identities](#output\_user\_assigned\_managed\_identities)
 
-Description: n/a
+Description: User assigned managed identities
 
 ### <a name="output_users"></a> [users](#output\_users)
 
-Description: n/a
+Description: Entra ID users
 
 ## Modules
 

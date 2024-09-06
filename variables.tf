@@ -1,4 +1,4 @@
-variable "role_assignments" {
+variable "role_assignments_azure_resource_manager" {
   type = map(object({
     role_definition_id                     = optional(string)
     role_definition_name                   = optional(string)

@@ -11,21 +11,17 @@ Having said that, there is one specific dependency on a custom role definition c
 terraform {
   required_version = "~> 1.6"
   required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~> 3.7"
-    }
     azuread = {
       source  = "hashicorp/azuread"
       version = "~> 2.46"
     }
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 3.7"
+    }
     random = {
       source  = "hashicorp/random"
       version = "~> 3.5"
-    }
-    time = {
-      source  = "hashicorp/time"
-      version = "~> 0.7"
     }
   }
 }
@@ -105,7 +101,7 @@ module "role_assignments" {
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
   enable_telemetry = false
 
-  role_assignments = {
+  role_assignments_azure_resource_manager = {
     for key, value in local.users : key => {
       principal_id         = azuread_user.test[key].object_id
       role_definition_name = "Owner"
@@ -134,8 +130,6 @@ The following requirements are needed by this module:
 - <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 3.7)
 
 - <a name="requirement_random"></a> [random](#requirement\_random) (~> 3.5)
-
-- <a name="requirement_time"></a> [time](#requirement\_time) (~> 0.7)
 
 ## Resources
 
