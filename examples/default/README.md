@@ -55,7 +55,8 @@ module "role_assignments" {
     azurerm_static_web_app.test,
     azurerm_user_assigned_identity.test,
     data.azuread_service_principal.test,
-    azurerm_management_group.test
+    azurerm_management_group.test,
+    time_sleep.after_management_group_creation
   ]
 }
 
@@ -99,6 +100,7 @@ The following resources are used by this module:
 - [random_pet.user_assigned_managed_identity](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)
 - [random_pet.username](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)
 - [random_string.employee_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) (resource)
+- [time_sleep.after_management_group_creation](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) (resource)
 - [time_sleep.before_service_principal_read_creation](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) (resource)
 - [azuread_service_principal.test](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) (data source)
 - [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)

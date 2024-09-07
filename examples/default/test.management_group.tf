@@ -14,6 +14,7 @@ resource "azurerm_management_group" "test" {
 }
 
 resource "time_sleep" "after_management_group_creation" {
-  create_duration  = "60s"
+  create_duration = "60s"
+
   depends_on = [azurerm_management_group.test]
 }
