@@ -5,7 +5,7 @@ resource "random_pet" "static_site" {
   separator = "-"
 }
 
-resource "azurerm_static_site" "test" {
+resource "azurerm_static_web_app" "test" {
   for_each = local.system_assigned_managed_identities
 
   location            = azurerm_resource_group.test.location
@@ -23,13 +23,13 @@ resource "time_sleep" "before_service_principal_read_creation" {
   create_duration  = "20s"
   destroy_duration = "10s"
 
-  depends_on = [azurerm_static_site.test]
+  depends_on = [azurerm_static_web_app.test]
 }
 
 data "azuread_service_principal" "test" {
   for_each = local.system_assigned_managed_identities
 
-  object_id = azurerm_static_site.test[each.key].identity[0].principal_id
+  object_id = azurerm_static_web_app.test[each.key].identity[0].principal_id
 
   depends_on = [time_sleep.before_service_principal_read_creation]
 }

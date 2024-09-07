@@ -52,12 +52,15 @@ module "role_assignments" {
     azuread_user.test,
     azuread_group.test,
     azuread_application.test,
-    azurerm_static_site.test,
+    azurerm_static_web_app.test,
     azurerm_user_assigned_identity.test,
     data.azuread_service_principal.test,
-    azurerm_management_group.test
+    azurerm_management_group.test,
+    time_sleep.after_management_group_creation
   ]
 }
+
+data "azurerm_client_config" "current" {}
 ```
 
 <!-- markdownlint-disable MD033 -->
@@ -75,20 +78,6 @@ The following requirements are needed by this module:
 
 - <a name="requirement_time"></a> [time](#requirement\_time) (~> 0.7)
 
-## Providers
-
-The following providers are used by this module:
-
-- <a name="provider_azuread"></a> [azuread](#provider\_azuread) (~> 2.46)
-
-- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (~> 3.7)
-
-- <a name="provider_azurerm.alternative"></a> [azurerm.alternative](#provider\_azurerm.alternative) (~> 3.7)
-
-- <a name="provider_random"></a> [random](#provider\_random) (~> 3.5)
-
-- <a name="provider_time"></a> [time](#provider\_time) (~> 0.7)
-
 ## Resources
 
 The following resources are used by this module:
@@ -100,7 +89,7 @@ The following resources are used by this module:
 - [azurerm_management_group.test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_group) (resource)
 - [azurerm_resource_group.alternative](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) (resource)
 - [azurerm_resource_group.test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) (resource)
-- [azurerm_static_site.test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/static_site) (resource)
+- [azurerm_static_web_app.test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/static_web_app) (resource)
 - [azurerm_user_assigned_identity.test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) (resource)
 - [random_password.password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) (resource)
 - [random_pet.app_registration_display_name](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)
@@ -111,8 +100,10 @@ The following resources are used by this module:
 - [random_pet.user_assigned_managed_identity](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)
 - [random_pet.username](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)
 - [random_string.employee_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) (resource)
+- [time_sleep.after_management_group_creation](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) (resource)
 - [time_sleep.before_service_principal_read_creation](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) (resource)
 - [azuread_service_principal.test](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) (data source)
+- [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
 - [azurerm_management_group.test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/management_group) (data source)
 
 <!-- markdownlint-disable MD013 -->
@@ -173,47 +164,47 @@ The following outputs are exported:
 
 ### <a name="output_all_principals"></a> [all\_principals](#output\_all\_principals)
 
-Description: n/a
+Description: All principals
 
 ### <a name="output_app_registrations"></a> [app\_registrations](#output\_app\_registrations)
 
-Description: n/a
+Description: Entra ID application registrations
 
 ### <a name="output_entra_id_role_assignments"></a> [entra\_id\_role\_assignments](#output\_entra\_id\_role\_assignments)
 
-Description: n/a
+Description: Entra ID role assignments
 
 ### <a name="output_entra_id_role_definitions"></a> [entra\_id\_role\_definitions](#output\_entra\_id\_role\_definitions)
 
-Description: n/a
+Description: Entra ID role definitions
 
 ### <a name="output_groups"></a> [groups](#output\_groups)
 
-Description: n/a
+Description: Entra ID groups
 
 ### <a name="output_role_assignments"></a> [role\_assignments](#output\_role\_assignments)
 
-Description: n/a
+Description: Azure Resource Manager role assignments
 
 ### <a name="output_role_defintions"></a> [role\_defintions](#output\_role\_defintions)
 
-Description: n/a
+Description: Azure Resource Manager role definitions
 
 ### <a name="output_system_assigned_managed_identities"></a> [system\_assigned\_managed\_identities](#output\_system\_assigned\_managed\_identities)
 
-Description: n/a
+Description: System assigned managed identities
 
 ### <a name="output_test_resource_ids"></a> [test\_resource\_ids](#output\_test\_resource\_ids)
 
-Description: n/a
+Description: Test resource ids
 
 ### <a name="output_user_assigned_managed_identities"></a> [user\_assigned\_managed\_identities](#output\_user\_assigned\_managed\_identities)
 
-Description: n/a
+Description: User assigned managed identities
 
 ### <a name="output_users"></a> [users](#output\_users)
 
-Description: n/a
+Description: Entra ID users
 
 ## Modules
 

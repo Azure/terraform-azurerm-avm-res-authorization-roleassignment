@@ -31,9 +31,51 @@ The module provides multiple helper variables to make it easier to find the prin
 
 ## Usage
 
-The module takes a mapping approach, where you define the principals and role definitions with keys, then map them together to define role assignments. This approach enables you to create role assignments at multiple scopes for multiple principals with multiple methods of finding the principal id.
+The module provides 2 ways to create role assignments:
 
-### Approach
+1. Basic: This just uses the `role_assignments_azure_resource_manager` and `role_assignments_entra_id` variable to create role assignments and you need to supply the principal id, scope and role definition data yourself.
+1. Advanced: This uses a set of variables to define the principals, role definitions and role assignments separately and then map them together to create the role assignments.
+
+### Basic Usage
+
+The basic usage is a simple way to create role assignments. You must supply the principal id, scope and role definition data yourself.
+
+Here is an example to apply the Owner role to a user principal at the subscription scope:
+
+```hcl
+module "role_assignments" {
+  source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
+
+  role_assignments_azure_resource_manager = {
+    user1_owner = {
+      principal_id         = "00000000-0000-0000-0000-000000000000"
+      role_definition_name = "Owner"
+      scope                = "/subscriptions/00000000-0000-0000-0000-000000000000"
+    }
+  }
+}
+```
+
+Here is an example to apply the Directory Reader role to a user principal at the Entra ID scope:
+
+```hcl
+module "role_assignments" {
+  source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
+
+  role_assignments_entra_id = {
+    user1_directory_reader = {
+      principal_object_id = "00000000-0000-0000-0000-000000000000"
+      role_id             = "00000000-0000-0000-0000-000000000000"
+    }
+  }
+}
+```
+
+### Advanced Usage
+
+The module takes a mapping approach for advanced usage, where you define the principals and role definitions with keys, then map them together to define role assignments. This approach enables you to create role assignments at multiple scopes for multiple principals with multiple methods of finding the principal id.
+
+#### Approach
 
 The following steps outline the approach to using this module:
 
@@ -41,7 +83,7 @@ The following steps outline the approach to using this module:
 2. Define the role definitions
 3. Map the principals to the role definitions at a specific scope
 
-#### 1 - Define the principals
+##### 1 - Define the principals
 
 There are different method to find each type of prinicpal, each has a different variable. These are combined together into a single map in the module, so you can refer to them by their key in the role assignment variables. As such, you can use multiple variable for the same type of principal, as long as the keys are unique.
 
@@ -81,14 +123,14 @@ For a User Assigned Managed Identity principal you have the following options:
 - `user_assigned_managed_identities_by_client_id`: Find user assigned managed identities by their client id (application id).
 - `user_assigned_managed_identities_by_principal_id`: Find user assigned managed identities by their principal id of the underpinning Service Principal.
 
-#### 2 - Define the role definitions
+##### 2 - Define the role definitions
 
 You can use either built in or custom role definitions. There are two variables used to find role definitions:
 
 - `role_definitions`: Find Azure Resource Manager role definitions by their name.
 - `entra_id_role_definitions`: Find Entra ID role definitions by their name.
 
-#### 3 - Map the principals to the role definitions at a specific scope
+##### 3 - Map the principals to the role definitions at a specific scope
 
 There are several variables that can be used to map the principals to the role definitions at a specific scope:
 
@@ -99,7 +141,7 @@ There are several variables that can be used to map the principals to the role d
 - `role_assignments_for_resources`: Map principals to role definitions at the resource scope. This only works in the scope of the current subscription.
 - `role_assignments_for_scopes`: Map principals to role definitions at any scope. This is a catch all and you must supply the scope / resource id. This works cross-subscription.
 
-## Examples
+### Examples
 
 The following examples show common usage patterns:
 
@@ -111,7 +153,7 @@ The following examples show common usage patterns:
 - [Example - Assign a Group account Owner rights to a single Resource in a different subscription to the one Terraform is configured for](#example---assign-a-group-account-owner-rights-to-a-single-resource-in-a-different-subscription-to-the-one-terraform-is-configured-for)
 - [Example - Assign a User an Entra ID role](#example---assign-a-user-an-entra-id-role)
 
-### Simple Example - Assign a single User account Owner rights to a single Resource Group
+#### Simple Example - Assign a single User account Owner rights to a single Resource Group
 
 This example shows how to assign a single user principal to a resource group with a built in role definition. The comments in the example re-iterate the generic approach to using this module.
 
@@ -126,7 +168,9 @@ module "role_assignments" {
 
   # 2 - Define the role definition(s)
   role_definitions = {
-    role1 = "Owner"
+    role1 = {
+      name = "Owner"
+    }
   }
 
   # 3 - Map the principal(s) to the role definition(s) at a specific scope(s)
@@ -146,7 +190,7 @@ module "role_assignments" {
 
 > NOTE: Although this may seem like a lot of code for this seemingly simple task, it is important to note that we are referring to our user by their user principal name and we are referring to our role definition by its name. If you were to attempt this same task using the native `azurerm` resources and data sources, you would find that you require at least 3 data sources and 1 resource to achieve the same result.
 
-### Example - Assign multiple principals different roles on a resource group in a different subscription to the one Terraform is configured for
+#### Example - Assign multiple principals different roles on a resource group in a different subscription to the one Terraform is configured for
 
 This example demonstrates how to use different principal types and different roles to assign multiple principals to a resource group in a different subscription than the one the provider is configured for. The principal running Terraform would require User Access Administrator rights on the target resource group to be able to assign roles to principals in that subscription.
 
@@ -182,9 +226,15 @@ module "role_assignments" {
   }
 
   role_definitions = {
-    owner       = "Owner"
-    contributor = "Contributor"
-    reader      = "Reader"
+    owner = {
+      name = "Owner"
+    }
+    contributor = {
+      name = "Contributor"
+    }
+    reader = {
+      name = "Reader"
+    }
   }
 
   role_assignments_for_resource_groups = {
@@ -212,7 +262,7 @@ module "role_assignments" {
 }
 ```
 
-### Example - Assign multiple principals different roles on a resource group using the `any_principal` option
+#### Example - Assign multiple principals different roles on a resource group using the `any_principal` option
 
 This example demonstrates how to use different principal types and different roles to assign multiple principals to a resource group using the `any_principal` option. The `any_principal` variable is a convenience variable that allows you to add all your principals, regardless of type to the same set.
 
@@ -250,9 +300,15 @@ module "role_assignments" {
   }
 
   role_definitions = {
-    owner       = "Owner"
-    contributor = "Contributor"
-    reader      = "Reader"
+    owner = {
+      name = "Owner"
+    }
+    contributor = {
+      name = "Contributor"
+    }
+    reader = {
+      name = "Reader"
+    }
   }
 
   role_assignments_for_resource_groups = {
@@ -280,7 +336,7 @@ module "role_assignments" {
 
 >NOTE: You can mix and match the `any_principal` variable with the other principal variables. However, if you have a principal in the `any_principal` variable that is also in one of the other principal variables, the apply will fail since it will attempt to create the same role assignment twice.
 
-### Example - Assign multiple principals to management group, subscription and resource group
+#### Example - Assign multiple principals to management group, subscription and resource group
 
 This example demonstrates how to use different principal types and different roles to assign multiple principals to a management group, subscription and resource group in the same module call. The principal running Terraform would require User Access Administrator rights on the target management group, subscription and resource group.
 
@@ -306,9 +362,15 @@ module "role_assignments" {
   }
 
   role_definitions = {
-    owner       = "Owner"
-    contributor = "Contributor"
-    reader      = "Reader"
+    owner = {
+      name = "Owner"
+    }
+    contributor = {
+      name = "Contributor"
+    }
+    reader = {
+      name = "Reader"
+    }
   }
 
   role_assignnents_for_management_groups = {
@@ -350,7 +412,7 @@ module "role_assignments" {
 }
 ```
 
-### Example - Assign a Group account Contributor rights to a single Resource
+#### Example - Assign a Group account Contributor rights to a single Resource
 
 In this example we use the convenience variable `role_assignments_for_resources` to find the scope of a resource. You must supply the `resource_name` and `resource_group_name` in order for the module to lookup the scope for you.
 
@@ -363,7 +425,9 @@ module "role_assignments" {
     group1 = "my-group"
   }
   role_definitions = {
-    contributor = "Contributor"
+    contributor = {
+      name = "Contributor"
+    }
   }
   role_assignments_for_resources = {
     example1 = {
@@ -380,7 +444,7 @@ module "role_assignments" {
 }
 ```
 
-### Example - Assign a Group account Owner rights to a single Resource in a different subscription to the one Terraform is configured for
+#### Example - Assign a Group account Owner rights to a single Resource in a different subscription to the one Terraform is configured for
 
 In this example we use the convenience variable `role_assignments_for_scopes` to assign a role to an individual resource in a different subscription to the one Terraform is configured for. The principal running Terraform would require User Access Administrator rights on the target resource.
 
@@ -393,7 +457,9 @@ module "role_assignments" {
     group1 = "my-group"
   }
   role_definitions = {
-    owner = "Owner"
+    owner = {
+      name = "Owner"
+    }
   }
   role_assignments_for_scopes = {
     example1 = {
@@ -409,7 +475,7 @@ module "role_assignments" {
 }
 ```
 
-### Example - Assign a User an Entra ID role
+#### Example - Assign a User an Entra ID role
 
 In this example we assign a User account a role in Entra ID.
 
@@ -422,7 +488,9 @@ module "role_assignments" {
     abc = "abc@def.com"
   }
   entra_id_role_definitions = {
-    application-administrator = "Application Administrator"
+    application-administrator = {
+      display_name = "Application Administrator"
+    }
   }
   role_assignments_for_entra_id = {
     example1 = {
@@ -448,27 +516,21 @@ The following requirements are needed by this module:
 
 - <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 3.71)
 
+- <a name="requirement_modtm"></a> [modtm](#requirement\_modtm) (~> 0.3)
+
 - <a name="requirement_random"></a> [random](#requirement\_random) (~> 3.5)
-
-## Providers
-
-The following providers are used by this module:
-
-- <a name="provider_azuread"></a> [azuread](#provider\_azuread) (~> 2.46)
-
-- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (~> 3.71)
-
-- <a name="provider_random"></a> [random](#provider\_random) (~> 3.5)
 
 ## Resources
 
 The following resources are used by this module:
 
 - [azuread_directory_role.entra_id_role_definitions_by_name](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/directory_role) (resource)
+- [azuread_directory_role_assignment.basic](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/directory_role_assignment) (resource)
 - [azuread_directory_role_assignment.this](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/directory_role_assignment) (resource)
-- [azurerm_resource_group_template_deployment.telemetry](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group_template_deployment) (resource)
+- [azurerm_role_assignment.basic](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) (resource)
 - [azurerm_role_assignment.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) (resource)
-- [random_id.telem](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) (resource)
+- [modtm_telemetry.telemetry](https://registry.terraform.io/providers/azure/modtm/latest/docs/resources/telemetry) (resource)
+- [random_uuid.telemetry](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/uuid) (resource)
 - [azuread_application.applications_by_client_id](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/application) (data source)
 - [azuread_application.applications_by_display_name](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/application) (data source)
 - [azuread_application.applications_by_object_id](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/application) (data source)
@@ -489,10 +551,12 @@ The following resources are used by this module:
 - [azuread_user.users_by_object_id](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/user) (data source)
 - [azuread_user.users_by_user_principal_name](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/user) (data source)
 - [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
+- [azurerm_client_config.telemetry](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
 - [azurerm_management_group.management_groups_by_id_or_display_name](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/management_group) (data source)
 - [azurerm_resources.resources_by_resource_group_and_name](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resources) (data source)
 - [azurerm_role_definition.role_definitions_by_name](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/role_definition) (data source)
 - [azurerm_user_assigned_identity.user_assigned_managed_identities_by_resource_group_and_name](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) (data source)
+- [modtm_module_source.telemetry](https://registry.terraform.io/providers/azure/modtm/latest/docs/data-sources/module_source) (data source)
 
 <!-- markdownlint-disable MD013 -->
 ## Required Inputs
@@ -590,16 +654,36 @@ Default: `true`
 Description: (Optional) A map of Entra ID role definitions to reference in role assignments.  
 The key is something unique to you. The value is a built in or custom role definition name.
 
+- `template_id` - (Optional) The template ID of the role definition.
+- `display_name` - (Optional) The display name of the role definition.
+
 Example Input:
 
 ```hcl
 entra_id_role_definitions = {
-  directory-writer     = "Directory Writer"
-  global-administrator = "Global Administrator"
+  directory-writer = {
+    display_name = "Directory Writer"
+  }
+  global-administrator = {
+    display_name = "Global Administrator"
+  }
+  custom_role_by_name = {
+    display_name = "Custom Role"
+  }
+  custom_role_by_id = {
+    template_id = "00000000-0000-0000-0000-000000000000"
+  }
 }
 ```
 
-Type: `map(string)`
+Type:
+
+```hcl
+map(object({
+    template_id  = optional(string)
+    display_name = optional(string)
+  }))
+```
 
 Default: `{}`
 
@@ -654,6 +738,61 @@ groups_by_object_id = {
 ```
 
 Type: `map(string)`
+
+Default: `{}`
+
+### <a name="input_role_assignments_azure_resource_manager"></a> [role\_assignments\_azure\_resource\_manager](#input\_role\_assignments\_azure\_resource\_manager)
+
+Description: Basic Azure Resource Manager role assignments to create. This variable does not do any validation that principals or roles exist and you need to supply the principalID, scope, and roleDefinitionID or roleDefinitionName yourself.  
+The key is something unique to you. The value is a map of role assignment attributes.
+
+- `role_definition_id` - (Optional) The ID of the role definition to assign.
+- `role_definition_name` - (Optional) The name of the role definition to assign.
+- `principal_type` - (Optional) The type of principal to assign the role to. Possible values are `User`, `Group`, `ServicePrincipal`, `SystemAssignedManagedIdentity`, `UserAssignedManagedIdentity`.
+- `principal_id` - The ID of the principal to assign the role to.
+- `scope` - The scope at which the role assignment applies.
+- `condition` - (Optional) The condition under which the role assignment is active.
+- `condition_version` - (Optional) The version of the condition.
+- `delegated_managed_identity_resource_id` - (Optional) The resource ID of the delegated managed identity.
+- `description` - (Optional) The description of the role assignment.
+
+Type:
+
+```hcl
+map(object({
+    role_definition_id                     = optional(string)
+    role_definition_name                   = optional(string)
+    principal_type                         = optional(string)
+    principal_id                           = string
+    scope                                  = string
+    condition                              = optional(string)
+    condition_version                      = optional(string)
+    delegated_managed_identity_resource_id = optional(string)
+    description                            = optional(string)
+  }))
+```
+
+Default: `{}`
+
+### <a name="input_role_assignments_entra_id"></a> [role\_assignments\_entra\_id](#input\_role\_assignments\_entra\_id)
+
+Description: Azure AD role assignments to create for Entra ID. This variable does not do any validation that principals or roles exist and you need to supply the principalObjectID and roleID yourself.
+
+- `app_scope_id` - (Optional) The scope ID of the app.
+- `directory_scope_id` - (Optional) The scope ID of the directory.
+- `principal_object_id` - The object ID of the principal to assign the role to.
+- `role_id` - The ID of the role to assign.
+
+Type:
+
+```hcl
+map(object({
+    app_scope_id        = optional(string)
+    directory_scope_id  = optional(string)
+    principal_object_id = string
+    role_id             = string
+  }))
+```
 
 Default: `{}`
 
@@ -1089,15 +1228,45 @@ Example Input:
 
 ```hcl
 role_definitions = {
-  owner       = "Owner"
-  contributor = "Contributor"
-  reader      = "Reader"
+  owner = {
+    name = "Owner"
+  }
+  contributor = {
+    name = "Contributor"
+  }
+  reader = {
+    name = "Reader"
+  }
+  custom_role_by_name = {
+    name  = "Custom Role"
+    scope = "/subscriptions/00000000-0000-0000-0000-000000000000"
+  }
+  custom_role_by_id = {
+    id = "00000000-0000-0000-0000-000000000000"
+  }
 }
 ```
 
-Type: `map(string)`
+Type:
+
+```hcl
+map(object({
+    id    = optional(string)
+    name  = optional(string)
+    scope = optional(string)
+  }))
+```
 
 Default: `{}`
+
+### <a name="input_skip_service_principal_aad_check"></a> [skip\_service\_principal\_aad\_check](#input\_skip\_service\_principal\_aad\_check)
+
+Description: (Optional) Skip the check for the service principal in Azure AD.  
+This is useful when the service principal is not yet created in Azure AD.
+
+Type: `bool`
+
+Default: `false`
 
 ### <a name="input_system_assigned_managed_identities_by_client_id"></a> [system\_assigned\_managed\_identities\_by\_client\_id](#input\_system\_assigned\_managed\_identities\_by\_client\_id)
 
@@ -1152,14 +1321,6 @@ system_assigned_managed_identities_by_principal_id = {
 Type: `map(string)`
 
 Default: `{}`
-
-### <a name="input_telemetry_resource_group_name"></a> [telemetry\_resource\_group\_name](#input\_telemetry\_resource\_group\_name)
-
-Description: The resource group where the telemetry will be deployed.
-
-Type: `string`
-
-Default: `""`
 
 ### <a name="input_user_assigned_managed_identities_by_client_id"></a> [user\_assigned\_managed\_identities\_by\_client\_id](#input\_user\_assigned\_managed\_identities\_by\_client\_id)
 
@@ -1355,8 +1516,8 @@ Description: A map of Entra ID application registrations. The key is the key you
 
 Description: A map of Entra ID role assignments. The key is the key you supplied and the value is the role assignment details:
 
-- role\_definition\_id: The role definition template id of the role assignment.
-- principal\_id: The principal id (object id) of the user, group, service principal, or managed identity the role assignment is for.
+* `role_definition_id`: The role definition template id of the role assignment.
+* `principal_id`: The principal id (object id) of the user, group, service principal, or managed identity the role assignment is for.
 
 ### <a name="output_entra_id_role_definitions"></a> [entra\_id\_role\_definitions](#output\_entra\_id\_role\_definitions)
 
@@ -1366,13 +1527,17 @@ Description: A map of Entra ID role definitions. The key is the key you supplied
 
 Description: A map of Entra ID groups. The key is the key you supplied and the value is the principal id (object id) of the group.
 
+### <a name="output_resource_id"></a> [resource\_id](#output\_resource\_id)
+
+Description: This output is not used and is only here to satisfy the requirements of the module linting.
+
 ### <a name="output_role_assignments"></a> [role\_assignments](#output\_role\_assignments)
 
 Description: A map of Azure Resource Manager role assignments. The key is the key you supplied and the value is the role assignment details:
 
-- role\_definition\_id: The role definition id of the role assignment.
-- principal\_id: The principal id (object id) of the user, group, service principal, or managed identity the role assignment is for.
-- scope: The scope of the role assignment.
+* `role_definition_id`: The role definition id of the role assignment.
+* `principal_id`: The principal id (object id) of the user, group, service principal, or managed identity the role assignment is for.
+* `scope`: The scope of the role assignment.
 
 ### <a name="output_role_defintions"></a> [role\_defintions](#output\_role\_defintions)
 

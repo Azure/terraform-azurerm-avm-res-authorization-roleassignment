@@ -42,9 +42,12 @@ module "role_assignments" {
     azuread_user.test,
     azuread_group.test,
     azuread_application.test,
-    azurerm_static_site.test,
+    azurerm_static_web_app.test,
     azurerm_user_assigned_identity.test,
     data.azuread_service_principal.test,
-    azurerm_management_group.test
+    azurerm_management_group.test,
+    time_sleep.after_management_group_creation
   ]
 }
+
+data "azurerm_client_config" "current" {}

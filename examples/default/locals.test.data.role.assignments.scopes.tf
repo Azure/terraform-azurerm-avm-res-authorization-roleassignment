@@ -27,7 +27,7 @@ locals {
       }
     },
     test3 = {
-      scope = azurerm_static_site.test[local.system_assigned_managed_identities.sami1].id
+      scope = azurerm_static_web_app.test[local.system_assigned_managed_identities.sami1].id
       role_assignments = {
         role_assignment1 = {
           role_definition                    = "role1"

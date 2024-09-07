@@ -12,3 +12,9 @@ resource "azurerm_management_group" "test" {
   name                       = "${local.module_name}-${random_pet.management_group_name.id}"
   parent_management_group_id = data.azurerm_management_group.test.id
 }
+
+resource "time_sleep" "after_management_group_creation" {
+  create_duration = "60s"
+
+  depends_on = [azurerm_management_group.test]
+}
