@@ -45,7 +45,8 @@ module "role_assignments" {
     azurerm_static_web_app.test,
     azurerm_user_assigned_identity.test,
     data.azuread_service_principal.test,
-    azurerm_management_group.test
+    azurerm_management_group.test,
+    time_sleep.after_management_group_creation
   ]
 }
 
