@@ -1,5 +1,6 @@
 <!-- BEGIN_TF_DOCS -->
-# Azure Authorization Role Assignment Module
+# Azure Authorization Role Assignment Module 
+# Testing vars
 
 This module is a convenience wrapper around the `azurerm_role_assignment` resource to make it easier to create role assignments at different scopes for different types of principals.
 
