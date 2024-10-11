@@ -45,5 +45,15 @@ locals {
         }
       }
     }
+    test2 = {
+      resource_group_name = azurerm_resource_group.test.name
+      resource_name       = azurerm_static_web_app.test[local.system_assigned_managed_identities.sami2].name
+      role_assignments = {
+        role_assignment1 = {
+          role_definition = "role3"
+          users           = [local.users.user5]
+        }
+      }
+    }
   }
 }
