@@ -1,5 +1,5 @@
 <!-- BEGIN_TF_DOCS -->
-# Default example
+# Basic example
 
 This is an end to end example demonstrating the full functionlality of the module.
 
