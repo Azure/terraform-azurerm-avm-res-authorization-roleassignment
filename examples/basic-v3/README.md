@@ -1,7 +1,7 @@
 <!-- BEGIN_TF_DOCS -->
-# Basic example
+# Basic v3 example
 
-This is an end to end example demonstrating the full functionlality of the module.
+This is an end to end example demonstrating the full functionlality of the module using the AzureRM provider version 3.7.
 
 Since this module requires specific account name, this example creates them dynamically so we can use it for end to end testing without any specific dependencies.
 
@@ -17,7 +17,7 @@ terraform {
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 3.7, < 5.0"
+      version = ">= 3.7, < 4.0"
     }
     random = {
       source  = "hashicorp/random"
@@ -127,7 +127,7 @@ The following requirements are needed by this module:
 
 - <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) (~> 2.46)
 
-- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (>= 3.7, < 5.0)
+- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (>= 3.7, < 4.0)
 
 - <a name="requirement_random"></a> [random](#requirement\_random) (~> 3.5)
 

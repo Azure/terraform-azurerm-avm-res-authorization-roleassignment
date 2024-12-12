@@ -514,7 +514,7 @@ The following requirements are needed by this module:
 
 - <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) (~> 2.46)
 
-- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 3.71)
+- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (>= 3.71, < 5.0)
 
 - <a name="requirement_modtm"></a> [modtm](#requirement\_modtm) (~> 0.3)
 
