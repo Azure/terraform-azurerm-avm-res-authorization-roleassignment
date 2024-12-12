@@ -1,6 +1,6 @@
-# Basic example
+# Basic v3 example
 
-This is an end to end example demonstrating the full functionlality of the module.
+This is an end to end example demonstrating the full functionlality of the module using the AzureRM provider version 3.7.
 
 Since this module requires specific account name, this example creates them dynamically so we can use it for end to end testing without any specific dependencies.
 
