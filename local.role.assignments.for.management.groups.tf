@@ -4,11 +4,12 @@ locals {
       for key, value in var.role_assignments_for_management_groups : [
         for assignment_key, assignment_value in value.role_assignments : [
           for any_principal in assignment_value.any_principals : {
-            key                = "managementgroup-any-${key}-${assignment_key}-${any_principal}"
-            role_definition_id = local.role_definitions[assignment_value.role_definition].id
-            principal_id       = local.all_principals[any_principal].principal_id
-            scope              = data.azurerm_management_group.management_groups_by_id_or_display_name[key].id
-            principal_type     = null
+            key                              = "managementgroup-any-${key}-${assignment_key}-${any_principal}"
+            role_definition_id               = local.role_definitions[assignment_value.role_definition].id
+            principal_id                     = local.all_principals[any_principal].principal_id
+            scope                            = data.azurerm_management_group.management_groups_by_id_or_display_name[key].id
+            principal_type                   = null
+            skip_service_principal_aad_check = false
           }
         ]
       ]
@@ -19,11 +20,12 @@ locals {
       for key, value in var.role_assignments_for_management_groups : [
         for assignment_key, assignment_value in value.role_assignments : [
           for app_registration in assignment_value.app_registrations : {
-            key                = "managementgroup-appregistration-${key}-${assignment_key}-${app_registration}"
-            role_definition_id = local.role_definitions[assignment_value.role_definition].id
-            principal_id       = local.app_registrations[app_registration]
-            scope              = data.azurerm_management_group.management_groups_by_id_or_display_name[key].id
-            principal_type     = local.principal_type.app_registration
+            key                              = "managementgroup-appregistration-${key}-${assignment_key}-${app_registration}"
+            role_definition_id               = local.role_definitions[assignment_value.role_definition].id
+            principal_id                     = local.app_registrations[app_registration]
+            scope                            = data.azurerm_management_group.management_groups_by_id_or_display_name[key].id
+            principal_type                   = local.principal_type.app_registration
+            skip_service_principal_aad_check = assignment_value.skip_service_principal_aad_check
           }
         ]
       ]
@@ -34,11 +36,12 @@ locals {
       for key, value in var.role_assignments_for_management_groups : [
         for assignment_key, assignment_value in value.role_assignments : [
           for group in assignment_value.groups : {
-            key                = "managementgroup-group-${key}-${assignment_key}-${group}"
-            role_definition_id = local.role_definitions[assignment_value.role_definition].id
-            principal_id       = local.groups[group]
-            scope              = data.azurerm_management_group.management_groups_by_id_or_display_name[key].id
-            principal_type     = local.principal_type.group
+            key                              = "managementgroup-group-${key}-${assignment_key}-${group}"
+            role_definition_id               = local.role_definitions[assignment_value.role_definition].id
+            principal_id                     = local.groups[group]
+            scope                            = data.azurerm_management_group.management_groups_by_id_or_display_name[key].id
+            principal_type                   = local.principal_type.group
+            skip_service_principal_aad_check = false
           }
         ]
       ]
@@ -49,11 +52,12 @@ locals {
       for key, value in var.role_assignments_for_management_groups : [
         for assignment_key, assignment_value in value.role_assignments : [
           for system_assigned_managed_identity in assignment_value.system_assigned_managed_identities : {
-            key                = "managementgroup-sami-${key}-${assignment_key}-${system_assigned_managed_identity}"
-            role_definition_id = local.role_definitions[assignment_value.role_definition].id
-            principal_id       = local.system_assigned_managed_identities[system_assigned_managed_identity]
-            scope              = data.azurerm_management_group.management_groups_by_id_or_display_name[key].id
-            principal_type     = local.principal_type.system_assigned_managed_identity
+            key                              = "managementgroup-sami-${key}-${assignment_key}-${system_assigned_managed_identity}"
+            role_definition_id               = local.role_definitions[assignment_value.role_definition].id
+            principal_id                     = local.system_assigned_managed_identities[system_assigned_managed_identity]
+            scope                            = data.azurerm_management_group.management_groups_by_id_or_display_name[key].id
+            principal_type                   = local.principal_type.system_assigned_managed_identity
+            skip_service_principal_aad_check = assignment_value.skip_service_principal_aad_check
           }
         ]
       ]
@@ -64,11 +68,12 @@ locals {
       for key, value in var.role_assignments_for_management_groups : [
         for assignment_key, assignment_value in value.role_assignments : [
           for user_assigned_managed_identity in assignment_value.user_assigned_managed_identities : {
-            key                = "managementgroup-uami-${key}-${assignment_key}-${user_assigned_managed_identity}"
-            role_definition_id = local.role_definitions[assignment_value.role_definition].id
-            principal_id       = local.user_assigned_managed_identities[user_assigned_managed_identity]
-            scope              = data.azurerm_management_group.management_groups_by_id_or_display_name[key].id
-            principal_type     = local.principal_type.user_assigned_managed_identity
+            key                              = "managementgroup-uami-${key}-${assignment_key}-${user_assigned_managed_identity}"
+            role_definition_id               = local.role_definitions[assignment_value.role_definition].id
+            principal_id                     = local.user_assigned_managed_identities[user_assigned_managed_identity]
+            scope                            = data.azurerm_management_group.management_groups_by_id_or_display_name[key].id
+            principal_type                   = local.principal_type.user_assigned_managed_identity
+            skip_service_principal_aad_check = assignment_value.skip_service_principal_aad_check
           }
         ]
       ]
@@ -79,11 +84,12 @@ locals {
       for key, value in var.role_assignments_for_management_groups : [
         for assignment_key, assignment_value in value.role_assignments : [
           for user in assignment_value.users : {
-            key                = "managementgroup-user-${key}-${assignment_key}-${user}"
-            role_definition_id = local.role_definitions[assignment_value.role_definition].id
-            principal_id       = local.users[user]
-            scope              = data.azurerm_management_group.management_groups_by_id_or_display_name[key].id
-            principal_type     = local.principal_type.user
+            key                              = "managementgroup-user-${key}-${assignment_key}-${user}"
+            role_definition_id               = local.role_definitions[assignment_value.role_definition].id
+            principal_id                     = local.users[user]
+            scope                            = data.azurerm_management_group.management_groups_by_id_or_display_name[key].id
+            principal_type                   = local.principal_type.user
+            skip_service_principal_aad_check = false
           }
         ]
       ]

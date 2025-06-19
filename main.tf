@@ -5,7 +5,7 @@ resource "azurerm_role_assignment" "this" {
   scope                            = each.value.scope
   principal_type                   = each.value.principal_type
   role_definition_id               = each.value.role_definition_id
-  skip_service_principal_aad_check = var.skip_service_principal_aad_check
+  skip_service_principal_aad_check = each.value.skip_service_principal_aad_check
 }
 
 resource "azuread_directory_role_assignment" "this" {
@@ -27,7 +27,7 @@ resource "azurerm_role_assignment" "basic" {
   principal_type                         = each.value.principal_type
   role_definition_id                     = each.value.role_definition_id
   role_definition_name                   = each.value.role_definition_name
-  skip_service_principal_aad_check       = var.skip_service_principal_aad_check
+  skip_service_principal_aad_check       = each.value.skip_service_principal_aad_check
 }
 
 resource "azuread_directory_role_assignment" "basic" {
