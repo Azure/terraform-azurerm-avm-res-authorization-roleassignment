@@ -9,6 +9,7 @@ variable "role_assignments_azure_resource_manager" {
     condition_version                      = optional(string)
     delegated_managed_identity_resource_id = optional(string)
     description                            = optional(string)
+    skip_service_principal_aad_check       = optional(bool, false)
   }))
   default     = {}
   description = <<DESCRIPTION
@@ -24,6 +25,7 @@ The key is something unique to you. The value is a map of role assignment attrib
 - `condition_version` - (Optional) The version of the condition.
 - `delegated_managed_identity_resource_id` - (Optional) The resource ID of the delegated managed identity.
 - `description` - (Optional) The description of the role assignment.
+- `skip_service_principal_aad_check` - (Optional) If set to true, the service principal AAD check is skipped. This is useful for role assignments where the Service Principal is newly created and not yet available in AAD. Defaults to `false`.
 DESCRIPTION
 }
 

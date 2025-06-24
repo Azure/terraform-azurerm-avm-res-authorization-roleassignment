@@ -17,9 +17,10 @@ locals {
             role_definition_id = (length(regexall(local.regex_scope_is_management_group, value.scope)) > 0 ?
               local.role_definitions[assignment_value.role_definition].id :
             format(local.scope_role_definition_format, split("/", value.scope)[2], local.role_definitions[assignment_value.role_definition].id))
-            principal_id   = local.all_principals[any_principal].principal_id
-            scope          = value.scope
-            principal_type = null
+            principal_id                     = local.all_principals[any_principal].principal_id
+            scope                            = value.scope
+            principal_type                   = null
+            skip_service_principal_aad_check = false
           }
         ]
       ]
@@ -34,9 +35,10 @@ locals {
             role_definition_id = (length(regexall(local.regex_scope_is_management_group, value.scope)) > 0 ?
               local.role_definitions[assignment_value.role_definition].id :
             format(local.scope_role_definition_format, split("/", value.scope)[2], local.role_definitions[assignment_value.role_definition].id))
-            principal_id   = local.app_registrations[app_registration]
-            scope          = value.scope
-            principal_type = local.principal_type.app_registration
+            principal_id                     = local.app_registrations[app_registration]
+            scope                            = value.scope
+            principal_type                   = local.principal_type.app_registration
+            skip_service_principal_aad_check = assignment_value.skip_service_principal_aad_check
           }
         ]
       ]
@@ -51,9 +53,10 @@ locals {
             role_definition_id = (length(regexall(local.regex_scope_is_management_group, value.scope)) > 0 ?
               local.role_definitions[assignment_value.role_definition].id :
             format(local.scope_role_definition_format, split("/", value.scope)[2], local.role_definitions[assignment_value.role_definition].id))
-            principal_id   = local.groups[group]
-            scope          = value.scope
-            principal_type = local.principal_type.group
+            principal_id                     = local.groups[group]
+            scope                            = value.scope
+            principal_type                   = local.principal_type.group
+            skip_service_principal_aad_check = false
           }
         ]
       ]
@@ -68,9 +71,10 @@ locals {
             role_definition_id = (length(regexall(local.regex_scope_is_management_group, value.scope)) > 0 ?
               local.role_definitions[assignment_value.role_definition].id :
             format(local.scope_role_definition_format, split("/", value.scope)[2], local.role_definitions[assignment_value.role_definition].id))
-            principal_id   = local.system_assigned_managed_identities[system_assigned_managed_identity]
-            scope          = value.scope
-            principal_type = local.principal_type.system_assigned_managed_identity
+            principal_id                     = local.system_assigned_managed_identities[system_assigned_managed_identity]
+            scope                            = value.scope
+            principal_type                   = local.principal_type.system_assigned_managed_identity
+            skip_service_principal_aad_check = assignment_value.skip_service_principal_aad_check
           }
         ]
       ]
@@ -85,9 +89,10 @@ locals {
             role_definition_id = (length(regexall(local.regex_scope_is_management_group, value.scope)) > 0 ?
               local.role_definitions[assignment_value.role_definition].id :
             format(local.scope_role_definition_format, split("/", value.scope)[2], local.role_definitions[assignment_value.role_definition].id))
-            principal_id   = local.user_assigned_managed_identities[user_assigned_managed_identity]
-            scope          = value.scope
-            principal_type = local.principal_type.user_assigned_managed_identity
+            principal_id                     = local.user_assigned_managed_identities[user_assigned_managed_identity]
+            scope                            = value.scope
+            principal_type                   = local.principal_type.user_assigned_managed_identity
+            skip_service_principal_aad_check = assignment_value.skip_service_principal_aad_check
           }
         ]
       ]
@@ -102,9 +107,10 @@ locals {
             role_definition_id = (length(regexall(local.regex_scope_is_management_group, value.scope)) > 0 ?
               local.role_definitions[assignment_value.role_definition].id :
             format(local.scope_role_definition_format, split("/", value.scope)[2], local.role_definitions[assignment_value.role_definition].id))
-            principal_id   = local.users[user]
-            scope          = value.scope
-            principal_type = local.principal_type.user
+            principal_id                     = local.users[user]
+            scope                            = value.scope
+            principal_type                   = local.principal_type.user
+            skip_service_principal_aad_check = false
           }
         ]
       ]
