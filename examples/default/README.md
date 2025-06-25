@@ -180,7 +180,7 @@ Description: Entra ID groups
 
 Description: Azure Resource Manager role assignments
 
-### <a name="output_role_defintions"></a> [role\_defintions](#output\_role\_defintions)
+### <a name="output_role_definitions"></a> [role\_definitions](#output\_role\_definitions)
 
 Description: Azure Resource Manager role definitions
 
