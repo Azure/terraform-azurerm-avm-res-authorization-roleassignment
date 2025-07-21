@@ -10,6 +10,7 @@ Having said that, there is one specific dependency on a custom role definition c
 ```hcl
 terraform {
   required_version = "~> 1.6"
+
   required_providers {
     azuread = {
       source  = "hashicorp/azuread"
@@ -28,15 +29,6 @@ terraform {
 
 provider "azurerm" {
   features {}
-}
-
-variable "spn_domain" {
-  type        = string
-  default     = "changeme.com"
-  description = <<DESCRIPTION
-The domain name that is post-fixed on the service principal name.
-This must be a valid domain registered in your Entra ID tenant.
-DESCRIPTION
 }
 
 locals {
@@ -98,9 +90,9 @@ data "azurerm_client_config" "current" {}
 
 module "role_assignments" {
   source = "../../"
+
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
   enable_telemetry = false
-
   role_assignments_azure_resource_manager = {
     for key, value in local.users : key => {
       principal_id         = azuread_user.test[key].object_id
@@ -108,7 +100,6 @@ module "role_assignments" {
       scope                = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
     }
   }
-
   role_assignments_entra_id = {
     for key, value in local.users : key => {
       principal_object_id = azuread_user.test[key].object_id

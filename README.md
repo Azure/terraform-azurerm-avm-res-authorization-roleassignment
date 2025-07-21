@@ -755,6 +755,7 @@ The key is something unique to you. The value is a map of role assignment attrib
 - `condition_version` - (Optional) The version of the condition.
 - `delegated_managed_identity_resource_id` - (Optional) The resource ID of the delegated managed identity.
 - `description` - (Optional) The description of the role assignment.
+- `skip_service_principal_aad_check` - (Optional) If set to true, the service principal AAD check is skipped. This is useful for role assignments where the Service Principal is newly created and not yet available in AAD. Defaults to `false`.
 
 Type:
 
@@ -769,6 +770,7 @@ map(object({
     condition_version                      = optional(string)
     delegated_managed_identity_resource_id = optional(string)
     description                            = optional(string)
+    skip_service_principal_aad_check       = optional(bool, false)
   }))
 ```
 
@@ -874,6 +876,7 @@ This is a convenience variable that avoids the need to find the resource id of t
   - system\_assigned\_managed\_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
   - user\_assigned\_managed\_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
   - any\_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
+  - skip\_service\_principal\_aad\_check: (Optional) If set to true, the service principal AAD check is skipped. This is useful for role assignments where the Service Principal is newly created and not yet available in AAD. Defaults to `false`.
 
 Example Input:
 
@@ -947,6 +950,7 @@ map(object({
       system_assigned_managed_identities = optional(set(string), [])
       user_assigned_managed_identities   = optional(set(string), [])
       any_principals                     = optional(set(string), [])
+      skip_service_principal_aad_check   = optional(bool, false)
     }))
   }))
 ```
@@ -969,6 +973,7 @@ This is a convenience variable that avoids the need to find the resource id of t
   - system\_assigned\_managed\_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
   - user\_assigned\_managed\_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
   - any\_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
+  - skip\_service\_principal\_aad\_check: (Optional) If set to true, the service principal AAD check is skipped. This is useful for role assignments where the Service Principal is newly created and not yet available in AAD. Defaults to `false`.
 
 Example Input:
 
@@ -1015,6 +1020,7 @@ map(object({
       system_assigned_managed_identities = optional(set(string), [])
       user_assigned_managed_identities   = optional(set(string), [])
       any_principals                     = optional(set(string), [])
+      skip_service_principal_aad_check   = optional(bool, false)
     }))
   }))
 ```
@@ -1036,6 +1042,7 @@ This variable only works with the current provider subscription. This is a conve
   - system\_assigned\_managed\_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
   - user\_assigned\_managed\_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
   - any\_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
+  - skip\_service\_principal\_aad\_check: (Optional) If set to true, the service principal AAD check is skipped. This is useful for role assignments where the Service Principal is newly created and not yet available in AAD. Defaults to `false`.
 
 Example Input:
 
@@ -1083,6 +1090,7 @@ map(object({
       system_assigned_managed_identities = optional(set(string), [])
       user_assigned_managed_identities   = optional(set(string), [])
       any_principals                     = optional(set(string), [])
+      skip_service_principal_aad_check   = optional(bool, false)
     }))
   }))
 ```
@@ -1102,6 +1110,7 @@ Description: (Optional) Role assignments to be applied to specific scope ids. Th
   - system\_assigned\_managed\_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
   - user\_assigned\_managed\_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
   - any\_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
+  - skip\_service\_principal\_aad\_check: (Optional) If set to true, the service principal AAD check is skipped. This is useful for role assignments where the Service Principal is newly created and not yet available in AAD. Defaults to `false`.
 
 Example Input:
 
@@ -1147,6 +1156,7 @@ map(object({
       system_assigned_managed_identities = optional(set(string), [])
       user_assigned_managed_identities   = optional(set(string), [])
       any_principals                     = optional(set(string), [])
+      skip_service_principal_aad_check   = optional(bool, false)
     }))
   }))
 ```
@@ -1168,6 +1178,7 @@ This is a convenience variable that avoids the need to find the resource id of t
   - system\_assigned\_managed\_identities: (Optional) The keys of the system assigned managed identities as defined in one of the `system_assigned_managed_identities_by_...` variables.
   - user\_assigned\_managed\_identities: (Optional) The keys of the user assigned managed identities as defined in one of the `user_assigned_managed_identities_by_...` variables.
   - any\_principals: (Optional) The keys of the principals as defined in any of the `[principal_type]_by_...` variables. This is a convenience method that can be used in combination with or instrad of the specific principal type options.
+  - skip\_service\_principal\_aad\_check: (Optional) If set to true, the service principal AAD check is skipped. This is useful for role assignments where the Service Principal is newly created and not yet available in AAD. Defaults to `false`.
 
 Example Input:
 
@@ -1213,6 +1224,7 @@ map(object({
       system_assigned_managed_identities = optional(set(string), [])
       user_assigned_managed_identities   = optional(set(string), [])
       any_principals                     = optional(set(string), [])
+      skip_service_principal_aad_check   = optional(bool, false)
     }))
   }))
 ```
@@ -1261,7 +1273,9 @@ Default: `{}`
 
 ### <a name="input_skip_service_principal_aad_check"></a> [skip\_service\_principal\_aad\_check](#input\_skip\_service\_principal\_aad\_check)
 
-Description: (Optional) Skip the check for the service principal in Azure AD.  
+Description: DEPRECATED: Please use the new `skip_service_principal_aad_check` variable inside of the different `role_assignments` blocks.
+
+(Optional) Skip the check for the service principal in Azure AD.  
 This is useful when the service principal is not yet created in Azure AD.
 
 Type: `bool`
