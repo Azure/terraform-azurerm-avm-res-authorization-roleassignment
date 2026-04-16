@@ -3,9 +3,14 @@ resource "azurerm_role_assignment" "this" {
 
   principal_id                     = each.value.principal_id
   scope                            = each.value.scope
+  name                             = uuidv5("url", "${each.value.scope}|${each.value.role_definition_id}|${each.value.principal_id}")
   principal_type                   = each.value.principal_type
   role_definition_id               = each.value.role_definition_id
   skip_service_principal_aad_check = each.value.skip_service_principal_aad_check
+
+  lifecycle {
+    ignore_changes = [name]
+  }
 }
 
 resource "azuread_directory_role_assignment" "this" {
@@ -24,10 +29,15 @@ resource "azurerm_role_assignment" "basic" {
   condition_version                      = each.value.condition_version
   delegated_managed_identity_resource_id = each.value.delegated_managed_identity_resource_id
   description                            = each.value.description
+  name                                   = uuidv5("url", "${each.value.scope}|${coalesce(each.value.role_definition_id, each.value.role_definition_name, "")}|${each.value.principal_id}")
   principal_type                         = each.value.principal_type
   role_definition_id                     = each.value.role_definition_id
   role_definition_name                   = each.value.role_definition_name
   skip_service_principal_aad_check       = each.value.skip_service_principal_aad_check
+
+  lifecycle {
+    ignore_changes = [name]
+  }
 }
 
 resource "azuread_directory_role_assignment" "basic" {
