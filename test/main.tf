@@ -39,7 +39,7 @@ resource "azurerm_user_assigned_identity" "test" {
 # Direct test of the deterministic-GUID pattern used in main.tf.
 # Bypasses the module to avoid pre-existing bugs in other locals.
 resource "azurerm_role_assignment" "test" {
-  name                 = uuidv5("url", "${azurerm_resource_group.test.id}|Reader|${azurerm_user_assigned_identity.test.principal_id}")
+  name                 = uuidv5("11fb06fb-712d-4ddd-98c7-e71bbd588830", "${azurerm_resource_group.test.id}-Reader-${azurerm_user_assigned_identity.test.principal_id}")
   scope                = azurerm_resource_group.test.id
   role_definition_name = "Reader"
   principal_id         = azurerm_user_assigned_identity.test.principal_id
