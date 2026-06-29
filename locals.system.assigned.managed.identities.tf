@@ -32,6 +32,3 @@ data "azuread_service_principal" "system_assigned_managed_identities_by_principa
 
   object_id = each.value
 }
-
-
-
