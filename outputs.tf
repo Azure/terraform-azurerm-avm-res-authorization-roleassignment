@@ -46,7 +46,7 @@ DESCRIPTION
   value       = local.role_assignments
 }
 
-output "role_defintions" {
+output "role_definitions" {
   description = "A map of Azure Resource Manager role definitions. The key is the key you supplied and the value consists of is the role definition id and the allowed scopes."
   value       = local.role_definitions
 }
