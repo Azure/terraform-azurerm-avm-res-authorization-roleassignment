@@ -6,7 +6,7 @@ module "role_assignments" {
   app_registrations_by_object_id    = local.app_registrations_by_object_id
   app_registrations_by_principal_id = local.app_registrations_by_principal_id
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
-  enable_telemetry                                            = var.enable_telemetry
+  enable_telemetry                                            = false
   entra_id_role_definitions                                   = local.entra_id_role_definitions
   groups_by_display_name                                      = local.groups_by_display_name
   groups_by_mail_nickname                                     = local.groups_by_mail_nickname
