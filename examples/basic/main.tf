@@ -82,7 +82,7 @@ module "role_assignments" {
   source = "../../"
 
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
-  enable_telemetry = false
+  enable_telemetry = var.enable_telemetry
   role_assignments_azure_resource_manager = {
     for key, value in local.users : key => {
       principal_id         = azuread_user.test[key].object_id
