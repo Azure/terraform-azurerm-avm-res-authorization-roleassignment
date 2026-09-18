@@ -93,7 +93,7 @@ module "role_assignments" {
   source = "../../"
 
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
-  enable_telemetry = false
+  enable_telemetry = var.enable_telemetry
   role_assignments_azure_resource_manager = {
     for key, value in local.users : key => {
       principal_id         = azuread_user.test[key].object_id
@@ -141,6 +141,16 @@ No required inputs.
 ## Optional Inputs
 
 The following input variables are optional (have default values):
+
+### <a name="input_enable_telemetry"></a> [enable\_telemetry](#input\_enable\_telemetry)
+
+Description: This variable controls whether or not telemetry is enabled for the module.  
+For more information see <https://aka.ms/avm/telemetryinfo>.  
+If it is set to false, then no telemetry will be collected.
+
+Type: `bool`
+
+Default: `false`
 
 ### <a name="input_spn_domain"></a> [spn\_domain](#input\_spn\_domain)
 

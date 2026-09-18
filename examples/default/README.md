@@ -17,7 +17,7 @@ module "role_assignments" {
   app_registrations_by_object_id    = local.app_registrations_by_object_id
   app_registrations_by_principal_id = local.app_registrations_by_principal_id
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
-  enable_telemetry                                            = false
+  enable_telemetry                                            = var.enable_telemetry
   entra_id_role_definitions                                   = local.entra_id_role_definitions
   groups_by_display_name                                      = local.groups_by_display_name
   groups_by_mail_nickname                                     = local.groups_by_mail_nickname
@@ -126,7 +126,7 @@ If it is set to false, then no telemetry will be collected.
 
 Type: `bool`
 
-Default: `true`
+Default: `false`
 
 ### <a name="input_include_custom_role_definition"></a> [include\_custom\_role\_definition](#input\_include\_custom\_role\_definition)
 
