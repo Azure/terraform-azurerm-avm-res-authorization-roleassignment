@@ -150,7 +150,7 @@ If it is set to false, then no telemetry will be collected.
 
 Type: `bool`
 
-Default: `false`
+Default: `true`
 
 ### <a name="input_spn_domain"></a> [spn\_domain](#input\_spn\_domain)
 
