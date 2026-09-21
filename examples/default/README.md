@@ -126,7 +126,7 @@ If it is set to false, then no telemetry will be collected.
 
 Type: `bool`
 
-Default: `false`
+Default: `true`
 
 ### <a name="input_include_custom_role_definition"></a> [include\_custom\_role\_definition](#input\_include\_custom\_role\_definition)
 
