@@ -18,12 +18,6 @@ data "azuread_service_principal" "user_assigned_managed_identities_by_client_id"
   client_id = each.value
 }
 
-data "azuread_service_principal" "user_assigned_managed_identities_by_principal_id" {
-  for_each = var.user_assigned_managed_identities_by_principal_id
-
-  object_id = each.value
-}
-
 locals {
   user_assigned_managed_identities_by_resource_group_and_name = {
     for key, value in data.azapi_resource_list.user_assigned_managed_identities_by_resource_group_and_name :
@@ -45,7 +39,7 @@ locals {
   user_assigned_managed_identities_by_display_name = { for key, value in data.azuread_service_principal.user_assigned_managed_identities_by_display_name :
     key => value.object_id
   }
-  user_assigned_managed_identities_by_principal_id = { for key, value in data.azuread_service_principal.user_assigned_managed_identities_by_principal_id :
-    key => value.object_id
+  user_assigned_managed_identities_by_principal_id = { for key, value in var.user_assigned_managed_identities_by_principal_id :
+    key => value
   }
 }

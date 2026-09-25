@@ -20,8 +20,8 @@ locals {
   service_principal_by_client_id = { for key, value in data.azuread_service_principal.service_principal_by_client_id :
     key => value.object_id
   }
-  service_principal_by_object_id = { for key, value in data.azuread_service_principal.service_principal_by_object_id :
-    key => value.object_id
+  service_principal_by_object_id = { for key, value in var.app_registrations_by_principal_id :
+    key => value
   }
 }
 
@@ -33,12 +33,6 @@ data "azuread_application" "applications_by_display_name" {
 
 data "azuread_application" "applications_by_object_id" {
   for_each = var.app_registrations_by_object_id
-
-  object_id = each.value
-}
-
-data "azuread_service_principal" "service_principal_by_object_id" {
-  for_each = var.app_registrations_by_principal_id
 
   object_id = each.value
 }
