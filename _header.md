@@ -1,12 +1,21 @@
 # Azure Authorization Role Assignment Module
 
-This module is a convenience wrapper around the `azurerm_role_assignment` resource to make it easier to create role assignments at different scopes for different types of principals.
+This module creates Azure role assignments with AzAPI for Azure Resource Manager scopes and continues to resolve Entra ID principals and directory roles with AzureAD.
 
-TLDR: Skip to our [Examples](#examples) section for common usage patterns.
+It supports role assignments at management group, subscription, resource group, and arbitrary scope levels, plus a basic mode for directly supplied role assignment definitions.
+
+This provider migration is breaking for existing AzureRM-managed role assignments because AzAPI requires explicit deterministic resource names.
+
+TL;DR: Skip to the [Examples](#examples) section for common usage patterns.
+
+## Examples
+
+- [`examples/basic`](examples/basic/) — a focused basic usage example for direct role assignments.
+- [`examples/default`](examples/default/) — the full end-to-end example used for testing.
 
 ## Features
 
-This module supports both built in and custom role definitions.
+This module supports both built-in and custom role definitions.
 
 This module can be used to create role assignments at the following scopes:
 
@@ -32,8 +41,8 @@ The module provides multiple helper variables to make it easier to find the prin
 
 The module provides 2 ways to create role assignments:
 
-1. Basic: This just uses the `role_assignments_azure_resource_manager` and `role_assignments_entra_id` variable to create role assignments and you need to supply the principal id, scope and role definition data yourself.
-1. Advanced: This uses a set of variables to define the principals, role definitions and role assignments separately and then map them together to create the role assignments.
+1. Basic: Use the `role_assignments_azure_resource_manager` and `role_assignments_for_entra_id` variables to create role assignments and supply the principal ID or principal object ID, scope, and role definition data yourself.
+1. Advanced: Use a set of variables to define the principals, role definitions, and role assignments separately and then map them together to create the role assignments.
 
 ### Basic Usage
 
@@ -47,9 +56,9 @@ module "role_assignments" {
 
   role_assignments_azure_resource_manager = {
     user1_owner = {
-      principal_id         = "00000000-0000-0000-0000-000000000000"
-      role_definition_name = "Owner"
-      scope                = "/subscriptions/00000000-0000-0000-0000-000000000000"
+      principal_id       = "00000000-0000-0000-0000-000000000000"
+      role_definition_id = "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
+      scope              = "/subscriptions/00000000-0000-0000-0000-000000000000"
     }
   }
 }
@@ -61,10 +70,20 @@ Here is an example to apply the Directory Reader role to a user principal at the
 module "role_assignments" {
   source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
 
-  role_assignments_entra_id = {
+  entra_id_role_definitions = {
+    directory-reader = {
+      display_name = "Directory Readers"
+    }
+  }
+
+  role_assignments_for_entra_id = {
     user1_directory_reader = {
-      principal_object_id = "00000000-0000-0000-0000-000000000000"
-      role_id             = "00000000-0000-0000-0000-000000000000"
+      role_assignments = {
+        directory_reader = {
+          role_definition     = "directory-reader"
+          principal_object_id = "00000000-0000-0000-0000-000000000000"
+        }
+      }
     }
   }
 }
@@ -84,7 +103,7 @@ The following steps outline the approach to using this module:
 
 ##### 1 - Define the principals
 
-There are different method to find each type of prinicpal, each has a different variable. These are combined together into a single map in the module, so you can refer to them by their key in the role assignment variables. As such, you can use multiple variable for the same type of principal, as long as the keys are unique.
+There are different methods to find each type of principal, and each has a different variable. These are combined together into a single map in the module, so you can refer to them by their key in the role assignment variables. As such, you can use multiple variables for the same type of principal, as long as the keys are unique.
 
 >NOTE: If the keys are not unique, then the principals will be merged based on the key in the precedence order of the variables shown here.
 

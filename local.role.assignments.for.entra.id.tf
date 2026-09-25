@@ -1,5 +1,18 @@
 locals {
+  role_assignments_for_entra_id_legacy = {
+    for key, value in var.role_assignments_entra_id :
+    key => {
+      role_assignments = {
+        legacy = {
+          role_definition     = value.role_id
+          principal_object_id = value.principal_object_id
+        }
+      }
+    }
+  }
   role_assignments_for_entra_id = merge(
+    local.role_assignments_for_entra_id_legacy,
+    local.role_assignments_for_entra_id_for_principal_object_ids,
     local.role_assignments_for_entra_id_for_users,
     local.role_assignments_for_entra_id_for_groups,
     local.role_assignments_for_entra_id_for_app_registrations,
@@ -7,6 +20,17 @@ locals {
     local.role_assignments_for_entra_id_for_user_assigned_managed_identities,
     local.role_assignments_for_entra_id_for_any
   )
+  role_assignments_for_entra_id_for_principal_object_ids = {
+    for flattened_role_assignments in flatten([
+      for key, value in var.role_assignments_for_entra_id : [
+        for assignment_key, assignment_value in value.role_assignments : assignment_value.principal_object_id == null ? [] : [{
+          key                = "entraid-principal-${key}-${assignment_key}"
+          role_definition_id = local.entra_id_role_definitions[assignment_value.role_definition].id
+          principal_id       = assignment_value.principal_object_id
+        }]
+      ]
+    ]) : flattened_role_assignments.key => flattened_role_assignments
+  }
   role_assignments_for_entra_id_for_any = {
     for flattened_role_assignments in flatten([
       for key, value in var.role_assignments_for_entra_id : [

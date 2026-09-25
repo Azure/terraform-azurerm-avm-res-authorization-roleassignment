@@ -26,7 +26,6 @@ locals {
       }
     }
   )
-  default_subscription_id = data.azurerm_client_config.current.subscription_id
   principal_type = {
     user                             = "User"
     group                            = "Group"

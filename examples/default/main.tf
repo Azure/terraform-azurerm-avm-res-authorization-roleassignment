@@ -6,12 +6,21 @@ module "role_assignments" {
   app_registrations_by_object_id    = local.app_registrations_by_object_id
   app_registrations_by_principal_id = local.app_registrations_by_principal_id
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
-  enable_telemetry                                            = var.enable_telemetry
-  entra_id_role_definitions                                   = local.entra_id_role_definitions
-  groups_by_display_name                                      = local.groups_by_display_name
-  groups_by_mail_nickname                                     = local.groups_by_mail_nickname
-  groups_by_object_id                                         = local.groups_by_object_id
-  role_assignments_for_entra_id                               = local.role_assignments_for_entra_id
+  enable_telemetry          = var.enable_telemetry
+  entra_id_role_definitions = local.entra_id_role_definitions
+  groups_by_display_name    = local.groups_by_display_name
+  groups_by_mail_nickname   = local.groups_by_mail_nickname
+  groups_by_object_id       = local.groups_by_object_id
+  role_assignments_for_entra_id = {
+    directory_reader = {
+      role_assignments = {
+        principal_1 = {
+          role_definition     = "role1"
+          principal_object_id = "00000000-0000-0000-0000-000000000001"
+        }
+      }
+    }
+  }
   role_assignments_for_management_groups                      = local.role_assignments_for_management_groups
   role_assignments_for_resource_groups                        = local.role_assignments_for_resource_groups
   role_assignments_for_resources                              = local.role_assignments_for_resources
@@ -36,12 +45,12 @@ module "role_assignments" {
     azuread_user.test,
     azuread_group.test,
     azuread_application.test,
-    azurerm_static_web_app.test,
-    azurerm_user_assigned_identity.test,
+    azapi_resource.static_web_app,
+    azapi_resource.user_assigned_identity,
     data.azuread_service_principal.test,
-    azurerm_management_group.test,
+    azapi_resource.management_group,
     time_sleep.after_management_group_creation
   ]
 }
 
-data "azurerm_client_config" "current" {}
+data "azapi_client_config" "current" {}
