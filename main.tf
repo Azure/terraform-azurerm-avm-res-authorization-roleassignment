@@ -1,5 +1,5 @@
 resource "azapi_resource" "this" {
-  for_each = local.role_assignments_all
+  for_each = local.role_assignments_all_normalized
 
   name      = uuidv5("00000000-0000-0000-0000-000000000000", "${each.value.scope}|${each.value.principal_id}|${each.value.role_definition_id}")
   parent_id = each.value.scope
