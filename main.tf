@@ -1,40 +1,51 @@
-resource "azurerm_role_assignment" "this" {
-  for_each = local.role_assignments
+resource "azapi_resource" "this" {
+  for_each = local.role_assignments_all
 
-  principal_id                     = each.value.principal_id
-  scope                            = each.value.scope
-  principal_type                   = each.value.principal_type
-  role_definition_id               = each.value.role_definition_id
-  skip_service_principal_aad_check = each.value.skip_service_principal_aad_check
+  name      = uuidv5("00000000-0000-0000-0000-000000000000", "${each.value.scope}|${each.value.principal_id}|${each.value.role_definition_id}")
+  parent_id = each.value.scope
+  type      = var.resource_types.authorization_role_assignments
+  body = {
+    properties = merge(
+      {
+        principalId      = each.value.principal_id
+        roleDefinitionId = each.value.role_definition_id
+      },
+      each.value.principal_type == null ? {} : {
+        principalType = each.value.principal_type
+      },
+      each.value.condition == null ? {} : {
+        condition = each.value.condition
+      },
+      each.value.condition_version == null ? {} : {
+        conditionVersion = each.value.condition_version
+      },
+      each.value.delegated_managed_identity_resource_id == null ? {} : {
+        delegatedManagedIdentityResourceId = each.value.delegated_managed_identity_resource_id
+      },
+      each.value.description == null ? {} : {
+        description = each.value.description
+      }
+    )
+  }
+  ignore_body_changes    = length(var.ignore_body_changes.authorization_role_assignments) > 0 ? var.ignore_body_changes.authorization_role_assignments : null
+  response_export_values = []
+  retry                  = var.retry
+
+  dynamic "timeouts" {
+    for_each = var.timeouts == null ? [] : [var.timeouts]
+
+    content {
+      create = timeouts.value.create
+      read   = timeouts.value.read
+      update = timeouts.value.update
+      delete = timeouts.value.delete
+    }
+  }
 }
 
 resource "azuread_directory_role_assignment" "this" {
-  for_each = local.entra_id_role_assignments
+  count = length(local.entra_id_role_assignments)
 
-  principal_object_id = each.value.principal_id
-  role_id             = each.value.role_definition_id
-}
-
-resource "azurerm_role_assignment" "basic" {
-  for_each = var.role_assignments_azure_resource_manager
-
-  principal_id                           = each.value.principal_id
-  scope                                  = each.value.scope
-  condition                              = each.value.condition
-  condition_version                      = each.value.condition_version
-  delegated_managed_identity_resource_id = each.value.delegated_managed_identity_resource_id
-  description                            = each.value.description
-  principal_type                         = each.value.principal_type
-  role_definition_id                     = each.value.role_definition_id
-  role_definition_name                   = each.value.role_definition_name
-  skip_service_principal_aad_check       = each.value.skip_service_principal_aad_check
-}
-
-resource "azuread_directory_role_assignment" "basic" {
-  for_each = var.role_assignments_entra_id
-
-  principal_object_id = each.value.principal_object_id
-  role_id             = each.value.role_id
-  app_scope_id        = each.value.app_scope_id
-  directory_scope_id  = each.value.directory_scope_id
+  principal_object_id = values(local.entra_id_role_assignments)[count.index].principal_id
+  role_id             = values(local.entra_id_role_assignments)[count.index].role_definition_id
 }

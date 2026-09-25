@@ -1,7 +1,7 @@
 locals {
   role_assignments_for_scopes = merge({
     test1 = {
-      scope = azurerm_management_group.test.id
+      scope = azapi_resource.management_group.id
       role_assignments = {
         role_assignment1 = {
           role_definition                    = "role1"
@@ -14,7 +14,7 @@ locals {
       }
     },
     test2 = {
-      scope = azurerm_resource_group.test.id
+      scope = azapi_resource.resource_group.id
       role_assignments = {
         role_assignment1 = {
           role_definition                    = "role1"
@@ -27,7 +27,7 @@ locals {
       }
     },
     test3 = {
-      scope = azurerm_static_web_app.test[local.system_assigned_managed_identities.sami1].id
+      scope = azapi_resource.static_web_app[local.system_assigned_managed_identities.sami1].id
       role_assignments = {
         role_assignment1 = {
           role_definition                    = "role1"

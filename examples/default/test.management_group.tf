@@ -3,18 +3,39 @@ resource "random_pet" "management_group_name" {
   separator = "-"
 }
 
-data "azurerm_management_group" "test" {
-  display_name = var.test_management_group_display_name
+data "azapi_resource_list" "test_management_groups" {
+  parent_id              = "/"
+  type                   = "Microsoft.Management/managementGroups@2023-04-01"
+  response_export_values = []
 }
 
-resource "azurerm_management_group" "test" {
-  display_name               = "${local.module_name}-${random_pet.management_group_name.id}"
-  name                       = "${local.module_name}-${random_pet.management_group_name.id}"
-  parent_management_group_id = data.azurerm_management_group.test.id
+resource "azapi_resource" "management_group" {
+  name = "${local.module_name}-${random_pet.management_group_name.id}"
+  parent_id = one([
+    for management_group in data.azapi_resource_list.test_management_groups.output :
+    management_group.id
+    if management_group.properties.displayName == var.test_management_group_display_name
+  ])
+  type = "Microsoft.Management/managementGroups@2023-04-01"
+  body = {
+    properties = {
+      displayName = "${local.module_name}-${random_pet.management_group_name.id}"
+      details = {
+        parent = {
+          id = one([
+            for management_group in data.azapi_resource_list.test_management_groups.output :
+            management_group.id
+            if management_group.properties.displayName == var.test_management_group_display_name
+          ])
+        }
+      }
+    }
+  }
+  response_export_values = []
 }
 
 resource "time_sleep" "after_management_group_creation" {
   create_duration = "300s"
 
-  depends_on = [azurerm_management_group.test]
+  depends_on = [azapi_resource.management_group]
 }

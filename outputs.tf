@@ -42,11 +42,13 @@ A map of Azure Resource Manager role assignments. The key is the key you supplie
 * `role_definition_id`: The role definition id of the role assignment.
 * `principal_id`: The principal id (object id) of the user, group, service principal, or managed identity the role assignment is for.
 * `scope`: The scope of the role assignment.
+
+Basic role assignments are surfaced with a `basic-` prefix on the key.
 DESCRIPTION
-  value       = local.role_assignments
+  value       = local.role_assignments_all
 }
 
-output "role_defintions" {
+output "role_definitions" {
   description = "A map of Azure Resource Manager role definitions. The key is the key you supplied and the value consists of is the role definition id and the allowed scopes."
   value       = local.role_definitions
 }

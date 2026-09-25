@@ -2,23 +2,19 @@ terraform {
   required_version = "~> 1.6"
 
   required_providers {
+    azapi = {
+      source  = "Azure/azapi"
+      version = "~> 2.12"
+    }
     azuread = {
       source  = "hashicorp/azuread"
       version = ">= 2.46, < 4.0"
-    }
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = ">= 3.7, < 5.0"
     }
     random = {
       source  = "hashicorp/random"
       version = "~> 3.5"
     }
   }
-}
-
-provider "azurerm" {
-  features {}
 }
 
 locals {
@@ -76,24 +72,33 @@ resource "azuread_user" "test" {
   password            = random_password.password[each.key].result
 }
 
-data "azurerm_client_config" "current" {}
+data "azapi_client_config" "current" {}
 
 module "role_assignments" {
   source = "../../"
 
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
   enable_telemetry = var.enable_telemetry
-  role_assignments_azure_resource_manager = {
-    for key, value in local.users : key => {
-      principal_id         = azuread_user.test[key].object_id
-      role_definition_name = "Owner"
-      scope                = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
+  entra_id_role_definitions = {
+    directory-reader = {
+      display_name = "Directory Readers"
     }
   }
-  role_assignments_entra_id = {
+  role_assignments_azure_resource_manager = {
     for key, value in local.users : key => {
-      principal_object_id = azuread_user.test[key].object_id
-      role_id             = "9b895d92-2cd3-44c7-9d02-a6ac2d5ea5c3"
+      principal_id       = azuread_user.test[key].object_id
+      role_definition_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
+      scope              = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+    }
+  }
+  role_assignments_for_entra_id = {
+    directory_reader = {
+      role_assignments = {
+        directory_reader = {
+          role_definition     = "directory-reader"
+          principal_object_id = "00000000-0000-0000-0000-000000000001"
+        }
+      }
     }
   }
 }

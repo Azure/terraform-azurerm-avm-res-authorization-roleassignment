@@ -9,4 +9,8 @@ locals {
     local.role_assignments_for_management_groups,
     local.role_assignments_for_scopes
   )
+  role_assignments_all = merge(
+    local.role_assignments,
+    local.role_assignments_azure_resource_manager_normalized
+  )
 }
