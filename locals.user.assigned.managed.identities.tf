@@ -44,6 +44,3 @@ data "azuread_service_principal" "user_assigned_managed_identities_by_principal_
 
   object_id = each.value
 }
-
-
-
