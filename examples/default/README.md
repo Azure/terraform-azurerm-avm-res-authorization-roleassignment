@@ -63,7 +63,7 @@ data "azurerm_client_config" "current" {}
 
 The following requirements are needed by this module:
 
-- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.10)
+- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.6)
 
 - <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) (>= 2.46, < 4.0)
 

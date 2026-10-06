@@ -10,7 +10,7 @@ Having said that, there is one specific dependency on a custom role definition c
 
 ```hcl
 terraform {
-  required_version = "~> 1.10"
+  required_version = "~> 1.6"
 
   required_providers {
     azuread = {
@@ -115,7 +115,7 @@ module "role_assignments" {
 
 The following requirements are needed by this module:
 
-- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.10)
+- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.6)
 
 - <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) (>= 2.46, < 4.0)
 
