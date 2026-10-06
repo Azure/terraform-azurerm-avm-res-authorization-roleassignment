@@ -10,7 +10,7 @@ Having said that, there is one specific dependency on a custom role definition c
 
 ```hcl
 terraform {
-  required_version = "~> 1.6"
+  required_version = "~> 1.10"
 
   required_providers {
     azuread = {
@@ -19,7 +19,7 @@ terraform {
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 3.7, < 5.0"
+      version = ">= 5.2, < 6.0"
     }
     random = {
       source  = "hashicorp/random"
@@ -115,11 +115,11 @@ module "role_assignments" {
 
 The following requirements are needed by this module:
 
-- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.6)
+- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.10)
 
 - <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) (>= 2.46, < 4.0)
 
-- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (>= 3.7, < 5.0)
+- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (>= 5.2, < 6.0)
 
 - <a name="requirement_random"></a> [random](#requirement\_random) (~> 3.5)
 
