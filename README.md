@@ -4,6 +4,8 @@
 
 This module is a convenience wrapper around the `azurerm_role_assignment` resource to make it easier to create role assignments at different scopes for different types of principals.
 
+This module requires AzureRM v4. Consumers using v3 must upgrade their provider configuration; role-assignment resource addresses are unchanged.
+
 TLDR: Skip to our [Examples](#examples) section for common usage patterns.
 
 ## Features
@@ -517,7 +519,7 @@ The following requirements are needed by this module:
 
 - <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) (>= 2.46, < 4.0)
 
-- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (>= 3.71, < 5.0)
+- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 4.0)
 
 - <a name="requirement_modtm"></a> [modtm](#requirement\_modtm) (~> 0.3)
 

@@ -8,9 +8,18 @@ Since this module requires specific account name, this example creates them dyna
 
 Having said that, there is one specific dependency on a custom role definition called `Example-Role` in this example. This is due to the very slow API response when creating role definitions, which makes it unsuitable for end to end testing.
 
+The parent management group defaults to the tenant root, identified by the tenant ID rather than its changeable display name. Set `test_management_group_display_name` to use a different existing management group. The deployment identity still needs access to that group; this example does not grant permissions.
+
 ```hcl
 module "role_assignments" {
   source = "../../"
+  providers = {
+    azapi   = azapi
+    azuread = azuread
+    azurerm = azurerm
+    modtm   = modtm
+    random  = random
+  }
 
   app_registrations_by_client_id    = local.app_registrations_by_client_id
   app_registrations_by_display_name = local.app_registrations_by_display_name
@@ -65,9 +74,13 @@ The following requirements are needed by this module:
 
 - <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.6)
 
+- <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) (~> 2.12)
+
 - <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) (>= 2.46, < 4.0)
 
-- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (>= 3.7, < 5.0)
+- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 4.0)
+
+- <a name="requirement_modtm"></a> [modtm](#requirement\_modtm) (~> 0.3)
 
 - <a name="requirement_random"></a> [random](#requirement\_random) (~> 3.5)
 
@@ -147,11 +160,11 @@ Default: `"changeme.com"`
 
 ### <a name="input_test_management_group_display_name"></a> [test\_management\_group\_display\_name](#input\_test\_management\_group\_display\_name)
 
-Description: The display name for the management group to test.
+Description: The display name for the management group to test. If null, use the tenant root management group by its immutable tenant ID.
 
 Type: `string`
 
-Default: `"Tenant Root Group"`
+Default: `null`
 
 ## Outputs
 
