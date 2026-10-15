@@ -40,3 +40,10 @@ variable "test_management_group_display_name" {
 The display name for the management group to test.
 DESCRIPTION
 }
+
+variable "location" {
+  type        = string
+  default     = "eastus"
+  description = "The Azure region for this module's resources or telemetry deployment."
+  nullable    = false
+}

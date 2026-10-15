@@ -81,6 +81,7 @@ data "azurerm_client_config" "current" {}
 module "role_assignments" {
   source = "../../"
 
+  location = var.location
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
   enable_telemetry = var.enable_telemetry
   role_assignments_azure_resource_manager = {
