@@ -5,6 +5,7 @@ resource "random_pet" "management_group_name" {
 
 data "azurerm_management_group" "test" {
   display_name = var.test_management_group_display_name
+  name         = var.test_management_group_display_name == null ? data.azurerm_client_config.current.tenant_id : null
 }
 
 resource "azurerm_management_group" "test" {
