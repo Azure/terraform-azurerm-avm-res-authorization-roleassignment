@@ -92,6 +92,7 @@ data "azurerm_client_config" "current" {}
 module "role_assignments" {
   source = "../../"
 
+  location = var.location
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
   enable_telemetry = var.enable_telemetry
   role_assignments_azure_resource_manager = {
@@ -151,6 +152,14 @@ If it is set to false, then no telemetry will be collected.
 Type: `bool`
 
 Default: `true`
+
+### <a name="input_location"></a> [location](#input\_location)
+
+Description: The Azure region for this module's resources or telemetry deployment.
+
+Type: `string`
+
+Default: `"eastus"`
 
 ### <a name="input_spn_domain"></a> [spn\_domain](#input\_spn\_domain)
 

@@ -12,6 +12,7 @@ Having said that, there is one specific dependency on a custom role definition c
 module "role_assignments" {
   source = "../../"
 
+  location                          = var.location
   app_registrations_by_client_id    = local.app_registrations_by_client_id
   app_registrations_by_display_name = local.app_registrations_by_display_name
   app_registrations_by_object_id    = local.app_registrations_by_object_id
@@ -135,6 +136,14 @@ Description: This variable is used to control whether the example tests a custom
 Type: `bool`
 
 Default: `true`
+
+### <a name="input_location"></a> [location](#input\_location)
+
+Description: The Azure region for this module's resources or telemetry deployment.
+
+Type: `string`
+
+Default: `"eastus"`
 
 ### <a name="input_spn_domain"></a> [spn\_domain](#input\_spn\_domain)
 

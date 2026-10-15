@@ -1,6 +1,7 @@
 module "role_assignments" {
   source = "../../"
 
+  location                          = var.location
   app_registrations_by_client_id    = local.app_registrations_by_client_id
   app_registrations_by_display_name = local.app_registrations_by_display_name
   app_registrations_by_object_id    = local.app_registrations_by_object_id
