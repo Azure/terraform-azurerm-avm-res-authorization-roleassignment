@@ -1,5 +1,12 @@
 module "role_assignments" {
   source = "../../"
+  providers = {
+    azapi   = azapi
+    azuread = azuread
+    azurerm = azurerm
+    modtm   = modtm
+    random  = random
+  }
 
   location                          = var.location
   app_registrations_by_client_id    = local.app_registrations_by_client_id
