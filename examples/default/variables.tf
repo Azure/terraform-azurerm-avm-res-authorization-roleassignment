@@ -24,6 +24,13 @@ This variable is used to control whether the example tests a custom role definit
 DESCRIPTION
 }
 
+variable "location" {
+  type        = string
+  default     = "eastus"
+  description = "The Azure region for this module's resources or telemetry deployment."
+  nullable    = false
+}
+
 variable "spn_domain" {
   type        = string
   default     = "changeme.com"
@@ -39,11 +46,4 @@ variable "test_management_group_display_name" {
   description = <<DESCRIPTION
 The display name for the management group to test.
 DESCRIPTION
-}
-
-variable "location" {
-  type        = string
-  default     = "eastus"
-  description = "The Azure region for this module's resources or telemetry deployment."
-  nullable    = false
 }
