@@ -92,9 +92,9 @@ data "azurerm_client_config" "current" {}
 module "role_assignments" {
   source = "../../"
 
-  location = var.location
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
   enable_telemetry = var.enable_telemetry
+  location         = var.location
   role_assignments_azure_resource_manager = {
     for key, value in local.users : key => {
       principal_id         = azuread_user.test[key].object_id
