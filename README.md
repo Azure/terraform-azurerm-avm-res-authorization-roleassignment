@@ -558,13 +558,7 @@ The following resources are used by this module:
 <!-- markdownlint-disable MD013 -->
 ## Required Inputs
 
-The following input variables are required:
-
-### <a name="input_location"></a> [location](#input\_location)
-
-Description: The Azure region for this module's resources or telemetry deployment.
-
-Type: `string`
+No required inputs.
 
 ## Optional Inputs
 
@@ -743,6 +737,14 @@ groups_by_object_id = {
 Type: `map(string)`
 
 Default: `{}`
+
+### <a name="input_location"></a> [location](#input\_location)
+
+Description: The Azure region for this module's resources or telemetry deployment.
+
+Type: `string`
+
+Default: `null`
 
 ### <a name="input_role_assignments_azure_resource_manager"></a> [role\_assignments\_azure\_resource\_manager](#input\_role\_assignments\_azure\_resource\_manager)
 

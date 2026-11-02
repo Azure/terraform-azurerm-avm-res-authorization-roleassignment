@@ -1,7 +1,6 @@
 module "role_assignments" {
   source = "../../"
 
-  location                          = var.location
   app_registrations_by_client_id    = local.app_registrations_by_client_id
   app_registrations_by_display_name = local.app_registrations_by_display_name
   app_registrations_by_object_id    = local.app_registrations_by_object_id
@@ -12,6 +11,7 @@ module "role_assignments" {
   groups_by_display_name                                      = local.groups_by_display_name
   groups_by_mail_nickname                                     = local.groups_by_mail_nickname
   groups_by_object_id                                         = local.groups_by_object_id
+  location                                                    = var.location
   role_assignments_for_entra_id                               = local.role_assignments_for_entra_id
   role_assignments_for_management_groups                      = local.role_assignments_for_management_groups
   role_assignments_for_resource_groups                        = local.role_assignments_for_resource_groups
