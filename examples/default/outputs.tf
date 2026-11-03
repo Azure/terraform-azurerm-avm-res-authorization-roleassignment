@@ -28,9 +28,9 @@ output "role_assignments" {
   value       = module.role_assignments.role_assignments
 }
 
-output "role_defintions" {
+output "role_definitions" {
   description = "Azure Resource Manager role definitions"
-  value       = module.role_assignments.role_defintions
+  value       = module.role_assignments.role_definitions
 }
 
 output "system_assigned_managed_identities" {
