@@ -38,6 +38,8 @@ resource "azurerm_user_assigned_identity" "test" {
 
 # Direct test of the deterministic-GUID pattern used in main.tf.
 # Bypasses the module to avoid pre-existing bugs in other locals.
+# The UUID is Bicep's guid() namespaceId:
+# https://learn.microsoft.com/azure/azure-resource-manager/bicep/bicep-functions-string#guid
 resource "azurerm_role_assignment" "test" {
   name                 = uuidv5("11fb06fb-712d-4ddd-98c7-e71bbd588830", join("-", [lower(azurerm_resource_group.test.id), lower(azurerm_user_assigned_identity.test.principal_id), "acdd72a7-3385-48ef-bd42-f606fba81ae7"]))
   scope                = azurerm_resource_group.test.id
