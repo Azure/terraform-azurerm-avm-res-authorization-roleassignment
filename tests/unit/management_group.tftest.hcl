@@ -54,7 +54,7 @@ run "renamed_tenant_root" {
   }
 
   plan_options {
-    target = [data.azurerm_client_config.current, azurerm_management_group.test]
+    target = [data.azurerm_client_config.current, azurerm_management_group.test, azurerm_resource_group.test, azurerm_static_web_app.test]
   }
 
   assert {
@@ -70,6 +70,11 @@ run "renamed_tenant_root" {
   assert {
     condition     = azurerm_management_group.test.parent_management_group_id == data.azurerm_management_group.test.id
     error_message = "The example management group must retain the selected parent."
+  }
+
+  assert {
+    condition     = output.test_resource_ids.subscription == "/subscriptions/00000000-0000-0000-0000-000000000002"
+    error_message = "Without an alternative subscription, the example output must use the active subscription."
   }
 }
 
@@ -91,6 +96,7 @@ run "explicit_management_group_display_name" {
   }
 
   variables {
+    alternative_subscription_id        = "00000000-0000-0000-0000-000000000003"
     test_management_group_display_name = "Existing test parent"
   }
 
@@ -103,7 +109,7 @@ run "explicit_management_group_display_name" {
   }
 
   plan_options {
-    target = [data.azurerm_client_config.current, azurerm_management_group.test]
+    target = [data.azurerm_client_config.current, azurerm_management_group.test, azurerm_resource_group.test, azurerm_static_web_app.test]
   }
 
   assert {
@@ -114,5 +120,10 @@ run "explicit_management_group_display_name" {
   assert {
     condition     = azurerm_management_group.test.parent_management_group_id == "/providers/Microsoft.Management/managementGroups/existing-test-parent"
     error_message = "An explicit parent must not be replaced by the tenant root."
+  }
+
+  assert {
+    condition     = output.test_resource_ids.subscription == "/subscriptions/00000000-0000-0000-0000-000000000003"
+    error_message = "An explicitly configured alternative subscription must remain in the example output."
   }
 }
