@@ -10,9 +10,14 @@ Having said that, there is one specific dependency on a custom role definition c
 
 ```hcl
 terraform {
-  required_version = "~> 1.6"
+  required_version = "~> 1.9"
 
   required_providers {
+    # tflint-ignore: terraform_unused_required_providers
+    azapi = {
+      source  = "Azure/azapi"
+      version = "~> 2.12"
+    }
     azuread = {
       source  = "hashicorp/azuread"
       version = ">= 2.46, < 4.0"
@@ -94,6 +99,7 @@ module "role_assignments" {
 
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
   enable_telemetry = var.enable_telemetry
+  location         = var.location
   role_assignments_azure_resource_manager = {
     for key, value in local.users : key => {
       principal_id         = azuread_user.test[key].object_id
@@ -115,7 +121,9 @@ module "role_assignments" {
 
 The following requirements are needed by this module:
 
-- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.6)
+- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.9)
+
+- <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) (~> 2.12)
 
 - <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) (>= 2.46, < 4.0)
 
@@ -151,6 +159,14 @@ If it is set to false, then no telemetry will be collected.
 Type: `bool`
 
 Default: `true`
+
+### <a name="input_location"></a> [location](#input\_location)
+
+Description: The Azure region for this module's resources or telemetry deployment.
+
+Type: `string`
+
+Default: `"eastus"`
 
 ### <a name="input_spn_domain"></a> [spn\_domain](#input\_spn\_domain)
 

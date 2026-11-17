@@ -1,7 +1,15 @@
-mock_provider "azapi" {}
+mock_provider "azapi" {
+  mock_data "azapi_client_config" {
+    defaults = {
+      subscription_resource_id = "/subscriptions/00000000-0000-0000-0000-000000000000"
+    }
+  }
+}
+
 mock_provider "azuread" {}
-mock_provider "modtm" {}
+
 mock_provider "random" {}
+
 mock_provider "time" {}
 
 mock_provider "azurerm" {
@@ -40,9 +48,9 @@ run "renamed_tenant_root" {
     azuread             = azuread
     azurerm             = azurerm
     azurerm.alternative = azurerm.alternative
-    modtm               = modtm
-    random              = random
-    time                = time
+
+    random = random
+    time   = time
   }
 
   plan_options {
@@ -77,9 +85,9 @@ run "explicit_management_group_display_name" {
     azuread             = azuread
     azurerm             = azurerm
     azurerm.alternative = azurerm.alternative
-    modtm               = modtm
-    random              = random
-    time                = time
+
+    random = random
+    time   = time
   }
 
   variables {

@@ -6,6 +6,23 @@ This module is a convenience wrapper around the `azurerm_role_assignment` resour
 
 This module requires AzureRM v4. Consumers using v3 must upgrade their provider configuration; role-assignment resource addresses are unchanged.
 
+## Telemetry upgrade
+
+Terraform 1.9 or later is required. Telemetry uses an empty subscription-scoped
+AzAPI deployment instead of the ModTM provider. When telemetry is enabled
+(the default), supply `location` and grant the deployment identity
+`Microsoft.Resources/deployments/read`, `write`, and `delete` at its active
+subscription scope. Set `enable_telemetry = false` to omit both the deployment
+and its telemetry-only location requirement.
+
+Existing ModTM and telemetry UUID state is forgotten with `destroy = false`.
+Keep the old providers available for the first initialization of existing state.
+Role-assignment resource addresses, generated names, scopes, principals, and role
+definitions are unchanged by this telemetry migration. Existing-state
+replacement behavior has not been validated; inspect your upgrade plan before
+applying. Enabled telemetry deliberately updates its empty deployment on each
+normal apply, including otherwise no-op applies.
+
 TLDR: Skip to our [Examples](#examples) section for common usage patterns.
 
 ## Features
@@ -513,7 +530,7 @@ module "role_assignments" {
 
 The following requirements are needed by this module:
 
-- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.6)
+- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.9)
 
 - <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) (~> 2.12)
 
@@ -521,21 +538,17 @@ The following requirements are needed by this module:
 
 - <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 4.0)
 
-- <a name="requirement_modtm"></a> [modtm](#requirement\_modtm) (~> 0.3)
-
-- <a name="requirement_random"></a> [random](#requirement\_random) (~> 3.5)
-
 ## Resources
 
 The following resources are used by this module:
 
+- [azapi_resource.telemetry](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) (resource)
 - [azuread_directory_role.entra_id_role_definitions_by_name](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/directory_role) (resource)
 - [azuread_directory_role_assignment.basic](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/directory_role_assignment) (resource)
 - [azuread_directory_role_assignment.this](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/directory_role_assignment) (resource)
 - [azurerm_role_assignment.basic](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) (resource)
 - [azurerm_role_assignment.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) (resource)
-- [modtm_telemetry.telemetry](https://registry.terraform.io/providers/azure/modtm/latest/docs/resources/telemetry) (resource)
-- [random_uuid.telemetry](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/uuid) (resource)
+- [terraform_data.telemetry](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) (resource)
 - [azapi_client_config.telemetry](https://registry.terraform.io/providers/Azure/azapi/latest/docs/data-sources/client_config) (data source)
 - [azuread_application.applications_by_display_name](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/application) (data source)
 - [azuread_application.applications_by_object_id](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/application) (data source)
@@ -560,7 +573,6 @@ The following resources are used by this module:
 - [azurerm_resources.resources_by_resource_group_and_name](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resources) (data source)
 - [azurerm_role_definition.role_definitions_by_name](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/role_definition) (data source)
 - [azurerm_user_assigned_identity.user_assigned_managed_identities_by_resource_group_and_name](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) (data source)
-- [modtm_module_source.telemetry](https://registry.terraform.io/providers/azure/modtm/latest/docs/data-sources/module_source) (data source)
 
 <!-- markdownlint-disable MD013 -->
 ## Required Inputs
@@ -744,6 +756,14 @@ groups_by_object_id = {
 Type: `map(string)`
 
 Default: `{}`
+
+### <a name="input_location"></a> [location](#input\_location)
+
+Description: The Azure region for this module's resources or telemetry deployment.
+
+Type: `string`
+
+Default: `null`
 
 ### <a name="input_role_assignments_azure_resource_manager"></a> [role\_assignments\_azure\_resource\_manager](#input\_role\_assignments\_azure\_resource\_manager)
 
