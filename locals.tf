@@ -26,6 +26,9 @@ locals {
       }
     }
   )
+  # The namespaceId Bicep/ARM guid() uses, so names match guid(scope, principalId, roleDefinitionId):
+  # https://learn.microsoft.com/azure/azure-resource-manager/bicep/bicep-functions-string#guid
+  bicep_guid_namespace    = "11fb06fb-712d-4ddd-98c7-e71bbd588830"
   default_subscription_id = data.azurerm_client_config.current.subscription_id
   principal_type = {
     user                             = "User"
