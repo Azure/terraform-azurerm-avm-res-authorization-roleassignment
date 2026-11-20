@@ -3,14 +3,14 @@ data "azapi_resource_list" "resources_by_resource_group_and_name" {
 
   parent_id              = "/subscriptions/${data.azapi_client_config.current.subscription_id}/resourceGroups/${each.value.resource_group_name}"
   type                   = "Microsoft.Resources/resources@2021-04-01"
-  response_export_values = []
+  response_export_values = ["value"]
 }
 
 locals {
   resource_ids_by_resource_group_and_name = {
     for key, value in data.azapi_resource_list.resources_by_resource_group_and_name :
     key => try([
-      for resource in value.output :
+      for resource in value.output.value :
       resource.id
       if resource.name == var.role_assignments_for_resources[key].resource_name
     ][0], null)

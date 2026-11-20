@@ -14,7 +14,7 @@ data "azapi_resource_list" "role_assignments_azure_resource_manager_role_definit
 
   parent_id              = local.role_assignments_azure_resource_manager_role_definition_parent_ids[each.key]
   type                   = "Microsoft.Authorization/roleDefinitions@2022-04-01"
-  response_export_values = []
+  response_export_values = ["value"]
 }
 
 locals {
@@ -28,7 +28,7 @@ locals {
       principal_id                           = value.principal_id
       principal_type                         = value.principal_type
       role_definition_id = value.role_definition_id != null ? value.role_definition_id : one([
-        for role_definition in data.azapi_resource_list.role_assignments_azure_resource_manager_role_definitions_by_name[key].output :
+        for role_definition in data.azapi_resource_list.role_assignments_azure_resource_manager_role_definitions_by_name[key].output.value :
         role_definition.id
         if try(role_definition.properties.roleName, role_definition.name, null) == value.role_definition_name
       ])

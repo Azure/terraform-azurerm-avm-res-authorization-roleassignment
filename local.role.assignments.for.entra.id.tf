@@ -2,12 +2,10 @@ locals {
   role_assignments_for_entra_id_legacy = {
     for key, value in var.role_assignments_entra_id :
     key => {
-      role_assignments = {
-        legacy = {
-          role_definition     = value.role_id
-          principal_object_id = value.principal_object_id
-        }
-      }
+      principal_id       = value.principal_object_id
+      role_definition_id = value.role_id
+      app_scope_id       = value.app_scope_id
+      directory_scope_id = value.directory_scope_id
     }
   }
   role_assignments_for_entra_id = merge(

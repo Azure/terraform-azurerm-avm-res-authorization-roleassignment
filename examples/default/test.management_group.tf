@@ -6,13 +6,13 @@ resource "random_pet" "management_group_name" {
 data "azapi_resource_list" "test_management_groups" {
   parent_id              = "/"
   type                   = "Microsoft.Management/managementGroups@2023-04-01"
-  response_export_values = []
+  response_export_values = ["value"]
 }
 
 resource "azapi_resource" "management_group" {
   name = "${local.module_name}-${random_pet.management_group_name.id}"
   parent_id = one([
-    for management_group in data.azapi_resource_list.test_management_groups.output :
+    for management_group in data.azapi_resource_list.test_management_groups.output.value :
     management_group.id
     if management_group.properties.displayName == var.test_management_group_display_name
   ])
@@ -23,7 +23,7 @@ resource "azapi_resource" "management_group" {
       details = {
         parent = {
           id = one([
-            for management_group in data.azapi_resource_list.test_management_groups.output :
+            for management_group in data.azapi_resource_list.test_management_groups.output.value :
             management_group.id
             if management_group.properties.displayName == var.test_management_group_display_name
           ])

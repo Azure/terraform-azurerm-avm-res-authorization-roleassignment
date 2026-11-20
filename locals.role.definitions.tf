@@ -14,7 +14,7 @@ data "azapi_resource_list" "role_definitions_by_name" {
 
   parent_id              = local.role_definition_parent_ids[each.key]
   type                   = "Microsoft.Authorization/roleDefinitions@2022-04-01"
-  response_export_values = []
+  response_export_values = ["value"]
 }
 
 resource "azuread_directory_role" "entra_id_role_definitions_by_name" {
@@ -29,14 +29,14 @@ locals {
     for key, value in var.role_definitions :
     key => {
       id = value.id != null ? "${local.role_definition_parent_ids[key]}/providers/Microsoft.Authorization/roleDefinitions/${value.id}" : one([
-        for role_definition in data.azapi_resource_list.role_definitions_by_name[key].output :
+        for role_definition in data.azapi_resource_list.role_definitions_by_name[key].output.value :
         role_definition.id
         if try(role_definition.properties.roleName, role_definition.name, null) == value.name
       ])
       scopes = value.id != null ? compact([
         value.scope
         ]) : one([
-        for role_definition in data.azapi_resource_list.role_definitions_by_name[key].output :
+        for role_definition in data.azapi_resource_list.role_definitions_by_name[key].output.value :
         try(role_definition.properties.assignableScopes, [])
         if try(role_definition.properties.roleName, role_definition.name, null) == value.name
       ])

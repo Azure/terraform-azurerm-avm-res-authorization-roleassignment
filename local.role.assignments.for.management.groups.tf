@@ -11,12 +11,12 @@ data "azapi_resource_list" "management_groups" {
 
   parent_id              = "/"
   type                   = "Microsoft.Management/managementGroups@2023-04-01"
-  response_export_values = []
+  response_export_values = ["value"]
 }
 
 locals {
   management_groups_by_display_name = length(data.azapi_resource_list.management_groups) == 0 ? {} : {
-    for management_group in one(data.azapi_resource_list.management_groups[*].output) :
+    for management_group in one(data.azapi_resource_list.management_groups[*].output).value :
     management_group.properties.displayName => management_group.id
   }
   management_groups = {

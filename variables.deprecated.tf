@@ -14,8 +14,8 @@ DEPRECATED: Please use `role_assignments_for_entra_id` instead.
 This variable is retained for backward compatibility and is translated into the
 `role_assignments_for_entra_id` input internally.
 
-- `app_scope_id` - (Optional) The scope ID of the app. This legacy field is ignored.
-- `directory_scope_id` - (Optional) The scope ID of the directory. This legacy field is ignored.
+- `app_scope_id` - (Optional) The scope ID of the app.
+- `directory_scope_id` - (Optional) The scope ID of the directory.
 - `principal_object_id` - The object ID of the principal to assign the role to.
 - `role_id` - The ID of the role to assign.
 DESCRIPTION

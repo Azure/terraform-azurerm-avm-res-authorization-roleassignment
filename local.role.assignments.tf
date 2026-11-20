@@ -13,8 +13,8 @@ locals {
     local.role_assignments,
     local.role_assignments_azure_resource_manager_normalized
   )
-  role_assignments_all_normalized = {
-    for key, value in local.role_assignments_all :
+  role_assignments_normalized = {
+    for key, value in local.role_assignments :
     key => merge(
       {
         condition                              = null

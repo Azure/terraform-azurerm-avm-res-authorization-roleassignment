@@ -3,7 +3,7 @@ data "azapi_resource_list" "user_assigned_managed_identities_by_resource_group_a
 
   parent_id              = "/subscriptions/${data.azapi_client_config.current.subscription_id}/resourceGroups/${each.value.resource_group_name}"
   type                   = "Microsoft.ManagedIdentity/userAssignedIdentities@2024-11-30"
-  response_export_values = []
+  response_export_values = ["value"]
 }
 
 data "azuread_service_principal" "user_assigned_managed_identities_by_display_name" {
@@ -22,7 +22,7 @@ locals {
   user_assigned_managed_identities_by_resource_group_and_name = {
     for key, value in data.azapi_resource_list.user_assigned_managed_identities_by_resource_group_and_name :
     key => one([
-      for identity in value.output :
+      for identity in value.output.value :
       try(identity.properties.principalId, null)
       if identity.name == var.user_assigned_managed_identities_by_resource_group_and_name[key].name
     ])
