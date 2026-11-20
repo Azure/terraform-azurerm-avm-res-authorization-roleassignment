@@ -1,8 +1,8 @@
 locals {
   role_assignments_for_resources = {
     test1 = {
-      resource_group_name = azurerm_resource_group.test.name
-      resource_name       = azurerm_static_web_app.test[local.system_assigned_managed_identities.sami1].name
+      resource_group_name = azapi_resource.resource_group.name
+      resource_name       = azapi_resource.static_web_app[local.system_assigned_managed_identities.sami1].name
       role_assignments = {
         role_assignment1 = {
           role_definition                    = "role1"
@@ -46,8 +46,8 @@ locals {
       }
     }
     test2 = {
-      resource_group_name = azurerm_resource_group.test.name
-      resource_name       = azurerm_static_web_app.test[local.system_assigned_managed_identities.sami2].name
+      resource_group_name = azapi_resource.resource_group.name
+      resource_name       = azapi_resource.static_web_app[local.system_assigned_managed_identities.sami2].name
       role_assignments = {
         role_assignment1 = {
           role_definition = "role3"

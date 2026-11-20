@@ -1,6 +1,6 @@
 # Basic example
 
-This is an end to end example demonstrating the full functionlality of the module.
+This is an end-to-end example demonstrating the full functionality of the module with AzAPI-backed Azure resources.
 
 Since this module requires specific account name, this example creates them dynamically so we can use it for end to end testing without any specific dependencies.
 

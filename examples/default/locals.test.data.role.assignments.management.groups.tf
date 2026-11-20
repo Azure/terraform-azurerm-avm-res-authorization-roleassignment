@@ -1,7 +1,7 @@
 locals {
   role_assignments_for_management_groups = {
     test1 = {
-      management_group_display_name = data.azurerm_management_group.test.display_name
+      management_group_display_name = var.test_management_group_display_name
       role_assignments = {
         role_assignment1 = {
           role_definition                    = "role1"
@@ -45,7 +45,7 @@ locals {
       }
     }
     test2 = {
-      management_group_id = azurerm_management_group.test.name
+      management_group_id = azapi_resource.management_group.name
       role_assignments = {
         role_assignment1 = {
           role_definition                    = "role1"
