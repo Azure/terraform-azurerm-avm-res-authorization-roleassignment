@@ -95,6 +95,7 @@ module "role_assignments" {
       display_name = "Directory Readers"
     }
   }
+  location = var.location
   role_assignments_azure_resource_manager = {
     for key, value in local.users : key => {
       principal_id       = azuread_user.test[key].object_id
@@ -156,6 +157,14 @@ If it is set to false, then no telemetry will be collected.
 Type: `bool`
 
 Default: `true`
+
+### <a name="input_location"></a> [location](#input\_location)
+
+Description: The Azure region for this module's resources or telemetry deployment.
+
+Type: `string`
+
+Default: `"eastus"`
 
 ### <a name="input_spn_domain"></a> [spn\_domain](#input\_spn\_domain)
 
