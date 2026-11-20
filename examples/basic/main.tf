@@ -84,6 +84,7 @@ module "role_assignments" {
       display_name = "Directory Readers"
     }
   }
+  location = var.location
   role_assignments_azure_resource_manager = {
     for key, value in local.users : key => {
       principal_id       = azuread_user.test[key].object_id
