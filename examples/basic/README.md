@@ -10,7 +10,7 @@ Having said that, there is one specific dependency on a custom role definition c
 
 ```hcl
 terraform {
-  required_version = "~> 1.9"
+  required_version = "~> 1.11"
 
   required_providers {
     # tflint-ignore: terraform_unused_required_providers
@@ -121,7 +121,7 @@ module "role_assignments" {
 
 The following requirements are needed by this module:
 
-- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.9)
+- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.11)
 
 - <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) (~> 2.12)
 

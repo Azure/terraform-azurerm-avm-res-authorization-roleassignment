@@ -6,7 +6,7 @@ This module requires AzureRM v4. Consumers using v3 must upgrade their provider 
 
 ## Telemetry upgrade
 
-Terraform 1.9 or later is required. Telemetry uses an empty subscription-scoped
+Terraform 1.11 or later is required. Telemetry uses an empty subscription-scoped
 AzAPI deployment instead of the ModTM provider. When telemetry is enabled
 (the default), supply `location` and grant the deployment identity
 `Microsoft.Resources/deployments/read`, `write`, and `delete` at its active

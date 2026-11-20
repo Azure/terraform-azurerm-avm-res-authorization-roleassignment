@@ -8,7 +8,7 @@ This module requires AzureRM v4. Consumers using v3 must upgrade their provider 
 
 ## Telemetry upgrade
 
-Terraform 1.9 or later is required. Telemetry uses an empty subscription-scoped
+Terraform 1.11 or later is required. Telemetry uses an empty subscription-scoped
 AzAPI deployment instead of the ModTM provider. When telemetry is enabled
 (the default), supply `location` and grant the deployment identity
 `Microsoft.Resources/deployments/read`, `write`, and `delete` at its active
@@ -530,7 +530,7 @@ module "role_assignments" {
 
 The following requirements are needed by this module:
 
-- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.9)
+- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.11)
 
 - <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) (~> 2.12)
 

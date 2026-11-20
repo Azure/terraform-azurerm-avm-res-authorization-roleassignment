@@ -32,6 +32,10 @@ mock_provider "azurerm" {
   alias = "alternative"
 }
 
+override_module {
+  target = module.role_assignments
+}
+
 variables {
   enable_telemetry = false
 }
