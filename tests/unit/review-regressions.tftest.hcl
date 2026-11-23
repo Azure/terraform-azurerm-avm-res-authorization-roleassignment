@@ -83,6 +83,21 @@ run "legacy_entra_alias_preserves_flattened_shape_and_scopes" {
   command = apply
 
   variables {
+    entra_id_role_definitions = {
+      reader = {
+        template_id = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+      }
+    }
+    role_assignments_for_entra_id = {
+      normal = {
+        role_assignments = {
+          reader = {
+            role_definition     = "reader"
+            principal_object_id = "55555555-5555-5555-5555-555555555555"
+          }
+        }
+      }
+    }
     role_assignments_entra_id = {
       legacy-app-reader = {
         app_scope_id        = "/app/legacy-app"
@@ -108,12 +123,17 @@ run "legacy_entra_alias_preserves_flattened_shape_and_scopes" {
   }
 
   assert {
-    condition     = azuread_directory_role_assignment.this["legacy-app-reader"].app_scope_id == "/app/legacy-app"
+    condition     = azuread_directory_role_assignment.basic["legacy-app-reader"].app_scope_id == "/app/legacy-app"
     error_message = "The legacy app scope should be passed to the directory role assignment."
   }
 
   assert {
-    condition     = azuread_directory_role_assignment.this["legacy-directory-reader"].directory_scope_id == "/administrativeUnits/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+    condition     = azuread_directory_role_assignment.basic["legacy-directory-reader"].directory_scope_id == "/administrativeUnits/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
     error_message = "The legacy directory scope should be passed to the directory role assignment."
+  }
+
+  assert {
+    condition     = contains(keys(azuread_directory_role_assignment.this), "entraid-principal-normal-reader") && !contains(keys(azuread_directory_role_assignment.this), "legacy-app-reader") && contains(keys(azuread_directory_role_assignment.basic), "legacy-app-reader")
+    error_message = "Regular and legacy Entra assignments must retain their separate state addresses."
   }
 }

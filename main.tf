@@ -8,11 +8,6 @@ moved {
   to   = azapi_resource.basic
 }
 
-moved {
-  from = azuread_directory_role_assignment.basic
-  to   = azuread_directory_role_assignment.this
-}
-
 resource "azapi_resource" "this" {
   for_each = local.role_assignments_normalized
 
@@ -112,10 +107,17 @@ resource "azapi_resource" "basic" {
 }
 
 resource "azuread_directory_role_assignment" "this" {
-  for_each = local.entra_id_role_assignments
+  for_each = local.role_assignments_for_entra_id_without_legacy
 
   principal_object_id = each.value.principal_id
   role_id             = each.value.role_definition_id
-  app_scope_id        = try(each.value.app_scope_id, null)
-  directory_scope_id  = try(each.value.directory_scope_id, null)
+}
+
+resource "azuread_directory_role_assignment" "basic" {
+  for_each = local.role_assignments_for_entra_id_legacy
+
+  principal_object_id = each.value.principal_id
+  role_id             = each.value.role_definition_id
+  app_scope_id        = each.value.app_scope_id
+  directory_scope_id  = each.value.directory_scope_id
 }

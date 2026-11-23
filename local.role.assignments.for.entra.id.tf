@@ -10,6 +10,9 @@ locals {
   }
   role_assignments_for_entra_id = merge(
     local.role_assignments_for_entra_id_legacy,
+    local.role_assignments_for_entra_id_without_legacy
+  )
+  role_assignments_for_entra_id_without_legacy = merge(
     local.role_assignments_for_entra_id_for_principal_object_ids,
     local.role_assignments_for_entra_id_for_users,
     local.role_assignments_for_entra_id_for_groups,
