@@ -37,7 +37,19 @@ resource "azapi_resource" "this" {
       }
     )
   }
-  ignore_body_changes    = length(var.ignore_body_changes.authorization_role_assignments) > 0 ? var.ignore_body_changes.authorization_role_assignments : null
+  ignore_body_changes = length(var.ignore_body_changes.authorization_role_assignments) > 0 ? var.ignore_body_changes.authorization_role_assignments : null
+  replace_triggers_external_values = [
+    each.value.principal_id,
+    each.value.role_definition_id,
+    each.value.principal_type,
+    each.value.delegated_managed_identity_resource_id,
+  ]
+  replace_triggers_refs = [
+    "properties.principalId",
+    "properties.roleDefinitionId",
+    "properties.principalType",
+    "properties.delegatedManagedIdentityResourceId",
+  ]
   response_export_values = []
   retry                  = var.retry
 
@@ -86,7 +98,19 @@ resource "azapi_resource" "basic" {
       }
     )
   }
-  ignore_body_changes    = length(var.ignore_body_changes.authorization_role_assignments) > 0 ? var.ignore_body_changes.authorization_role_assignments : null
+  ignore_body_changes = length(var.ignore_body_changes.authorization_role_assignments) > 0 ? var.ignore_body_changes.authorization_role_assignments : null
+  replace_triggers_external_values = [
+    each.value.principal_id,
+    local.role_assignments_azure_resource_manager_normalized["basic-${each.key}"].role_definition_id,
+    each.value.principal_type,
+    each.value.delegated_managed_identity_resource_id,
+  ]
+  replace_triggers_refs = [
+    "properties.principalId",
+    "properties.roleDefinitionId",
+    "properties.principalType",
+    "properties.delegatedManagedIdentityResourceId",
+  ]
   response_export_values = []
   retry                  = var.retry
 
