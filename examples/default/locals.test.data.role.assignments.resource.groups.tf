@@ -1,7 +1,7 @@
 locals {
   role_assignments_for_resource_groups = merge({
     test1 = {
-      resource_group_name = azurerm_resource_group.test.name
+      resource_group_name = azapi_resource.resource_group.name
       role_assignments = {
         role_assignment1 = {
           role_definition                    = "role1"
@@ -47,7 +47,7 @@ locals {
     },
     local.include_alternative_subscription ? {
       test2 = {
-        resource_group_name = azurerm_resource_group.alternative[0].name
+        resource_group_name = azapi_resource.alternative_resource_group[0].name
         subscription_id     = var.alternative_subscription_id
         role_assignments = {
           role_assignment1 = {

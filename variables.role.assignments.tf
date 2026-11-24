@@ -2,12 +2,13 @@ variable "role_assignments_for_entra_id" {
   type = map(object({
     role_assignments = map(object({
       role_definition                    = string
-      users                              = optional(set(string), [])
-      groups                             = optional(set(string), [])
-      app_registrations                  = optional(set(string), [])
-      system_assigned_managed_identities = optional(set(string), [])
-      user_assigned_managed_identities   = optional(set(string), [])
-      any_principals                     = optional(set(string), [])
+      principal_object_id                = optional(string)
+      users                              = optional(list(string), [])
+      groups                             = optional(list(string), [])
+      app_registrations                  = optional(list(string), [])
+      system_assigned_managed_identities = optional(list(string), [])
+      user_assigned_managed_identities   = optional(list(string), [])
+      any_principals                     = optional(list(string), [])
     }))
   }))
   default     = {}
@@ -18,6 +19,7 @@ This variable requires the `entra_id_role_definitions` variable to be populated.
 
 - role_assignments: (Required) The role assignments to be applied to the scope.
   - role_definition: (Required) The key of the role definition as defined in the `entra_id_role_definitions` variable.
+  - principal_object_id: (Optional) The object ID of the principal to assign the role to directly. Use this for simple assignments where you already know the Entra ID principal object ID.
   - users: (Optional) The keys of the users as defined in one of the `users_by_...` variables.
   - groups: (Optional) The keys of the groups as defined in one of the `groups_by_...` variables.
   - app_registrations: (Optional) The keys of the app registrations as defined in one of the `app_registrations_by_...` variables.
@@ -29,28 +31,36 @@ Example Input:
 
 ```hcl
 role_assignments_for_entra_id = {
-  role_assignments    = {
-    role_definition = "directory-writer"
-    users = [
-      "my-user-1",
-      "my-user-2"
-    ]
-    groups = [
-      "my-group-1",
-      "my-group-2"
-    ]
-    app_registrations = [
-      "my-app-1",
-      "my-app-2"
-    ]
-    system_assigned_managed_identities = [
-      "my-vm-1",
-      "my-vm-2"
-    ]
-    user_assigned_managed_identities = [
-      "my-user-assigned-managed-identity-1",
-      "my-user-assigned-managed-identity-2"
-    ]
+  directory_reader = {
+    role_assignments = {
+      principal_1 = {
+        role_definition    = "directory-reader"
+        principal_object_id = "00000000-0000-0000-0000-000000000000"
+      }
+      principal_2 = {
+        role_definition = "directory-reader"
+        users = [
+          "my-user-1",
+          "my-user-2"
+        ]
+        groups = [
+          "my-group-1",
+          "my-group-2"
+        ]
+        app_registrations = [
+          "my-app-1",
+          "my-app-2"
+        ]
+        system_assigned_managed_identities = [
+          "my-vm-1",
+          "my-vm-2"
+        ]
+        user_assigned_managed_identities = [
+          "my-user-assigned-managed-identity-1",
+          "my-user-assigned-managed-identity-2"
+        ]
+      }
+    }
   }
 }
 ```

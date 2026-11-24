@@ -28,9 +28,9 @@ output "role_assignments" {
   value       = module.role_assignments.role_assignments
 }
 
-output "role_defintions" {
+output "role_definitions" {
   description = "Azure Resource Manager role definitions"
-  value       = module.role_assignments.role_defintions
+  value       = module.role_assignments.role_definitions
 }
 
 output "system_assigned_managed_identities" {
@@ -41,10 +41,10 @@ output "system_assigned_managed_identities" {
 output "test_resource_ids" {
   description = "Test resource ids"
   value = {
-    management_group = azurerm_management_group.test.id
+    management_group = azapi_resource.management_group.id
     subscription     = "/subscriptions/${var.alternative_subscription_id}"
-    resource_group   = azurerm_resource_group.test.id
-    resource         = azurerm_static_web_app.test[local.system_assigned_managed_identities.sami1].id
+    resource_group   = azapi_resource.resource_group.id
+    resource         = azapi_resource.static_web_app[local.system_assigned_managed_identities.sami1].id
   }
 }
 

@@ -11,6 +11,6 @@ locals {
     role3 = { name = "Reader" }
     role4 = { name = var.include_custom_role_definition ? "Example-Role" : "User Access Administrator" } # Note the custom role `Example-Role` needs to be created manually on the Tenant Root Group MG as it takes too long to create one during the test.
     role5 = { id = "8e3af657-a8ff-443c-a75c-2fe8c4bcb635" }
-    role6 = { name = "Owner", scope = "/subscriptions/${data.azurerm_client_config.current.subscription_id}" }
+    role6 = { name = "Owner", scope = "/subscriptions/${data.azapi_client_config.current.subscription_id}" }
   }
 }

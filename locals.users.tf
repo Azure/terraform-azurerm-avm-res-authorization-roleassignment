@@ -15,8 +15,8 @@ locals {
   users_by_mail_nickname = { for key, value in data.azuread_user.users_by_mail_nickname :
     key => value.object_id
   }
-  users_by_object_id = { for key, value in data.azuread_user.users_by_object_id :
-    key => value.object_id
+  users_by_object_id = { for key, value in var.users_by_object_id :
+    key => value
   }
   users_by_user_principal_name = { for key, value in data.azuread_user.users_by_user_principal_name :
     key => value.object_id
@@ -45,10 +45,4 @@ data "azuread_user" "users_by_employee_id" {
   for_each = var.users_by_employee_id
 
   employee_id = each.value
-}
-
-data "azuread_user" "users_by_object_id" {
-  for_each = var.users_by_object_id
-
-  object_id = each.value
 }
