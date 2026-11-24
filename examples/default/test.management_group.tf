@@ -12,6 +12,8 @@ data "azapi_resource_list" "test_management_groups" {
 }
 
 locals {
+  # A string template is never null, even while random_pet is unknown, so the module can plan its display-name lookup.
+  test_management_group_name = "${local.module_name}-${random_pet.management_group_name.id}"
   # The tenant root's name is always the tenant ID. Build its ID directly because the test identity may not see the root in a management group list.
   test_parent_management_group_id = var.test_management_group_display_name == null ? "/providers/Microsoft.Management/managementGroups/${data.azapi_client_config.current.tenant_id}" : one([
     for management_group in one(data.azapi_resource_list.test_management_groups[*].output).value :
@@ -21,12 +23,12 @@ locals {
 }
 
 resource "azapi_resource" "management_group" {
-  name      = "${local.module_name}-${random_pet.management_group_name.id}"
+  name      = local.test_management_group_name
   parent_id = "/"
   type      = "Microsoft.Management/managementGroups@2023-04-01"
   body = {
     properties = {
-      displayName = "${local.module_name}-${random_pet.management_group_name.id}"
+      displayName = local.test_management_group_name
       details = {
         parent = {
           id = local.test_parent_management_group_id

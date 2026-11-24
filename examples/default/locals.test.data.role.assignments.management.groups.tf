@@ -2,7 +2,7 @@ locals {
   role_assignments_for_management_groups = {
     # Both entries target the test management group, so they use different roles or principals.
     test1 = {
-      management_group_display_name = azapi_resource.management_group.name
+      management_group_display_name = local.test_management_group_name
       role_assignments = {
         role_assignment1 = {
           role_definition                  = "role2"
