@@ -44,10 +44,10 @@ resource "azapi_resource" "this" {
     each.value.principal_type,
     each.value.delegated_managed_identity_resource_id,
   ]
+  # principalType is covered by replace_triggers_external_values instead. Azure always returns it, so comparing body paths after a moved block would replace assignments that never set it.
   replace_triggers_refs = [
     "properties.principalId",
     "properties.roleDefinitionId",
-    "properties.principalType",
     "properties.delegatedManagedIdentityResourceId",
   ]
   response_export_values = []
@@ -105,10 +105,10 @@ resource "azapi_resource" "basic" {
     each.value.principal_type,
     each.value.delegated_managed_identity_resource_id,
   ]
+  # principalType is covered by replace_triggers_external_values instead. Azure always returns it, so comparing body paths after a moved block would replace assignments that never set it.
   replace_triggers_refs = [
     "properties.principalId",
     "properties.roleDefinitionId",
-    "properties.principalType",
     "properties.delegatedManagedIdentityResourceId",
   ]
   response_export_values = []
