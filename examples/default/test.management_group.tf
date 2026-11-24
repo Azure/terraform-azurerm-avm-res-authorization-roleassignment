@@ -53,6 +53,10 @@ resource "azapi_resource" "management_group" {
     }
   }
   response_export_values = []
+  # Access to a new management group can take a few minutes to propagate.
+  retry = {
+    error_message_regex = ["AuthorizationFailed"]
+  }
 }
 
 resource "time_sleep" "after_management_group_creation" {

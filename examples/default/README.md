@@ -18,7 +18,13 @@ module "role_assignments" {
   app_registrations_by_client_id    = local.app_registrations_by_client_id
   app_registrations_by_principal_id = local.app_registrations_by_principal_id
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
-  enable_telemetry                                            = var.enable_telemetry
+  enable_telemetry = var.enable_telemetry
+  # Access to the new test management group can take a few minutes to propagate.
+  retry = {
+    error_message_regex  = ["AuthorizationFailed"]
+    interval_seconds     = 10
+    max_interval_seconds = 60
+  }
   role_assignments_for_management_groups                      = local.role_assignments_for_management_groups
   role_assignments_for_resource_groups                        = local.role_assignments_for_resource_groups
   role_assignments_for_resources                              = local.role_assignments_for_resources
