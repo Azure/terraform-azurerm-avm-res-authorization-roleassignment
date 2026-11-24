@@ -11,11 +11,27 @@ data "azapi_resource_list" "test_management_groups" {
   response_export_values = ["value"]
 }
 
+# Find the test subscription's parent management group. The test identity's access is inherited from there, not from the tenant root.
+data "azapi_resource_action" "subscription_management_groups" {
+  count = var.test_management_group_display_name == null ? 1 : 0
+
+  action      = "resources"
+  method      = "POST"
+  resource_id = "/providers/Microsoft.ResourceGraph"
+  type        = "Microsoft.ResourceGraph@2022-10-01"
+  body = {
+    subscriptions = [data.azapi_client_config.current.subscription_id]
+    query         = "resourcecontainers | where type == 'microsoft.resources/subscriptions' | project chain = properties.managementGroupAncestorsChain"
+  }
+  response_export_values = {
+    parent = "data[0].chain[0].name"
+  }
+}
+
 locals {
   # A string template is never null, even while random_pet is unknown, so the module can plan its display-name lookup.
   test_management_group_name = "${local.module_name}-${random_pet.management_group_name.id}"
-  # The tenant root's name is always the tenant ID. Build its ID directly because the test identity may not see the root in a management group list.
-  test_parent_management_group_id = var.test_management_group_display_name == null ? "/providers/Microsoft.Management/managementGroups/${data.azapi_client_config.current.tenant_id}" : one([
+  test_parent_management_group_id = var.test_management_group_display_name == null ? "/providers/Microsoft.Management/managementGroups/${one(data.azapi_resource_action.subscription_management_groups[*].output).parent}" : one([
     for management_group in one(data.azapi_resource_list.test_management_groups[*].output).value :
     management_group.id
     if management_group.properties.displayName == var.test_management_group_display_name

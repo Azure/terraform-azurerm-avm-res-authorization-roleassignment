@@ -6,11 +6,11 @@ locals {
     (local.system_assigned_managed_identities.sami6) = data.azuread_service_principal.test[local.system_assigned_managed_identities.sami6].client_id
   }
   system_assigned_managed_identities_by_display_name = {
-    (local.system_assigned_managed_identities.sami1) = azapi_resource.static_web_app[local.system_assigned_managed_identities.sami1].name
-    (local.system_assigned_managed_identities.sami2) = azapi_resource.static_web_app[local.system_assigned_managed_identities.sami2].name
+    (local.system_assigned_managed_identities.sami1) = azapi_resource.automation_account[local.system_assigned_managed_identities.sami1].name
+    (local.system_assigned_managed_identities.sami2) = azapi_resource.automation_account[local.system_assigned_managed_identities.sami2].name
   }
   system_assigned_managed_identities_by_principal_id = {
-    (local.system_assigned_managed_identities.sami1) = azapi_resource.static_web_app[local.system_assigned_managed_identities.sami1].output.identity.principalId
-    (local.system_assigned_managed_identities.sami3) = azapi_resource.static_web_app[local.system_assigned_managed_identities.sami3].output.identity.principalId
+    (local.system_assigned_managed_identities.sami1) = azapi_resource.automation_account[local.system_assigned_managed_identities.sami1].output.identity.principalId
+    (local.system_assigned_managed_identities.sami3) = azapi_resource.automation_account[local.system_assigned_managed_identities.sami3].output.identity.principalId
   }
 }

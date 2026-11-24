@@ -4,9 +4,9 @@
 
 This is an end-to-end example of the module's Azure Resource Manager role assignments at resource, resource group, subscription, management group, and arbitrary scopes.
 
-The principals are managed identities that the example creates through Azure Resource Manager, plus the identity running Terraform. The example creates no Entra ID users, groups, or app registrations, so it needs no Microsoft Graph write permissions. It also assigns only non-privileged roles, such as Contributor and Reader.
+The principals are the identity running Terraform plus managed identities that the example creates through Azure Resource Manager: system-assigned identities on Automation accounts, and user-assigned identities. The example creates no Entra ID users, groups, or app registrations, so it needs no Microsoft Graph write permissions. It also assigns only non-privileged roles, such as Contributor and Reader.
 
-The test management group's parent defaults to the tenant root management group, which is identified by the tenant ID. Set `test_management_group_display_name` to use a different existing management group.
+The test management group's parent defaults to the test subscription's parent management group, found through Azure Resource Graph. Set `test_management_group_display_name` to use a different existing management group.
 
 Set `include_custom_role_definition` to `true` to test a custom role definition called `Example-Role`. That role must already exist, because creating role definitions during the test is too slow.
 
@@ -34,7 +34,7 @@ module "role_assignments" {
   user_assigned_managed_identities_by_resource_group_and_name = local.user_assigned_managed_identities_by_resource_group_and_name
 
   depends_on = [
-    azapi_resource.static_web_app,
+    azapi_resource.automation_account,
     azapi_resource.user_assigned_identity,
     data.azuread_service_principal.test,
     azapi_resource.management_group,
@@ -65,17 +65,18 @@ The following requirements are needed by this module:
 The following resources are used by this module:
 
 - [azapi_resource.alternative_resource_group](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) (resource)
+- [azapi_resource.automation_account](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) (resource)
 - [azapi_resource.management_group](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) (resource)
 - [azapi_resource.resource_group](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) (resource)
-- [azapi_resource.static_web_app](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) (resource)
 - [azapi_resource.user_assigned_identity](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) (resource)
+- [random_pet.automation_account](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)
 - [random_pet.management_group_name](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)
 - [random_pet.resource_group_name](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)
-- [random_pet.static_site](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)
 - [random_pet.user_assigned_managed_identity](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)
 - [time_sleep.after_management_group_creation](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) (resource)
 - [time_sleep.before_service_principal_read_creation](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) (resource)
 - [azapi_client_config.current](https://registry.terraform.io/providers/Azure/azapi/latest/docs/data-sources/client_config) (data source)
+- [azapi_resource_action.subscription_management_groups](https://registry.terraform.io/providers/Azure/azapi/latest/docs/data-sources/resource_action) (data source)
 - [azapi_resource_list.test_management_groups](https://registry.terraform.io/providers/Azure/azapi/latest/docs/data-sources/resource_list) (data source)
 - [azuread_client_config.current](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/client_config) (data source)
 - [azuread_service_principal.test](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) (data source)
@@ -125,7 +126,7 @@ Default: `"eastus"`
 
 ### <a name="input_test_management_group_display_name"></a> [test\_management\_group\_display\_name](#input\_test\_management\_group\_display\_name)
 
-Description: The display name of an existing management group to use as the test parent. If null, the tenant root management group is found by its immutable name, the tenant ID.
+Description: The display name of an existing management group to use as the test parent. If null, the test subscription's parent management group is used.
 
 Type: `string`
 

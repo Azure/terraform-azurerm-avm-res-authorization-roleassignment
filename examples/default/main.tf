@@ -21,7 +21,7 @@ module "role_assignments" {
   user_assigned_managed_identities_by_resource_group_and_name = local.user_assigned_managed_identities_by_resource_group_and_name
 
   depends_on = [
-    azapi_resource.static_web_app,
+    azapi_resource.automation_account,
     azapi_resource.user_assigned_identity,
     data.azuread_service_principal.test,
     azapi_resource.management_group,

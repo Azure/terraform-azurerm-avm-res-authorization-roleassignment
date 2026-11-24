@@ -35,6 +35,6 @@ variable "test_management_group_display_name" {
   type        = string
   default     = null
   description = <<DESCRIPTION
-The display name of an existing management group to use as the test parent. If null, the tenant root management group is found by its immutable name, the tenant ID.
+The display name of an existing management group to use as the test parent. If null, the test subscription's parent management group is used.
 DESCRIPTION
 }

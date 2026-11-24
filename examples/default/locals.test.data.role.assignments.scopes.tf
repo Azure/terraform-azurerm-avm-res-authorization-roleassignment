@@ -21,7 +21,7 @@ locals {
       }
     },
     test3 = {
-      scope = azapi_resource.static_web_app[local.system_assigned_managed_identities.sami1].id
+      scope = azapi_resource.automation_account[local.system_assigned_managed_identities.sami1].id
       role_assignments = {
         role_assignment1 = {
           role_definition                    = "role1"
