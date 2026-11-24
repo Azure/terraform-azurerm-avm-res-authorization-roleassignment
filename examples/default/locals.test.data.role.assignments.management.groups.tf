@@ -1,7 +1,7 @@
 locals {
   role_assignments_for_management_groups = {
     test1 = {
-      management_group_display_name = var.test_management_group_display_name
+      management_group_display_name = local.test_parent_management_group.properties.displayName
       role_assignments = {
         role_assignment1 = {
           role_definition                    = "role1"

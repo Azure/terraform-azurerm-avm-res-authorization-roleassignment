@@ -165,11 +165,11 @@ Default: `"changeme.com"`
 
 ### <a name="input_test_management_group_display_name"></a> [test\_management\_group\_display\_name](#input\_test\_management\_group\_display\_name)
 
-Description: The display name for the management group to test.
+Description: The display name of an existing management group to use as the test parent. If null, the tenant root management group is found by its immutable name, the tenant ID.
 
 Type: `string`
 
-Default: `"Tenant Root Group"`
+Default: `null`
 
 ## Outputs
 
