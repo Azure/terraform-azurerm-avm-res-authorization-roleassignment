@@ -1,11 +1,11 @@
 module "role_assignments" {
   source = "../../"
 
+  location                          = var.location
   app_registrations_by_client_id    = local.app_registrations_by_client_id
   app_registrations_by_principal_id = local.app_registrations_by_principal_id
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
   enable_telemetry                                            = var.enable_telemetry
-  location                                                    = var.location
   role_assignments_for_management_groups                      = local.role_assignments_for_management_groups
   role_assignments_for_resource_groups                        = local.role_assignments_for_resource_groups
   role_assignments_for_resources                              = local.role_assignments_for_resources

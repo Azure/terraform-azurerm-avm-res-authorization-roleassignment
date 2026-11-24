@@ -20,9 +20,9 @@ data "azapi_client_config" "current" {}
 module "role_assignments" {
   source = "../../"
 
+  location = var.location
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
   enable_telemetry = var.enable_telemetry
-  location         = var.location
   role_assignments_azure_resource_manager = {
     monitoring_reader_by_id = {
       principal_id       = data.azapi_client_config.current.object_id
