@@ -1,14 +1,20 @@
-data "azapi_resource_list" "resources_by_resource_group_and_name" {
+# azapi_resource_list would request <resource group>/providers/Microsoft.Resources/resources, which ARM doesn't serve. The resource group's resources endpoint is <resource group>/resources.
+data "azapi_resource_action" "resources_by_resource_group_and_name" {
   for_each = var.role_assignments_for_resources
 
-  parent_id              = "/subscriptions/${data.azapi_client_config.current.subscription_id}/resourceGroups/${each.value.resource_group_name}"
-  type                   = "Microsoft.Resources/resources@2021-04-01"
+  action = "resources"
+  method = "GET"
+  query_parameters = {
+    "$filter" = ["name eq '${each.value.resource_name}'"]
+  }
+  resource_id            = "/subscriptions/${data.azapi_client_config.current.subscription_id}/resourceGroups/${each.value.resource_group_name}"
+  type                   = "Microsoft.Resources/resourceGroups@2021-04-01"
   response_export_values = ["value"]
 }
 
 locals {
   resource_ids_by_resource_group_and_name = {
-    for key, value in data.azapi_resource_list.resources_by_resource_group_and_name :
+    for key, value in data.azapi_resource_action.resources_by_resource_group_and_name :
     key => try([
       for resource in value.output.value :
       resource.id

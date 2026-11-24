@@ -201,3 +201,55 @@ run "role_assignment_identity_changes_trigger_replacement" {
     error_message = "The entra_id_role_assignments output should still include legacy assignments."
   }
 }
+
+run "resource_scope_lookup_uses_resource_group_resources_endpoint" {
+  command = apply
+
+  variables {
+    role_definitions = {
+      reader = {
+        name = "Reader"
+      }
+    }
+    role_assignments_for_resources = {
+      app = {
+        resource_group_name = "test-rg"
+        resource_name       = "test-app"
+        role_assignments = {
+          reader = {
+            role_definition = "reader"
+            any_principals  = []
+          }
+        }
+      }
+    }
+  }
+
+  override_data {
+    target = data.azapi_resource_action.resources_by_resource_group_and_name["app"]
+    values = {
+      output = {
+        value = [
+          {
+            id   = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Web/sites/test-app"
+            name = "test-app"
+          }
+        ]
+      }
+    }
+  }
+
+  assert {
+    condition = (
+      data.azapi_resource_action.resources_by_resource_group_and_name["app"].resource_id == "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg" &&
+      data.azapi_resource_action.resources_by_resource_group_and_name["app"].action == "resources" &&
+      data.azapi_resource_action.resources_by_resource_group_and_name["app"].method == "GET"
+    )
+    error_message = "The resource lookup must call the resource group's resources endpoint."
+  }
+
+  assert {
+    condition     = local.resource_ids_by_resource_group_and_name["app"] == "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Web/sites/test-app"
+    error_message = "The resource lookup should resolve the resource ID from output.value."
+  }
+}
