@@ -253,3 +253,56 @@ run "resource_scope_lookup_uses_resource_group_resources_endpoint" {
     error_message = "The resource lookup should resolve the resource ID from output.value."
   }
 }
+
+run "role_definition_id_matches_the_form_azure_returns_for_the_scope" {
+  command = apply
+
+  variables {
+    role_definitions = {
+      reader = {
+        id = "acdd72a7-3385-48ef-bd42-f606fba81ae7"
+      }
+    }
+    users_by_object_id = {
+      user1 = "33333333-3333-3333-3333-333333333333"
+    }
+    role_assignments_for_management_groups = {
+      mg = {
+        management_group_id = "test-mg"
+        role_assignments = {
+          reader = {
+            role_definition = "reader"
+            users           = ["user1"]
+          }
+        }
+      }
+    }
+    role_assignments_azure_resource_manager = {
+      mg = {
+        principal_id       = "44444444-4444-4444-4444-444444444444"
+        role_definition_id = "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleDefinitions/acdd72a7-3385-48ef-bd42-f606fba81ae7"
+        scope              = "/providers/Microsoft.Management/managementGroups/test-mg"
+      }
+      other_subscription = {
+        principal_id       = "44444444-4444-4444-4444-444444444444"
+        role_definition_id = "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleDefinitions/acdd72a7-3385-48ef-bd42-f606fba81ae7"
+        scope              = "/subscriptions/99999999-9999-9999-9999-999999999999/resourceGroups/other-rg"
+      }
+    }
+  }
+
+  assert {
+    condition     = azapi_resource.this["managementgroup-user-mg-reader-user1"].body.properties.roleDefinitionId == "/providers/Microsoft.Authorization/roleDefinitions/acdd72a7-3385-48ef-bd42-f606fba81ae7"
+    error_message = "Management group assignments must send the tenant-level role definition ID that Azure returns."
+  }
+
+  assert {
+    condition     = azapi_resource.basic["mg"].body.properties.roleDefinitionId == "/providers/Microsoft.Authorization/roleDefinitions/acdd72a7-3385-48ef-bd42-f606fba81ae7"
+    error_message = "Basic management group assignments must send the tenant-level role definition ID that Azure returns."
+  }
+
+  assert {
+    condition     = azapi_resource.basic["other_subscription"].body.properties.roleDefinitionId == "/subscriptions/99999999-9999-9999-9999-999999999999/providers/Microsoft.Authorization/roleDefinitions/acdd72a7-3385-48ef-bd42-f606fba81ae7"
+    error_message = "Subscription-level assignments must use the assignment's own subscription in the role definition ID."
+  }
+}

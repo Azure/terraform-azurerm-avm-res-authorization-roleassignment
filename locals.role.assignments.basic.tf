@@ -18,6 +18,14 @@ data "azapi_resource_list" "role_assignments_azure_resource_manager_role_definit
 }
 
 locals {
+  role_assignments_azure_resource_manager_role_definition_ids = {
+    for key, value in var.role_assignments_azure_resource_manager :
+    key => value.role_definition_id != null ? value.role_definition_id : one([
+      for role_definition in data.azapi_resource_list.role_assignments_azure_resource_manager_role_definitions_by_name[key].output.value :
+      role_definition.id
+      if try(role_definition.properties.roleName, role_definition.name, null) == value.role_definition_name
+    ])
+  }
   role_assignments_azure_resource_manager_normalized = {
     for key, value in var.role_assignments_azure_resource_manager :
     "basic-${key}" => {
@@ -27,11 +35,12 @@ locals {
       description                            = value.description
       principal_id                           = value.principal_id
       principal_type                         = value.principal_type
-      role_definition_id = value.role_definition_id != null ? value.role_definition_id : one([
-        for role_definition in data.azapi_resource_list.role_assignments_azure_resource_manager_role_definitions_by_name[key].output.value :
-        role_definition.id
-        if try(role_definition.properties.roleName, role_definition.name, null) == value.role_definition_name
-      ])
+      # Azure returns the role definition ID in a form that depends on the assignment scope. Sending that form keeps the body stable between plans.
+      role_definition_id = local.role_assignments_azure_resource_manager_role_definition_ids[key] == null ? null : (
+        startswith(lower(value.scope), "/subscriptions/")
+        ? "/subscriptions/${split("/", value.scope)[2]}/providers/Microsoft.Authorization/roleDefinitions/${reverse(split("/", local.role_assignments_azure_resource_manager_role_definition_ids[key]))[0]}"
+        : "/providers/Microsoft.Authorization/roleDefinitions/${reverse(split("/", local.role_assignments_azure_resource_manager_role_definition_ids[key]))[0]}"
+      )
       scope                            = value.scope
       skip_service_principal_aad_check = value.skip_service_principal_aad_check
     }
