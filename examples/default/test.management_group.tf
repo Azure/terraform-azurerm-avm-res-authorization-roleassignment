@@ -4,17 +4,19 @@ resource "random_pet" "management_group_name" {
 }
 
 data "azapi_resource_list" "test_management_groups" {
+  count = var.test_management_group_display_name == null ? 0 : 1
+
   parent_id              = "/"
   type                   = "Microsoft.Management/managementGroups@2023-04-01"
   response_export_values = ["value"]
 }
 
 locals {
-  # The tenant root's name is always the tenant ID; its display name can be changed.
-  test_parent_management_group = one([
-    for management_group in data.azapi_resource_list.test_management_groups.output.value :
-    management_group
-    if(var.test_management_group_display_name == null ? management_group.name == data.azapi_client_config.current.tenant_id : management_group.properties.displayName == var.test_management_group_display_name)
+  # The tenant root's name is always the tenant ID. Build its ID directly because the test identity may not see the root in a management group list.
+  test_parent_management_group_id = var.test_management_group_display_name == null ? "/providers/Microsoft.Management/managementGroups/${data.azapi_client_config.current.tenant_id}" : one([
+    for management_group in one(data.azapi_resource_list.test_management_groups[*].output).value :
+    management_group.id
+    if management_group.properties.displayName == var.test_management_group_display_name
   ])
 }
 
@@ -27,7 +29,7 @@ resource "azapi_resource" "management_group" {
       displayName = "${local.module_name}-${random_pet.management_group_name.id}"
       details = {
         parent = {
-          id = local.test_parent_management_group.id
+          id = local.test_parent_management_group_id
         }
       }
     }
