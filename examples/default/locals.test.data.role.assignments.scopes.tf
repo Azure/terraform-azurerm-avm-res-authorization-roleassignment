@@ -5,9 +5,6 @@ locals {
       role_assignments = {
         role_assignment1 = {
           role_definition                    = "role1"
-          users                              = [local.users.user8]
-          groups                             = [local.groups.group6]
-          app_registrations                  = [local.app_registrations.app_registration7]
           system_assigned_managed_identities = [local.system_assigned_managed_identities.sami6]
           user_assigned_managed_identities   = [local.user_assigned_managed_identities.uami7]
         }
@@ -18,9 +15,6 @@ locals {
       role_assignments = {
         role_assignment1 = {
           role_definition                    = "role1"
-          users                              = [local.users.user8]
-          groups                             = [local.groups.group6]
-          app_registrations                  = [local.app_registrations.app_registration7]
           system_assigned_managed_identities = [local.system_assigned_managed_identities.sami6]
           user_assigned_managed_identities   = [local.user_assigned_managed_identities.uami7]
         }
@@ -31,9 +25,6 @@ locals {
       role_assignments = {
         role_assignment1 = {
           role_definition                    = "role1"
-          users                              = [local.users.user8]
-          groups                             = [local.groups.group6]
-          app_registrations                  = [local.app_registrations.app_registration7]
           system_assigned_managed_identities = [local.system_assigned_managed_identities.sami6]
           user_assigned_managed_identities   = [local.user_assigned_managed_identities.uami7]
         }
@@ -46,9 +37,6 @@ locals {
         role_assignments = {
           role_assignment1 = {
             role_definition                    = "role1"
-            users                              = [local.users.user8]
-            groups                             = [local.groups.group6]
-            app_registrations                  = [local.app_registrations.app_registration7]
             system_assigned_managed_identities = [local.system_assigned_managed_identities.sami6]
             user_assigned_managed_identities   = [local.user_assigned_managed_identities.uami7]
           }

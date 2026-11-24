@@ -1,20 +1,8 @@
 locals {
+  # Both keys resolve to the test identity, through different lookups. Never give them the same role at the same scope.
   app_registrations = {
     app_registration1 = "app_registration1"
     app_registration2 = "app_registration2"
-    app_registration3 = "app_registration3"
-    app_registration4 = "app_registration4"
-    app_registration5 = "app_registration5"
-    app_registration6 = "app_registration6"
-    app_registration7 = "app_registration7"
-  }
-  groups = {
-    group1 = "group1"
-    group2 = "group2"
-    group3 = "group3"
-    group4 = "group4"
-    group5 = "group5"
-    group6 = "group6"
   }
   system_assigned_managed_identities = {
     sami1 = "sami1"
@@ -32,15 +20,5 @@ locals {
     uami5 = "uami5"
     uami6 = "uami6"
     uami7 = "uami7"
-  }
-  users = {
-    user1 = "user1"
-    user2 = "user2"
-    user3 = "user3"
-    user4 = "user4"
-    user5 = "user5"
-    user6 = "user6"
-    user7 = "user7"
-    user8 = "user8"
   }
 }

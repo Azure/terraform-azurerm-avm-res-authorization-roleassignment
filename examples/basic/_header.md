@@ -1,7 +1,3 @@
 # Basic example
 
-This is an end-to-end example demonstrating the full functionality of the module with AzAPI-backed Azure resources.
-
-Since this module requires specific account name, this example creates them dynamically so we can use it for end to end testing without any specific dependencies.
-
-Having said that, there is one specific dependency on a custom role definition called `Example-Role` in this example. This is due to the very slow API response when creating role definitions, which makes it unsuitable for end to end testing.
+This example uses the `role_assignments_azure_resource_manager` input to assign two roles to the identity running Terraform at subscription scope. One role is set by role definition ID and the other by role name.
