@@ -4,11 +4,9 @@
 
 This is an end to end example demonstrating the full functionlality of the module.
 
-Since this module requires specific account name, this example creates them dynamically so we can use it for end to end testing without any specific dependencies.
+This example creates its test identities and custom role definition dynamically.
 
-Having said that, there is one specific dependency on a custom role definition called `Example-Role` in this example. This is due to the very slow API response when creating role definitions, which makes it unsuitable for end to end testing.
-
-The parent management group defaults to the tenant root, identified by the tenant ID rather than its changeable display name. Set `test_management_group_display_name` to use a different existing management group. The deployment identity still needs access to that group; this example does not grant permissions.
+The parent management group defaults to `AVM Tests`. Set `test_management_group_display_name` to another existing management group, or null for the tenant root. The deployment identity needs access to that group; this example does not grant permissions.
 
 ```hcl
 module "role_assignments" {
@@ -82,6 +80,7 @@ The following requirements are needed by this module:
 
 The following resources are used by this module:
 
+- [azapi_resource.test_role_definition](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) (resource)
 - [azuread_application.test](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application) (resource)
 - [azuread_group.test](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/group) (resource)
 - [azuread_service_principal.test](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal) (resource)
@@ -100,6 +99,7 @@ The following resources are used by this module:
 - [random_pet.user_assigned_managed_identity](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)
 - [random_pet.username](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) (resource)
 - [random_string.employee_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) (resource)
+- [random_uuid.test_role_definition](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/uuid) (resource)
 - [time_sleep.after_management_group_creation](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) (resource)
 - [time_sleep.before_service_principal_read_creation](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) (resource)
 - [azuread_service_principal.test](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) (data source)
@@ -160,11 +160,11 @@ Default: `"changeme.com"`
 
 ### <a name="input_test_management_group_display_name"></a> [test\_management\_group\_display\_name](#input\_test\_management\_group\_display\_name)
 
-Description: The display name for the management group to test. If null, use the tenant root management group by its immutable tenant ID.
+Description: The display name of the parent management group. If null, use the tenant root management group by its immutable tenant ID.
 
 Type: `string`
 
-Default: `null`
+Default: `"AVM Tests"`
 
 ## Outputs
 
