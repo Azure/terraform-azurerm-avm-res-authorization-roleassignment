@@ -3,18 +3,64 @@ resource "random_pet" "management_group_name" {
   separator = "-"
 }
 
-data "azurerm_management_group" "test" {
-  display_name = var.test_management_group_display_name
+data "azapi_resource_list" "test_management_groups" {
+  count = var.test_management_group_display_name == null ? 0 : 1
+
+  parent_id              = "/"
+  type                   = "Microsoft.Management/managementGroups@2023-04-01"
+  response_export_values = ["value"]
 }
 
-resource "azurerm_management_group" "test" {
-  display_name               = "${local.module_name}-${random_pet.management_group_name.id}"
-  name                       = "${local.module_name}-${random_pet.management_group_name.id}"
-  parent_management_group_id = data.azurerm_management_group.test.id
+# Find the test subscription's parent management group. The test identity's access is inherited from there, not from the tenant root.
+data "azapi_resource_action" "subscription_management_groups" {
+  count = var.test_management_group_display_name == null ? 1 : 0
+
+  action      = "resources"
+  method      = "POST"
+  resource_id = "/providers/Microsoft.ResourceGraph"
+  type        = "Microsoft.ResourceGraph@2022-10-01"
+  body = {
+    subscriptions = [data.azapi_client_config.current.subscription_id]
+    query         = "resourcecontainers | where type == 'microsoft.resources/subscriptions' | project chain = properties.managementGroupAncestorsChain"
+  }
+  response_export_values = {
+    parent = "data[0].chain[0].name"
+  }
+}
+
+locals {
+  # A string template is never null, even while random_pet is unknown, so the module can plan its display-name lookup.
+  test_management_group_name = "${local.module_name}-${random_pet.management_group_name.id}"
+  test_parent_management_group_id = var.test_management_group_display_name == null ? "/providers/Microsoft.Management/managementGroups/${one(data.azapi_resource_action.subscription_management_groups[*].output).parent}" : one([
+    for management_group in one(data.azapi_resource_list.test_management_groups[*].output).value :
+    management_group.id
+    if management_group.properties.displayName == var.test_management_group_display_name
+  ])
+}
+
+resource "azapi_resource" "management_group" {
+  name      = local.test_management_group_name
+  parent_id = "/"
+  type      = "Microsoft.Management/managementGroups@2023-04-01"
+  body = {
+    properties = {
+      displayName = local.test_management_group_name
+      details = {
+        parent = {
+          id = local.test_parent_management_group_id
+        }
+      }
+    }
+  }
+  response_export_values = []
+  # Access to a new management group can take a few minutes to propagate.
+  retry = {
+    error_message_regex = ["AuthorizationFailed"]
+  }
 }
 
 resource "time_sleep" "after_management_group_creation" {
   create_duration = "300s"
 
-  depends_on = [azurerm_management_group.test]
+  depends_on = [azapi_resource.management_group]
 }

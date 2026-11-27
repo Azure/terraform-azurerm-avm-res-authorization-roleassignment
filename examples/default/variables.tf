@@ -18,7 +18,7 @@ DESCRIPTION
 
 variable "include_custom_role_definition" {
   type        = bool
-  default     = true
+  default     = false
   description = <<DESCRIPTION
 This variable is used to control whether the example tests a custom role definition.
 DESCRIPTION
@@ -31,19 +31,10 @@ variable "location" {
   nullable    = false
 }
 
-variable "spn_domain" {
-  type        = string
-  default     = "changeme.com"
-  description = <<DESCRIPTION
-The domain name that is post-fixed on the service principal name.
-This must be a valid domain registered in your Entra ID tenant.
-DESCRIPTION
-}
-
 variable "test_management_group_display_name" {
   type        = string
-  default     = "Tenant Root Group"
+  default     = null
   description = <<DESCRIPTION
-The display name for the management group to test.
+The display name of an existing management group to use as the test parent. If null, the test subscription's parent management group is used.
 DESCRIPTION
 }

@@ -1,35 +1,43 @@
-resource "random_pet" "static_site" {
+resource "random_pet" "automation_account" {
   for_each = local.system_assigned_managed_identities
 
   length    = 2
   separator = "-"
 }
 
-resource "azurerm_static_web_app" "test" {
+resource "azapi_resource" "automation_account" {
   for_each = local.system_assigned_managed_identities
 
-  location            = azurerm_resource_group.test.location
-  name                = "${local.module_name}-${each.key}-${random_pet.static_site[each.key].id}"
-  resource_group_name = azurerm_resource_group.test.name
-  sku_size            = "Standard"
-  sku_tier            = "Standard"
-
-  identity {
-    type = "SystemAssigned"
+  location  = var.location
+  name      = "${local.module_name}-${each.key}-${random_pet.automation_account[each.key].id}"
+  parent_id = azapi_resource.resource_group.id
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  body = {
+    identity = {
+      type = "SystemAssigned"
+    }
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
   }
+  response_export_values = [
+    "identity.principalId",
+  ]
 }
 
 resource "time_sleep" "before_service_principal_read_creation" {
   create_duration  = "20s"
   destroy_duration = "10s"
 
-  depends_on = [azurerm_static_web_app.test]
+  depends_on = [azapi_resource.automation_account]
 }
 
 data "azuread_service_principal" "test" {
   for_each = local.system_assigned_managed_identities
 
-  object_id = azurerm_static_web_app.test[each.key].identity[0].principal_id
+  object_id = azapi_resource.automation_account[each.key].output.identity.principalId
 
   depends_on = [time_sleep.before_service_principal_read_creation]
 }

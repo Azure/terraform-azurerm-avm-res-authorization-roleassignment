@@ -1,18 +1,17 @@
 module "role_assignments" {
   source = "../../"
 
+  location                          = var.location
   app_registrations_by_client_id    = local.app_registrations_by_client_id
-  app_registrations_by_display_name = local.app_registrations_by_display_name
-  app_registrations_by_object_id    = local.app_registrations_by_object_id
   app_registrations_by_principal_id = local.app_registrations_by_principal_id
   # source = "Azure/avm-ptn-authorization-roleassignment/azurerm"
-  enable_telemetry                                            = var.enable_telemetry
-  entra_id_role_definitions                                   = local.entra_id_role_definitions
-  groups_by_display_name                                      = local.groups_by_display_name
-  groups_by_mail_nickname                                     = local.groups_by_mail_nickname
-  groups_by_object_id                                         = local.groups_by_object_id
-  location                                                    = var.location
-  role_assignments_for_entra_id                               = local.role_assignments_for_entra_id
+  enable_telemetry = var.enable_telemetry
+  # Access to the new test management group can take a few minutes to propagate.
+  retry = {
+    error_message_regex  = ["AuthorizationFailed"]
+    interval_seconds     = 10
+    max_interval_seconds = 60
+  }
   role_assignments_for_management_groups                      = local.role_assignments_for_management_groups
   role_assignments_for_resource_groups                        = local.role_assignments_for_resource_groups
   role_assignments_for_resources                              = local.role_assignments_for_resources
@@ -26,23 +25,14 @@ module "role_assignments" {
   user_assigned_managed_identities_by_display_name            = local.user_assigned_managed_identities_by_display_name
   user_assigned_managed_identities_by_principal_id            = local.user_assigned_managed_identities_by_principal_id
   user_assigned_managed_identities_by_resource_group_and_name = local.user_assigned_managed_identities_by_resource_group_and_name
-  users_by_employee_id                                        = local.users_by_employee_id
-  users_by_mail                                               = local.users_by_mail
-  users_by_mail_nickname                                      = local.users_by_mail_nickname
-  users_by_object_id                                          = local.users_by_object_id
-  users_by_user_principal_name                                = local.users_by_user_principal_name
 
   depends_on = [
-    azuread_service_principal.test,
-    azuread_user.test,
-    azuread_group.test,
-    azuread_application.test,
-    azurerm_static_web_app.test,
-    azurerm_user_assigned_identity.test,
+    azapi_resource.automation_account,
+    azapi_resource.user_assigned_identity,
     data.azuread_service_principal.test,
-    azurerm_management_group.test,
+    azapi_resource.management_group,
     time_sleep.after_management_group_creation
   ]
 }
 
-data "azurerm_client_config" "current" {}
+data "azapi_client_config" "current" {}

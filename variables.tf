@@ -1,7 +1,7 @@
 variable "location" {
   type        = string
-  default     = null
   description = "The Azure region for this module's resources or telemetry deployment."
+  nullable    = false
 
   validation {
     condition     = !var.enable_telemetry || var.location != null
@@ -37,23 +37,5 @@ The key is something unique to you. The value is a map of role assignment attrib
 - `delegated_managed_identity_resource_id` - (Optional) The resource ID of the delegated managed identity.
 - `description` - (Optional) The description of the role assignment.
 - `skip_service_principal_aad_check` - (Optional) If set to true, the service principal AAD check is skipped. This is useful for role assignments where the Service Principal is newly created and not yet available in AAD. Defaults to `false`.
-DESCRIPTION
-}
-
-variable "role_assignments_entra_id" {
-  type = map(object({
-    app_scope_id        = optional(string)
-    directory_scope_id  = optional(string)
-    principal_object_id = string
-    role_id             = string
-  }))
-  default     = {}
-  description = <<DESCRIPTION
-Azure AD role assignments to create for Entra ID. This variable does not do any validation that principals or roles exist and you need to supply the principalObjectID and roleID yourself.
-
-- `app_scope_id` - (Optional) The scope ID of the app.
-- `directory_scope_id` - (Optional) The scope ID of the directory.
-- `principal_object_id` - The object ID of the principal to assign the role to.
-- `role_id` - The ID of the role to assign.
 DESCRIPTION
 }
