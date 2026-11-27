@@ -42,8 +42,8 @@ DESCRIPTION
 
 variable "test_management_group_display_name" {
   type        = string
-  default     = "Tenant Root Group"
+  default     = "AVM Tests"
   description = <<DESCRIPTION
-The display name for the management group to test.
+The display name of the parent management group. If null, use the tenant root management group by its immutable tenant ID.
 DESCRIPTION
 }

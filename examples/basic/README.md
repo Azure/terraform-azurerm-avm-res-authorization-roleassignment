@@ -10,16 +10,21 @@ Having said that, there is one specific dependency on a custom role definition c
 
 ```hcl
 terraform {
-  required_version = "~> 1.6"
+  required_version = "~> 1.11"
 
   required_providers {
+    # tflint-ignore: terraform_unused_required_providers
+    azapi = {
+      source  = "Azure/azapi"
+      version = "~> 2.12"
+    }
     azuread = {
       source  = "hashicorp/azuread"
       version = ">= 2.46, < 4.0"
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 3.7, < 5.0"
+      version = "~> 4.0"
     }
     random = {
       source  = "hashicorp/random"
@@ -116,11 +121,13 @@ module "role_assignments" {
 
 The following requirements are needed by this module:
 
-- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.6)
+- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.11)
+
+- <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) (~> 2.12)
 
 - <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) (>= 2.46, < 4.0)
 
-- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (>= 3.7, < 5.0)
+- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 4.0)
 
 - <a name="requirement_random"></a> [random](#requirement\_random) (~> 3.5)
 

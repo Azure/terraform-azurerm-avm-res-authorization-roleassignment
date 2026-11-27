@@ -42,7 +42,7 @@ output "test_resource_ids" {
   description = "Test resource ids"
   value = {
     management_group = azurerm_management_group.test.id
-    subscription     = "/subscriptions/${var.alternative_subscription_id}"
+    subscription     = "/subscriptions/${coalesce(var.alternative_subscription_id, data.azurerm_client_config.current.subscription_id)}"
     resource_group   = azurerm_resource_group.test.id
     resource         = azurerm_static_web_app.test[local.system_assigned_managed_identities.sami1].id
   }

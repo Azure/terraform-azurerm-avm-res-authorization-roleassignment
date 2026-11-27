@@ -2,6 +2,6 @@
 
 This is an end to end example demonstrating the full functionlality of the module.
 
-Since this module requires specific account name, this example creates them dynamically so we can use it for end to end testing without any specific dependencies.
+This example creates its test identities and custom role definition dynamically.
 
-Having said that, there is one specific dependency on a custom role definition called `Example-Role` in this example. This is due to the very slow API response when creating role definitions, which makes it unsuitable for end to end testing.
+The parent management group defaults to `AVM Tests`. Set `test_management_group_display_name` to another existing management group, or null for the tenant root. The deployment identity needs access to that group; this example does not grant permissions.
